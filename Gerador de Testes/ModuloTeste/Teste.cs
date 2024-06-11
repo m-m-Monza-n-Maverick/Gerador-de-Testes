@@ -48,5 +48,21 @@ namespace Gerador_de_Testes.ModuloTeste
             {
             }
         }
+
+        public List<ModuloQuestao.Questao> Questoes
+        {
+            get => default;
+            set
+            {
+            }
+        }
+
+        public bool Recuperacao
+        {
+            get => default;
+            set
+            {
+            }
+        }
     }
 }

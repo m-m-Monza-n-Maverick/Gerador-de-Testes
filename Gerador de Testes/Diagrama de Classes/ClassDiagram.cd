@@ -3,19 +3,25 @@
   <Class Name="Gerador_de_Testes.ModuloDisciplina.Disciplina">
     <Position X="3" Y="0.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAEAAAA=</HashCode>
       <FileName>ModuloDisciplina\Disciplina.cs</FileName>
     </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Materias" />
+    </ShowAsCollectionAssociation>
   </Class>
   <Class Name="Gerador_de_Testes.ModuloMateria.Materia">
     <Position X="5.5" Y="0.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAE=</HashCode>
+      <HashCode>AAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAgAAEAAAE=</HashCode>
       <FileName>ModuloMateria\Materia.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="Disciplina" />
     </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="Questoes" />
+    </ShowAsCollectionAssociation>
   </Class>
   <Class Name="Gerador_de_Testes.ModuloQuestao.Questao">
     <Position X="8" Y="0.75" Width="1.5" />
@@ -28,15 +34,18 @@
     </ShowAsAssociation>
   </Class>
   <Class Name="Gerador_de_Testes.ModuloTeste.Teste">
-    <Position X="5.5" Y="3" Width="1.5" />
+    <Position X="5.5" Y="2.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAEAAAAAAAAAAAQAAAAAAAAACAAAABE=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAEAAAAAAAAAAAQAAAACAAAgCAAAABE=</HashCode>
       <FileName>ModuloTeste\Teste.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="Diciplina" />
       <Property Name="Materia" />
     </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="Questoes" />
+    </ShowAsCollectionAssociation>
   </Class>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

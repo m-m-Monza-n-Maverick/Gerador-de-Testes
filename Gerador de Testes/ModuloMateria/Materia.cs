@@ -31,5 +31,13 @@ namespace Gerador_de_Testes.ModuloMateria
             {
             }
         }
+
+        public List<ModuloQuestao.Questao> Questoes
+        {
+            get => default;
+            set
+            {
+            }
+        }
     }
 }

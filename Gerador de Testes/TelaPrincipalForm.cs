@@ -1,8 +1,8 @@
 namespace Gerador_de_Testes
 {
-    public partial class Form1 : Form
+    public partial class TelaPrincipalForm : Form
     {
-        public Form1()
+        public TelaPrincipalForm()
         {
             InitializeComponent();
         }

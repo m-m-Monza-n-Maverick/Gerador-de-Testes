@@ -14,5 +14,13 @@ namespace Gerador_de_Testes.ModuloDisciplina
             {
             }
         }
+
+        public List<ModuloMateria.Materia> Materias
+        {
+            get => default;
+            set
+            {
+            }
+        }
     }
 }
