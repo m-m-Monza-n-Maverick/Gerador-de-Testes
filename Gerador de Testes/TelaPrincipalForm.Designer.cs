@@ -33,6 +33,7 @@
             clientesMenuItem = new ToolStripMenuItem();
             temasMenuItem = new ToolStripMenuItem();
             alugueisMenuItem = new ToolStripMenuItem();
+            testesToolStripMenuItem = new ToolStripMenuItem();
             statusStrip1 = new StatusStrip();
             statusLabelPrincipal = new ToolStripStatusLabel();
             toolStrip1 = new ToolStrip();
@@ -40,15 +41,15 @@
             btnEditar = new ToolStripButton();
             btnExcluir = new ToolStripButton();
             toolStripSeparator1 = new ToolStripSeparator();
-            btnFiltrar = new ToolStripButton();
-            toolStripSeparator3 = new ToolStripSeparator();
-            btnVisualizarAlugueis = new ToolStripButton();
-            btnConcluirAluguel = new ToolStripButton();
-            btnConfigurarDescontos = new ToolStripButton();
+            btnAlternativas = new ToolStripButton();
+            btnDuplicar = new ToolStripButton();
+            btnDetalhes = new ToolStripButton();
+            btnPdf = new ToolStripButton();
+            btnGabarito = new ToolStripButton();
             toolStripSeparator4 = new ToolStripSeparator();
             lblTipoCadastro = new ToolStripLabel();
             pnlRegistros = new Panel();
-            testesToolStripMenuItem = new ToolStripMenuItem();
+            toolStripSeparator2 = new ToolStripSeparator();
             menuStrip1.SuspendLayout();
             statusStrip1.SuspendLayout();
             toolStrip1.SuspendLayout();
@@ -74,7 +75,7 @@
             // clientesMenuItem
             // 
             clientesMenuItem.Name = "clientesMenuItem";
-            clientesMenuItem.Size = new Size(180, 24);
+            clientesMenuItem.Size = new Size(149, 24);
             clientesMenuItem.Text = "Disciplinas";
             // 
             // temasMenuItem
@@ -88,6 +89,12 @@
             alugueisMenuItem.Name = "alugueisMenuItem";
             alugueisMenuItem.Size = new Size(149, 24);
             alugueisMenuItem.Text = "Questões";
+            // 
+            // testesToolStripMenuItem
+            // 
+            testesToolStripMenuItem.Name = "testesToolStripMenuItem";
+            testesToolStripMenuItem.Size = new Size(149, 24);
+            testesToolStripMenuItem.Text = "Testes";
             // 
             // statusStrip1
             // 
@@ -107,7 +114,7 @@
             // 
             // toolStrip1
             // 
-            toolStrip1.Items.AddRange(new ToolStripItem[] { btnAdicionar, btnEditar, btnExcluir, toolStripSeparator1, btnFiltrar, toolStripSeparator3, btnVisualizarAlugueis, btnConcluirAluguel, btnConfigurarDescontos, toolStripSeparator4, lblTipoCadastro });
+            toolStrip1.Items.AddRange(new ToolStripItem[] { btnAdicionar, btnEditar, btnExcluir, toolStripSeparator2, btnAlternativas, toolStripSeparator1, btnDuplicar, btnDetalhes, btnPdf, btnGabarito, toolStripSeparator4, lblTipoCadastro });
             toolStrip1.Location = new Point(0, 28);
             toolStrip1.Name = "toolStrip1";
             toolStrip1.Size = new Size(800, 41);
@@ -118,7 +125,7 @@
             // 
             btnAdicionar.DisplayStyle = ToolStripItemDisplayStyle.Image;
             btnAdicionar.Enabled = false;
-            btnAdicionar.Image = Gerador_de_Testes.Properties.Resources.btnAdicionar;
+            btnAdicionar.Image = Gerador_de_Testes.Properties.Resources.btnAdicionarItens;
             btnAdicionar.ImageScaling = ToolStripItemImageScaling.None;
             btnAdicionar.ImageTransparentColor = Color.Magenta;
             btnAdicionar.Name = "btnAdicionar";
@@ -152,52 +159,60 @@
             toolStripSeparator1.Name = "toolStripSeparator1";
             toolStripSeparator1.Size = new Size(6, 41);
             // 
-            // btnFiltrar
+            // btnAlternativas
             // 
-            btnFiltrar.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            btnFiltrar.Enabled = false;
-            btnFiltrar.Image = Gerador_de_Testes.Properties.Resources.btnConfigurarDescontos;
-            btnFiltrar.ImageScaling = ToolStripItemImageScaling.None;
-            btnFiltrar.ImageTransparentColor = Color.Magenta;
-            btnFiltrar.Name = "btnFiltrar";
-            btnFiltrar.Padding = new Padding(5);
-            btnFiltrar.Size = new Size(38, 38);
+            btnAlternativas.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            btnAlternativas.Enabled = false;
+            btnAlternativas.Image = Gerador_de_Testes.Properties.Resources.btnConfigurarDescontos;
+            btnAlternativas.ImageScaling = ToolStripItemImageScaling.None;
+            btnAlternativas.ImageTransparentColor = Color.Magenta;
+            btnAlternativas.Name = "btnAlternativas";
+            btnAlternativas.Padding = new Padding(5);
+            btnAlternativas.Size = new Size(38, 38);
             // 
-            // toolStripSeparator3
+            // btnDuplicar
             // 
-            toolStripSeparator3.Name = "toolStripSeparator3";
-            toolStripSeparator3.Size = new Size(6, 41);
+            btnDuplicar.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            btnDuplicar.Enabled = false;
+            btnDuplicar.Image = Gerador_de_Testes.Properties.Resources.Copiar1;
+            btnDuplicar.ImageScaling = ToolStripItemImageScaling.None;
+            btnDuplicar.ImageTransparentColor = Color.DarkOrchid;
+            btnDuplicar.Name = "btnDuplicar";
+            btnDuplicar.Padding = new Padding(5);
+            btnDuplicar.Size = new Size(38, 38);
             // 
-            // btnVisualizarAlugueis
+            // btnDetalhes
             // 
-            btnVisualizarAlugueis.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            btnVisualizarAlugueis.Enabled = false;
-            btnVisualizarAlugueis.Image = Gerador_de_Testes.Properties.Resources.btnAdicionarItens;
-            btnVisualizarAlugueis.ImageScaling = ToolStripItemImageScaling.None;
-            btnVisualizarAlugueis.ImageTransparentColor = Color.Magenta;
-            btnVisualizarAlugueis.Name = "btnVisualizarAlugueis";
-            btnVisualizarAlugueis.Padding = new Padding(5);
-            btnVisualizarAlugueis.Size = new Size(38, 38);
+            btnDetalhes.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            btnDetalhes.Enabled = false;
+            btnDetalhes.Image = Gerador_de_Testes.Properties.Resources.Detalhes6;
+            btnDetalhes.ImageScaling = ToolStripItemImageScaling.None;
+            btnDetalhes.ImageTransparentColor = Color.Magenta;
+            btnDetalhes.Name = "btnDetalhes";
+            btnDetalhes.Padding = new Padding(5);
+            btnDetalhes.Size = new Size(38, 38);
             // 
-            // btnConcluirAluguel
+            // btnPdf
             // 
-            btnConcluirAluguel.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            btnConcluirAluguel.Enabled = false;
-            btnConcluirAluguel.ImageScaling = ToolStripItemImageScaling.None;
-            btnConcluirAluguel.ImageTransparentColor = Color.Magenta;
-            btnConcluirAluguel.Name = "btnConcluirAluguel";
-            btnConcluirAluguel.Padding = new Padding(5);
-            btnConcluirAluguel.Size = new Size(23, 38);
+            btnPdf.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            btnPdf.Enabled = false;
+            btnPdf.Image = Gerador_de_Testes.Properties.Resources.PDF;
+            btnPdf.ImageScaling = ToolStripItemImageScaling.None;
+            btnPdf.ImageTransparentColor = Color.Magenta;
+            btnPdf.Name = "btnPdf";
+            btnPdf.Padding = new Padding(5);
+            btnPdf.Size = new Size(38, 38);
             // 
-            // btnConfigurarDescontos
+            // btnGabarito
             // 
-            btnConfigurarDescontos.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            btnConfigurarDescontos.Enabled = false;
-            btnConfigurarDescontos.ImageScaling = ToolStripItemImageScaling.None;
-            btnConfigurarDescontos.ImageTransparentColor = Color.Magenta;
-            btnConfigurarDescontos.Name = "btnConfigurarDescontos";
-            btnConfigurarDescontos.Padding = new Padding(5);
-            btnConfigurarDescontos.Size = new Size(23, 38);
+            btnGabarito.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            btnGabarito.Enabled = false;
+            btnGabarito.Image = Gerador_de_Testes.Properties.Resources.PDF_gabarito;
+            btnGabarito.ImageScaling = ToolStripItemImageScaling.None;
+            btnGabarito.ImageTransparentColor = Color.Magenta;
+            btnGabarito.Name = "btnGabarito";
+            btnGabarito.Padding = new Padding(5);
+            btnGabarito.Size = new Size(38, 38);
             // 
             // toolStripSeparator4
             // 
@@ -219,11 +234,10 @@
             pnlRegistros.Size = new Size(800, 356);
             pnlRegistros.TabIndex = 3;
             // 
-            // testesToolStripMenuItem
+            // toolStripSeparator2
             // 
-            testesToolStripMenuItem.Name = "testesToolStripMenuItem";
-            testesToolStripMenuItem.Size = new Size(149, 24);
-            testesToolStripMenuItem.Text = "Testes";
+            toolStripSeparator2.Name = "toolStripSeparator2";
+            toolStripSeparator2.Size = new Size(6, 41);
             // 
             // TelaPrincipalForm
             // 
@@ -263,16 +277,17 @@
         private Panel pnlRegistros;
         private ToolStripSeparator toolStripSeparator1;
         private ToolStripLabel lblTipoCadastro;
-        private ToolStripButton btnVisualizarAlugueis;
-        private ToolStripButton btnFiltrar;
-        private ToolStripSeparator toolStripSeparator3;
-        private ToolStripButton btnConcluirAluguel;
-        private ToolStripButton btnConfigurarDescontos;
+        private ToolStripButton btnGabarito;
+        private ToolStripButton btnAlternativas;
         private ToolStripSeparator toolStripSeparator4;
         private ToolStripMenuItem clientesMenuItem;
         private ToolStripMenuItem temasMenuItem;
         private ToolStripMenuItem alugueisMenuItem;
         private object Properties;
         private ToolStripMenuItem testesToolStripMenuItem;
+        private ToolStripButton btnDuplicar;
+        private ToolStripButton btnDetalhes;
+        private ToolStripButton btnPdf;
+        private ToolStripSeparator toolStripSeparator2;
     }
 }
