@@ -1,36 +1,40 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="Gerador_de_Testes.Disciplina">
-    <Position X="5.5" Y="0.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
-      <FileName>Disciplina.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="Gerador_de_Testes.Materia">
+  <Class Name="Gerador_de_Testes.ModuloDisciplina.Disciplina">
     <Position X="3" Y="0.75" Width="1.5" />
     <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>ModuloDisciplina\Disciplina.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Gerador_de_Testes.ModuloMateria.Materia">
+    <Position X="5.5" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
       <HashCode>AAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAE=</HashCode>
-      <FileName>Materia.cs</FileName>
+      <FileName>ModuloMateria\Materia.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="Disciplina" />
     </ShowAsAssociation>
   </Class>
-  <Class Name="Gerador_de_Testes.Questao">
-    <Position X="0.5" Y="0.75" Width="1.5" />
+  <Class Name="Gerador_de_Testes.ModuloQuestao.Questao">
+    <Position X="8" Y="0.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAQAAAAAAAAAAAIAAQAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Questao.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="Gerador_de_Testes.Teste">
-    <Position X="3" Y="2.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAEAAAAAAAAAAAQAAAAAAAAACAAAABE=</HashCode>
-      <FileName>Teste.cs</FileName>
+      <FileName>ModuloQuestao\Questao.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
+      <Property Name="Materia" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Gerador_de_Testes.ModuloTeste.Teste">
+    <Position X="5.5" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAEAAAAAAAAAAAQAAAAAAAAACAAAABE=</HashCode>
+      <FileName>ModuloTeste\Teste.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Diciplina" />
       <Property Name="Materia" />
     </ShowAsAssociation>
   </Class>
