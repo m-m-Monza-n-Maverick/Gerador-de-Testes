@@ -132,7 +132,7 @@
             btnAdicionar.Name = "btnAdicionar";
             btnAdicionar.Padding = new Padding(5);
             btnAdicionar.Size = new Size(38, 38);
-            btnAdicionar.Click += btnAdicionar_Click_1;
+            btnAdicionar.Click += btnAdicionar_Click;
             // 
             // btnEditar
             // 
@@ -144,7 +144,7 @@
             btnEditar.Name = "btnEditar";
             btnEditar.Padding = new Padding(5);
             btnEditar.Size = new Size(38, 38);
-            btnEditar.Click += btnEditar_Click_1;
+            btnEditar.Click += btnEditar_Click;
             // 
             // btnExcluir
             // 
@@ -156,7 +156,7 @@
             btnExcluir.Name = "btnExcluir";
             btnExcluir.Padding = new Padding(5);
             btnExcluir.Size = new Size(38, 38);
-            btnExcluir.Click += btnExcluir_Click_1;
+            btnExcluir.Click += btnExcluir_Click;
             // 
             // toolStripSeparator2
             // 

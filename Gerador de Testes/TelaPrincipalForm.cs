@@ -1,5 +1,6 @@
 using Gerador_de_Testes.Compartilhado;
 using Gerador_de_Testes.ModuloDisciplina;
+using Gerador_de_Testes.ModuloQuestao;
 namespace Gerador_de_Testes
 {
     public partial class TelaPrincipalForm : Form
@@ -10,7 +11,7 @@ namespace Gerador_de_Testes
 
         IRepositorioDisciplina repositorioDisciplina;
         //IRepositorioMateria repositorioMateria;
-        //IRepositorioQuestao repositorioQuestao;
+        IRepositorioQuestao repositorioQuestao;
         //IRepositorioTeste repositorioTeste;
         public static TelaPrincipalForm Instancia { get; private set; }
 
@@ -23,7 +24,7 @@ namespace Gerador_de_Testes
             contexto = new(carregarDados: true);
             repositorioDisciplina = new RepositorioDisciplinaEmArquivo(contexto);
             //repositorioMateria = new RepositorioMateriaEmArquivo(contexto);
-            //repositorioQuestao = new RepositorioQuestaoEmArquivo(contexto);
+            repositorioQuestao = new RepositorioQuestao(contexto);
             //repositorioTeste = new RepositorioTesteEmArquivo(contexto);
 
             Instancia = this;
@@ -35,14 +36,17 @@ namespace Gerador_de_Testes
         #region Seleção de módulo
         private void disciplinasMenuItem_Click(object sender, EventArgs e)
             => SelecionaModulo(ref controlador, () => controlador = new ControladorDisciplina(repositorioDisciplina, contexto));
+        private void questoesMenuItem_Click(object sender, EventArgs e)
+            => SelecionaModulo(ref controlador, () => controlador = new ControladorQuestao(repositorioQuestao, contexto));
+        
         #endregion
 
         #region Botões
-        private void btnAdicionar_Click_1(object sender, EventArgs e)
+        private void btnAdicionar_Click(object sender, EventArgs e)
             => controlador.Adicionar();
-        private void btnEditar_Click_1(object sender, EventArgs e)
+        private void btnEditar_Click(object sender, EventArgs e)
             => controlador.Editar();
-        private void btnExcluir_Click_1(object sender, EventArgs e)
+        private void btnExcluir_Click(object sender, EventArgs e)
             => controlador.Excluir();
         #endregion
 
