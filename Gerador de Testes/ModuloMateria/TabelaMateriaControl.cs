@@ -4,6 +4,9 @@ namespace Gerador_de_Testes.ModuloMateria
 {
     public partial class TabelaMateriaControl : UserControl
     {
+
+        //Acrescentei a Disciplina na linha 24 e a linha 33
+
         public TabelaMateriaControl()
         {
             InitializeComponent();
@@ -18,14 +21,18 @@ namespace Gerador_de_Testes.ModuloMateria
             grid.Rows.Clear();
 
             foreach (Materia materia in materias) 
-                grid.Rows.Add(materia.Id, materia.Nome, materia.Serie);
+                grid.Rows.Add(materia.Id, materia.Nome, materia.Disciplina, materia.Serie);
         }
         public int ObterRegistroSelecionado() => grid.SelecionarId();
         private static DataGridViewTextBoxColumn[] ObterColunas()
         {
-            return [new DataGridViewTextBoxColumn { DataPropertyName = "Id", HeaderText = "Id" },
-                    new DataGridViewTextBoxColumn { DataPropertyName = "Nome", HeaderText = "Nome" },
-                    new DataGridViewTextBoxColumn { DataPropertyName = "Serie", HeaderText = "Serie" },];
+            return 
+            [
+                new DataGridViewTextBoxColumn { DataPropertyName = "Id", HeaderText = "Id" },
+                new DataGridViewTextBoxColumn { DataPropertyName = "Nome", HeaderText = "Nome" },
+                new DataGridViewTextBoxColumn { DataPropertyName = "Disciplina", HeaderText = "Disciplina" },
+                new DataGridViewTextBoxColumn { DataPropertyName = "Serie", HeaderText = "Série" },
+            ];
         }
 
     }
