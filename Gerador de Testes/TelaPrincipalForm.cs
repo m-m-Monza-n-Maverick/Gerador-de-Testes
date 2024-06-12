@@ -1,4 +1,5 @@
 using Gerador_de_Testes.Compartilhado;
+using Gerador_de_Testes.ModuloMateria;
 namespace Gerador_de_Testes
 {
     public partial class TelaPrincipalForm : Form
@@ -6,6 +7,7 @@ namespace Gerador_de_Testes
         ControladorBase controlador;
 
         ContextoDados contexto;
+        RepositorioMateria repositorioMateria;
 
         //IRepositorioDisciplina repositorioDisciplina;
         //IRepositorioMateria repositorioMateria;
@@ -21,7 +23,7 @@ namespace Gerador_de_Testes
 
             contexto = new(carregarDados: true);
             //repositorioDisciplina = new RepositorioDisciplinaEmArquivo(contexto);
-            //repositorioMateria = new RepositorioMateriaEmArquivo(contexto);
+            repositorioMateria = new RepositorioMateria(contexto);
             //repositorioQuestao = new RepositorioQuestaoEmArquivo(contexto);
             //repositorioTeste = new RepositorioTesteEmArquivo(contexto);
 
@@ -32,6 +34,10 @@ namespace Gerador_de_Testes
 
 
         #region Seleção de módulo
+
+        private void temasMenuItem_Click(object sender, EventArgs e)
+            => SelecionaModulo(ref controlador, () => controlador = new ControladorMateria(repositorioMateria));
+
         #endregion
 
         #region Botões
