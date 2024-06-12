@@ -1,4 +1,5 @@
 using Gerador_de_Testes.Compartilhado;
+using Gerador_de_Testes.ModuloDisciplina;
 namespace Gerador_de_Testes
 {
     public partial class TelaPrincipalForm : Form
@@ -7,7 +8,7 @@ namespace Gerador_de_Testes
 
         ContextoDados contexto;
 
-        //IRepositorioDisciplina repositorioDisciplina;
+        IRepositorioDisciplina repositorioDisciplina;
         //IRepositorioMateria repositorioMateria;
         //IRepositorioQuestao repositorioQuestao;
         //IRepositorioTeste repositorioTeste;
@@ -20,7 +21,7 @@ namespace Gerador_de_Testes
             lblTipoCadastro.Text = string.Empty;
 
             contexto = new(carregarDados: true);
-            //repositorioDisciplina = new RepositorioDisciplinaEmArquivo(contexto);
+            repositorioDisciplina = new RepositorioDisciplinaEmArquivo(contexto);
             //repositorioMateria = new RepositorioMateriaEmArquivo(contexto);
             //repositorioQuestao = new RepositorioQuestaoEmArquivo(contexto);
             //repositorioTeste = new RepositorioTesteEmArquivo(contexto);
@@ -32,14 +33,16 @@ namespace Gerador_de_Testes
 
 
         #region Seleção de módulo
+        private void disciplinasMenuItem_Click(object sender, EventArgs e)
+            => SelecionaModulo(ref controlador, () => controlador = new ControladorDisciplina(repositorioDisciplina, contexto));
         #endregion
 
         #region Botões
-        private void btnAdicionar_Click(object sender, EventArgs e)
+        private void btnAdicionar_Click_1(object sender, EventArgs e)
             => controlador.Adicionar();
-        private void btnEditar_Click(object sender, EventArgs e)
+        private void btnEditar_Click_1(object sender, EventArgs e)
             => controlador.Editar();
-        private void btnExcluir_Click(object sender, EventArgs e)
+        private void btnExcluir_Click_1(object sender, EventArgs e)
             => controlador.Excluir();
         #endregion
 
