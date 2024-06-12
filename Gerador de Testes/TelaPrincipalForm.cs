@@ -7,8 +7,8 @@ namespace Gerador_de_Testes
         ControladorBase controlador;
 
         ContextoDados contexto;
-        RepositorioMateria repositorioMateria;
 
+        RepositorioMateria repositorioMateria;
         //IRepositorioDisciplina repositorioDisciplina;
         //IRepositorioMateria repositorioMateria;
         //IRepositorioQuestao repositorioQuestao;

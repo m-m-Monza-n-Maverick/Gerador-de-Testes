@@ -7,14 +7,14 @@ namespace Gerador_de_Testes.ModuloMateria
         private RepositorioMateria repositorioMateria = repositorioMateria;
         private TabelaMateriaControl tabelaMateria;
 
+        #region ToolTips
         public override string TipoCadastro => "Materia";
+        public override string ToolTipAdicionar => "Adicionar nova materia";
+        public override string ToolTipEditar => "Editar uma materia existente";
+        public override string ToolTipExcluir => "Excluir uma materia existente";
+        #endregion
 
-        public override string ToolTipAdicionar => "Adicionar materia";
-
-        public override string ToolTipEditar => "Editar materia";
-
-        public override string ToolTipExcluir => "Excluir materia";
-
+        #region CRUD
         public override void Adicionar()
         {
             int id = repositorioMateria.PegarId();
@@ -96,7 +96,9 @@ namespace Gerador_de_Testes.ModuloMateria
                 .Instancia
                 .AtualizarRodape($"O registro \"{materiaSelecionada.Nome}\" foi excluído com sucesso!");
         }
+        #endregion
 
+        #region Auxiliares 
         public override UserControl ObterListagem()
         {
             if (tabelaMateria == null)
@@ -113,5 +115,6 @@ namespace Gerador_de_Testes.ModuloMateria
 
             tabelaMateria.AtualizarRegistros(Materias);
         }
+        #endregion
     }
 }
