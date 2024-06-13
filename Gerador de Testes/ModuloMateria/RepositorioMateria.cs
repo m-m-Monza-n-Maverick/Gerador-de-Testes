@@ -10,7 +10,8 @@ namespace Gerador_de_Testes.ModuloMateria
         
         protected override List<Materia> ObterRegistros()
         {
-            return new List<Materia>() { };
+            //Troquei pelo padrão
+            return contexto.Materias;
         }
     }
 }

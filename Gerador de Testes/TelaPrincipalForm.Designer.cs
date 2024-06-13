@@ -75,26 +75,26 @@
             // clientesMenuItem
             // 
             clientesMenuItem.Name = "clientesMenuItem";
-            clientesMenuItem.Size = new Size(180, 24);
+            clientesMenuItem.Size = new Size(149, 24);
             clientesMenuItem.Text = "Disciplinas";
             // 
             // temasMenuItem
             // 
             temasMenuItem.Name = "temasMenuItem";
-            temasMenuItem.Size = new Size(180, 24);
+            temasMenuItem.Size = new Size(149, 24);
             temasMenuItem.Text = "Matérias";
             temasMenuItem.Click += temasMenuItem_Click;
             // 
             // alugueisMenuItem
             // 
             alugueisMenuItem.Name = "alugueisMenuItem";
-            alugueisMenuItem.Size = new Size(180, 24);
+            alugueisMenuItem.Size = new Size(149, 24);
             alugueisMenuItem.Text = "Questões";
             // 
             // testesToolStripMenuItem
             // 
             testesToolStripMenuItem.Name = "testesToolStripMenuItem";
-            testesToolStripMenuItem.Size = new Size(180, 24);
+            testesToolStripMenuItem.Size = new Size(149, 24);
             testesToolStripMenuItem.Text = "Testes";
             // 
             // statusStrip1
@@ -132,6 +132,7 @@
             btnAdicionar.Name = "btnAdicionar";
             btnAdicionar.Padding = new Padding(5);
             btnAdicionar.Size = new Size(38, 38);
+            btnAdicionar.Click += btnAdicionar_Click_1;
             // 
             // btnEditar
             // 
@@ -143,6 +144,7 @@
             btnEditar.Name = "btnEditar";
             btnEditar.Padding = new Padding(5);
             btnEditar.Size = new Size(38, 38);
+            btnEditar.Click += btnEditar_Click_1;
             // 
             // btnExcluir
             // 
@@ -154,6 +156,7 @@
             btnExcluir.Name = "btnExcluir";
             btnExcluir.Padding = new Padding(5);
             btnExcluir.Size = new Size(38, 38);
+            btnExcluir.Click += btnExcluir_Click_1;
             // 
             // toolStripSeparator2
             // 

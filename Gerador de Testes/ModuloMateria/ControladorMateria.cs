@@ -1,18 +1,20 @@
 ﻿using Gerador_de_Testes.Compartilhado;
-
+using Gerador_de_Testes.ModuloDisciplina;
 namespace Gerador_de_Testes.ModuloMateria
 {
-    internal class ControladorMateria (RepositorioMateria repositorioMateria) : ControladorBase
+    internal class ControladorMateria (RepositorioMateria repositorioMateria/*, RepositorioDisciplina repositorioDisciplina*/) : ControladorBase
     {
         private RepositorioMateria repositorioMateria = repositorioMateria;
+        //private RepositorioDisciplina repositorioDisciplina = repositorioDisciplina;
         private TabelaMateriaControl tabelaMateria;
 
-        #region ToolTips
-        public override string TipoCadastro => "Materia";
-        public override string ToolTipAdicionar => "Adicionar nova materia";
-        public override string ToolTipEditar => "Editar uma materia existente";
-        public override string ToolTipExcluir => "Excluir uma materia existente";
-        #endregion
+        public override string TipoCadastro => "Matéria";
+
+        public override string ToolTipAdicionar => "Adicionar matéria";
+
+        public override string ToolTipEditar => "Editar matéria";
+
+        public override string ToolTipExcluir => "Excluir matéria";
 
         #region CRUD
         public override void Adicionar()
@@ -20,6 +22,9 @@ namespace Gerador_de_Testes.ModuloMateria
             int id = repositorioMateria.PegarId();
 
             TelaMateriaForm telaMateria = new(id);
+
+            //Adicionei essa linha (olhar linha 120)
+            CarregarDisciplinas(telaMateria);
 
             DialogResult resultado = telaMateria.ShowDialog();
 
@@ -33,7 +38,7 @@ namespace Gerador_de_Testes.ModuloMateria
 
             TelaPrincipalForm
                 .Instancia
-                .AtualizarRodape($"O registro \"{novaMateria.Nome}\" foi excluído com sucesso!");
+                .AtualizarRodape($"O registro \"{novaMateria.Nome}\" foi cadastrado com sucesso!");
         }
 
         public override void Editar()
@@ -115,6 +120,19 @@ namespace Gerador_de_Testes.ModuloMateria
 
             tabelaMateria.AtualizarRegistros(Materias);
         }
-        #endregion
+        private void CarregarDisciplinas(TelaMateriaForm telaMateria)
+        {
+            //Tive que chamar o repositório de disciplinas aqui, pra ter acesso às disciplinas cadastradas (olhar linha 8)
+
+            List<Disciplina> disciplinasCadastradas/* = repositorioDisciplina.SelecionarTodos();
+
+            telaMateria.CarregarDisciplinas(disciplinasCadastradas)*/;
+
+
+
+            //Testando (apagar depois)
+            Disciplina disciplina = new();
+            telaMateria.CarregarDisciplinas([disciplina]);
+        }
     }
 }

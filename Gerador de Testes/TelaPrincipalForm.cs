@@ -1,4 +1,5 @@
 using Gerador_de_Testes.Compartilhado;
+using Gerador_de_Testes.ModuloDisciplina;
 using Gerador_de_Testes.ModuloMateria;
 namespace Gerador_de_Testes
 {
@@ -41,11 +42,11 @@ namespace Gerador_de_Testes
         #endregion
 
         #region Botões
-        private void btnAdicionar_Click(object sender, EventArgs e)
+        private void btnAdicionar_Click_1(object sender, EventArgs e)
             => controlador.Adicionar();
-        private void btnEditar_Click(object sender, EventArgs e)
+        private void btnEditar_Click_1(object sender, EventArgs e)
             => controlador.Editar();
-        private void btnExcluir_Click(object sender, EventArgs e)
+        private void btnExcluir_Click_1(object sender, EventArgs e)
             => controlador.Excluir();
         #endregion
 
