@@ -8,11 +8,11 @@ namespace Gerador_de_Testes.ModuloQuestao
         public Materia Materia { get; set; }
         public string Enunciado { get; set; }
         public string Resposta { get; set; }    
-        public string[] Alternativas { get; set; }
+        public List<string[]> Alternativas { get; set; }
         public Questao()
         {
         }
-        public Questao(string enunciado, string resposta, string[] alternativas)
+        public Questao(string enunciado, string resposta, List<string[]> alternativas)
         {
             Enunciado = enunciado;
             Resposta = resposta;

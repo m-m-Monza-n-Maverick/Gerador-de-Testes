@@ -2,9 +2,9 @@
 
 namespace Gerador_de_Testes.ModuloQuestao
 {
-    internal class ControladorQuestao(RepositorioQuestao repositorioQuestao, ContextoDados contexto) : ControladorBase
+    internal class ControladorQuestao(IRepositorioQuestao repositorioQuestao, ContextoDados contexto) : ControladorBase
     {
-        private RepositorioQuestao RepositorioQuestao = repositorioQuestao;
+        private IRepositorioQuestao RepositorioQuestao = repositorioQuestao;
         private TabelaQuestaoControl tabelaQuestao;
 
         #region ToolTips

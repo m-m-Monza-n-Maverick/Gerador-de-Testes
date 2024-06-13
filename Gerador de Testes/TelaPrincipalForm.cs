@@ -38,7 +38,8 @@ namespace Gerador_de_Testes
             => SelecionaModulo(ref controlador, () => controlador = new ControladorDisciplina(repositorioDisciplina, contexto));
         private void questoesMenuItem_Click(object sender, EventArgs e)
             => SelecionaModulo(ref controlador, () => controlador = new ControladorQuestao(repositorioQuestao, contexto));
-        
+
+
         #endregion
 
         #region Botões
@@ -82,5 +83,6 @@ namespace Gerador_de_Testes
             pnlRegistros.Controls.Add(listagemContato);
         }
         #endregion
+
     }
 }

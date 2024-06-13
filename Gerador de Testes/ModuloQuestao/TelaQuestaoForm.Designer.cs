@@ -95,7 +95,6 @@
             // 
             // btnAdicionar
             // 
-            btnAdicionar.DialogResult = DialogResult.Yes;
             btnAdicionar.Location = new Point(361, 191);
             btnAdicionar.Name = "btnAdicionar";
             btnAdicionar.Size = new Size(83, 31);
@@ -173,6 +172,7 @@
             btnRemoverlist.TabIndex = 9;
             btnRemoverlist.Text = "Remover";
             btnRemoverlist.UseVisualStyleBackColor = true;
+            btnRemoverlist.Click += btnRemoverlist_Click;
             // 
             // TelaQuestaoForm
             // 

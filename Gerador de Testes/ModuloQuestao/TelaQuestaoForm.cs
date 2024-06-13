@@ -19,13 +19,30 @@ namespace Gerador_de_Testes.ModuloQuestao
             InitializeComponent();
             txtId.Text = id.ToString();
         }
-
+        int countAlternativas = 0;
         private void btnAdicionar_Click(object sender, EventArgs e)
         {
-            if (txtResposta.Text == null) return;
+            if (txtResposta.Text == "") return;
+            if (countAlternativas > 4) return;
 
             listBox.Items.Add(txtResposta.Text);
+            countAlternativas++;
             txtResposta.Text = "";
+        }
+        private void btnRemoverlist_Click(object sender, EventArgs e)
+        {
+            List<object> itemsToRemove = new List<object>();
+
+            foreach (object selectedItem in listBox.SelectedItems)
+            {
+                itemsToRemove.Add(selectedItem);
+            }
+
+            foreach (object item in itemsToRemove)
+            {
+                listBox.Items.Remove(item);
+            }
+            countAlternativas--;
         }
 
         private void btnGravar_Click(object sender, EventArgs e)
