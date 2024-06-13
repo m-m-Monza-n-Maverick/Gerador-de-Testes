@@ -1,43 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Gerador_de_Testes.ModuloDisciplina;
-
+﻿using Gerador_de_Testes.ModuloDisciplina;
 namespace Gerador_de_Testes.ModuloMateria
 {
     public class Materia
     {
-        public string Nome
-        {
-            get => default;
-            set
-            {
-            }
-        }
+        public string Nome {  get; set; }
 
-        public Disciplina Disciplina
-        {
-            get => default;
-            set
-            {
-            }
-        }
+        public Disciplina Disciplina { get; set; }
 
-        public string Serie
-        {
-            get => default;
-            set
-            {
-            }
-        }
+        public string Serie { get; set; }
 
-        public List<ModuloQuestao.Questao> Questoes
-        {
-            get => default;
-            set
-            {
-            }
-        }
+        public List<ModuloQuestao.Questao> Questoes { get; set; } = [];
     }
 }

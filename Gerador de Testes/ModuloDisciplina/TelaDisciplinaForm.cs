@@ -28,9 +28,13 @@ namespace Gerador_de_Testes.ModuloDisciplina
 
             disciplina = new(nome);
 
-            List<string> erros = disciplina.Validar();
+            ValidacaoDeCampos(disciplina, nome);
+        }
+        private void ValidacaoDeCampos(EntidadeBase entidade, string nome)
+        {
+            List<string> erros = entidade.Validar();
 
-            if(contexto.Disciplinas.Exists(d => d.Nome == nome))
+            if (contexto.Disciplinas.Exists(d => d.Nome == nome))
                 erros.Add($"Já existe uma disciplina com o nome \"{nome.ToTitleCase()}\". Tente novamente.");
 
             if (erros.Count > 0)

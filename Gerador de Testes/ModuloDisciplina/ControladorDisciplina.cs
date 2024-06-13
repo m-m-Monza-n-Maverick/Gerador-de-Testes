@@ -68,9 +68,7 @@ namespace Gerador_de_Testes.ModuloDisciplina
 
             Disciplina disciplinaSelecionada = repositorioDisciplina.SelecionarPorId(idSelecionado);
 
-            if (SemSeleção(disciplinaSelecionada)) return;
-
-            if (!DesejaRealmenteExcluir(disciplinaSelecionada)) return;
+            if (SemSeleção(disciplinaSelecionada) || !DesejaRealmenteExcluir(disciplinaSelecionada)) return;
 
             repositorioDisciplina.Excluir(disciplinaSelecionada.Id);
 
@@ -78,7 +76,7 @@ namespace Gerador_de_Testes.ModuloDisciplina
 
             TelaPrincipalForm
                 .Instancia
-                .AtualizarRodape($"O registro \"{disciplinaSelecionada.Nome}\" foi excluído com sucesso!");
+                .AtualizarRodape($"O registro \"{disciplinaSelecionada}\" foi excluído com sucesso!");
         }
         #endregion
 

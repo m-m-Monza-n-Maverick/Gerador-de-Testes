@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using Gerador_de_Testes.Compartilhado;
 using Gerador_de_Testes.ModuloMateria;
 
 namespace Gerador_de_Testes.ModuloQuestao
 {
-    public class Questao
+    public class Questao : EntidadeBase
     {
         public Materia Materia
         {
@@ -30,6 +27,20 @@ namespace Gerador_de_Testes.ModuloQuestao
             set
             {
             }
+        }
+
+        public override void AtualizarRegistro(EntidadeBase novoRegistro)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override List<string> Validar()
+        {
+            throw new NotImplementedException();
+        }
+        public override string ToString()
+        {
+            return Id.ToString();
         }
     }
 }

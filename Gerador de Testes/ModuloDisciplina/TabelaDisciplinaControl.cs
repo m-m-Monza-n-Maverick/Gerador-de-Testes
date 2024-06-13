@@ -1,5 +1,4 @@
 ﻿using Gerador_de_Testes.Compartilhado;
-
 namespace Gerador_de_Testes.ModuloDisciplina
 {
     public partial class TabelaDisciplinaControl : UserControl

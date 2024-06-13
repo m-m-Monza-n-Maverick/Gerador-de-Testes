@@ -5,7 +5,6 @@ namespace Gerador_de_Testes.ModuloDisciplina
     {
         public RepositorioDisciplinaEmArquivo(ContextoDados contexto) : base(contexto) { }
 
-
         protected override List<Disciplina> ObterRegistros() => contexto.Disciplinas;
         public override bool Excluir(int id)
         {

@@ -6,7 +6,7 @@
         /// Required designer variable.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
-
+        
         /// <summary>
         /// Clean up any resources being used.
         /// </summary>
@@ -42,7 +42,7 @@
             btnGravar.Location = new Point(319, 163);
             btnGravar.Name = "btnGravar";
             btnGravar.Size = new Size(75, 23);
-            btnGravar.TabIndex = 18;
+            btnGravar.TabIndex = 2;
             btnGravar.Text = "Gravar";
             btnGravar.UseVisualStyleBackColor = true;
             btnGravar.Click += btnGravar_Click;
@@ -53,7 +53,7 @@
             btnCancelar.Location = new Point(12, 163);
             btnCancelar.Name = "btnCancelar";
             btnCancelar.Size = new Size(75, 23);
-            btnCancelar.TabIndex = 17;
+            btnCancelar.TabIndex = 1;
             btnCancelar.Text = "Cancelar";
             btnCancelar.UseVisualStyleBackColor = true;
             // 
@@ -62,7 +62,7 @@
             txtNome.Location = new Point(78, 89);
             txtNome.Name = "txtNome";
             txtNome.Size = new Size(281, 23);
-            txtNome.TabIndex = 14;
+            txtNome.TabIndex = 0;
             // 
             // txtId
             // 
