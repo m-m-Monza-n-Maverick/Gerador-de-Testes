@@ -18,7 +18,7 @@ namespace Gerador_de_Testes.ModuloQuestao
             grid.Rows.Clear();
 
             foreach (Questao questao in questoes) 
-                grid.Rows.Add(questao.Id, questao.Enunciado, questao.Materia, questao.Resposta); 
+                grid.Rows.Add(questao.Id, questao.Enunciado, questao.Materia); 
         }
 
         public int ObterRegistroSelecionado() => grid.SelecionarId();
@@ -30,7 +30,6 @@ namespace Gerador_de_Testes.ModuloQuestao
                 new DataGridViewTextBoxColumn { DataPropertyName = "Id", HeaderText = "Id" },
                 new DataGridViewTextBoxColumn { DataPropertyName = "Enunciado", HeaderText = "Enunciado" },
                 new DataGridViewTextBoxColumn { DataPropertyName = "Materia", HeaderText = "Materia" },
-                new DataGridViewTextBoxColumn { DataPropertyName = "Resposta", HeaderText = "Resposta" },
             };
         }
     }

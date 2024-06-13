@@ -8,14 +8,14 @@ namespace Gerador_de_Testes.ModuloQuestao
         public Materia Materia { get; set; }
         public string Enunciado { get; set; }
         public string Resposta { get; set; }    
-        public List<string[]> Alternativas { get; set; }
+        public List<Alternativa> Alternativas { get; set; }
         public Questao()
         {
         }
-        public Questao(string enunciado, string resposta, List<string[]> alternativas)
+        public Questao(string enunciado, Materia materia, List<Alternativa> alternativas)
         {
             Enunciado = enunciado;
-            Resposta = resposta;
+            Materia = materia;
             Alternativas = alternativas;
         }
         public override void AtualizarRegistro(EntidadeBase novoRegistro)
@@ -23,7 +23,7 @@ namespace Gerador_de_Testes.ModuloQuestao
             Questao atualizado = (Questao)novoRegistro;
 
             Enunciado = atualizado.Enunciado;
-            Resposta = atualizado.Resposta;
+            Materia = atualizado.Materia;
             Alternativas = atualizado.Alternativas;
         }
         public override List<string> Validar()
@@ -38,7 +38,7 @@ namespace Gerador_de_Testes.ModuloQuestao
         }
         public override string ToString()
         {
-            return $"Enunciado: {Enunciado.ToTitleCase()}";
+            return $"{Alternativas}";
         }
     }
     

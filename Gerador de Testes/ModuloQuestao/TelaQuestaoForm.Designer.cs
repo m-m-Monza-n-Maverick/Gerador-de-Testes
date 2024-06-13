@@ -34,7 +34,7 @@
             btnGravar = new Button();
             btnCancelar = new Button();
             btnAdicionar = new Button();
-            boxMateria = new ComboBox();
+            cmbMateria = new ComboBox();
             txtResposta = new TextBox();
             listBox = new CheckedListBox();
             txtEnunciado = new TextBox();
@@ -103,13 +103,13 @@
             btnAdicionar.UseVisualStyleBackColor = true;
             btnAdicionar.Click += btnAdicionar_Click;
             // 
-            // boxMateria
+            // cmbMateria
             // 
-            boxMateria.FormattingEnabled = true;
-            boxMateria.Location = new Point(92, 59);
-            boxMateria.Name = "boxMateria";
-            boxMateria.Size = new Size(200, 23);
-            boxMateria.TabIndex = 0;
+            cmbMateria.FormattingEnabled = true;
+            cmbMateria.Location = new Point(92, 59);
+            cmbMateria.Name = "cmbMateria";
+            cmbMateria.Size = new Size(200, 23);
+            cmbMateria.TabIndex = 0;
             // 
             // txtResposta
             // 
@@ -126,6 +126,7 @@
             listBox.Name = "listBox";
             listBox.Size = new Size(408, 130);
             listBox.TabIndex = 8;
+            listBox.ItemCheck += CheckedListBox1_ItemCheck;
             // 
             // txtEnunciado
             // 
@@ -184,7 +185,7 @@
             Controls.Add(label4);
             Controls.Add(txtEnunciado);
             Controls.Add(txtResposta);
-            Controls.Add(boxMateria);
+            Controls.Add(cmbMateria);
             Controls.Add(btnAdicionar);
             Controls.Add(btnCancelar);
             Controls.Add(btnGravar);
@@ -192,6 +193,7 @@
             Controls.Add(label2);
             Controls.Add(label1);
             Name = "TelaQuestaoForm";
+            StartPosition = FormStartPosition.CenterParent;
             Text = "Cadastro de Questões";
             groupBox1.ResumeLayout(false);
             ResumeLayout(false);
@@ -206,7 +208,7 @@
         private Button btnGravar;
         private Button btnCancelar;
         private Button btnAdicionar;
-        private ComboBox boxMateria;
+        private ComboBox cmbMateria;
         private TextBox txtResposta;
         private CheckedListBox listBox;
         private TextBox txtEnunciado;
