@@ -2,19 +2,18 @@
 using Gerador_de_Testes.ModuloDisciplina;
 namespace Gerador_de_Testes.ModuloMateria
 {
-    internal class ControladorMateria (RepositorioMateria repositorioMateria/*, RepositorioDisciplina repositorioDisciplina*/) : ControladorBase
+    internal class ControladorMateria (RepositorioMateria repositorioMateria /*, RepositorioDisciplina repositorioDisciplina*/) : ControladorBase
     {
         private RepositorioMateria repositorioMateria = repositorioMateria;
         //private RepositorioDisciplina repositorioDisciplina = repositorioDisciplina;
         private TabelaMateriaControl tabelaMateria;
 
+        #region ToolTips
         public override string TipoCadastro => "Matéria";
-
         public override string ToolTipAdicionar => "Adicionar matéria";
-
         public override string ToolTipEditar => "Editar matéria";
-
         public override string ToolTipExcluir => "Excluir matéria";
+        #endregion
 
         #region CRUD
         public override void Adicionar()
@@ -120,6 +119,7 @@ namespace Gerador_de_Testes.ModuloMateria
 
             tabelaMateria.AtualizarRegistros(Materias);
         }
+
         private void CarregarDisciplinas(TelaMateriaForm telaMateria)
         {
             //Tive que chamar o repositório de disciplinas aqui, pra ter acesso às disciplinas cadastradas (olhar linha 8)
@@ -127,12 +127,7 @@ namespace Gerador_de_Testes.ModuloMateria
             List<Disciplina> disciplinasCadastradas/* = repositorioDisciplina.SelecionarTodos();
 
             telaMateria.CarregarDisciplinas(disciplinasCadastradas)*/;
-
-
-
-            //Testando (apagar depois)
-            Disciplina disciplina = new();
-            telaMateria.CarregarDisciplinas([disciplina]);
         }
+        #endregion
     }
 }
