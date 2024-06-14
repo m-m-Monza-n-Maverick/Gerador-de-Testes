@@ -26,13 +26,9 @@ namespace Gerador_de_Testes.ModuloDisciplina
 
             Disciplina novaDisciplina = telaDisciplina.Disciplina;
 
-            repositorioDisciplina.Cadastrar(novaDisciplina);
-
-            CarregarDisciplinas();
-
-            TelaPrincipalForm
-                .Instancia
-                .AtualizarRodape($"O registro \"{novaDisciplina.Nome}\" foi criado com sucesso!");
+            RealizarAcao(
+                () => repositorioDisciplina.Cadastrar(novaDisciplina), 
+                novaDisciplina, "cadastrado");
 
             id++;
         }
@@ -54,13 +50,9 @@ namespace Gerador_de_Testes.ModuloDisciplina
 
             Disciplina disciplinaEditada = telaDisciplina.Disciplina;
 
-            repositorioDisciplina.Editar(disciplinaSelecionada.Id, disciplinaEditada);
-
-            CarregarDisciplinas();
-
-            TelaPrincipalForm
-                .Instancia
-                .AtualizarRodape($"O registro \"{disciplinaEditada.Nome}\" foi editado com sucesso!");
+            RealizarAcao(
+                () => repositorioDisciplina.Editar(disciplinaSelecionada.Id, disciplinaEditada),
+                disciplinaEditada, "editado");
         }
         public override void Excluir()
         {
@@ -70,13 +62,9 @@ namespace Gerador_de_Testes.ModuloDisciplina
 
             if (SemSeleção(disciplinaSelecionada) || !DesejaRealmenteExcluir(disciplinaSelecionada)) return;
 
-            repositorioDisciplina.Excluir(disciplinaSelecionada.Id);
-
-            CarregarDisciplinas();
-
-            TelaPrincipalForm
-                .Instancia
-                .AtualizarRodape($"O registro \"{disciplinaSelecionada}\" foi excluído com sucesso!");
+            RealizarAcao(
+                () => repositorioDisciplina.Excluir(disciplinaSelecionada.Id),
+                disciplinaSelecionada, "excluído");
         }
         #endregion
 
@@ -90,5 +78,11 @@ namespace Gerador_de_Testes.ModuloDisciplina
         }
         private void CarregarDisciplinas()
             => tabelaDisciplina.AtualizarRegistros(repositorioDisciplina.SelecionarTodos());
+        private void RealizarAcao(Action acao, Disciplina disciplina, string texto)
+        {
+            acao();
+            CarregarDisciplinas();
+            CarregarMensagem(disciplina, texto);
+        }
     }
 }

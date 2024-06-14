@@ -1,17 +1,17 @@
 ﻿using Gerador_de_Testes.Compartilhado;
-using Gerador_de_Testes.ModuloDisciplina;
 namespace Gerador_de_Testes.ModuloTeste
 {
-    internal class ControladorTeste(IRepositorioTeste repositorioTeste, ContextoDados contexto) : ControladorBase
+    internal class ControladorTeste(IRepositorioTeste repositorioTeste, ContextoDados contexto) : ControladorBase, IControladorDuplicavel
     {
         private IRepositorioTeste repositorioTeste = repositorioTeste;
         private TabelaTesteControl tabelaTeste;
 
         #region ToolTips
-        public override string TipoCadastro { get { return "Testes"; } }
-        public override string ToolTipAdicionar { get { return "Cadastrar um novo teste"; } }
-        public override string ToolTipEditar { get { return "Editar um teste"; } }
-        public override string ToolTipExcluir { get { return "Excluir um teste"; } }
+        public override string TipoCadastro { get => "Testes"; }
+        public override string ToolTipAdicionar { get => "Cadastrar um novo teste"; }
+        public override string ToolTipEditar => throw new NotImplementedException();
+        public override string ToolTipExcluir { get => "Excluir um teste"; }
+        public string ToolTipDuplicarTeste { get => "Duplicar um teste"; }
         #endregion
 
         #region CRUD
@@ -29,13 +29,9 @@ namespace Gerador_de_Testes.ModuloTeste
 
             Teste novoTeste = telaTeste.Teste;
 
-            repositorioTeste.Cadastrar(novoTeste);
-
-            CarregarTestes();
-
-            TelaPrincipalForm
-                .Instancia
-                .AtualizarRodape($"O registro \"{novoTeste}\" foi criado com sucesso!");
+            RealizarAcao(
+                () => repositorioTeste.Cadastrar(novoTeste),
+                novoTeste, "cadastrado");
 
             id++;
         }
@@ -48,13 +44,30 @@ namespace Gerador_de_Testes.ModuloTeste
 
             if (SemSeleção(testeSelecionado) || !DesejaRealmenteExcluir(testeSelecionado)) return;
 
-            repositorioTeste.Excluir(testeSelecionado.Id);
+            RealizarAcao(
+                () => repositorioTeste.Excluir(testeSelecionado.Id),
+                testeSelecionado, "excluído");
+        }
+        public void DuplicarTeste()
+        {
+            int idSelecionado = tabelaTeste.ObterRegistroSelecionado();
+            Teste testeSelecionado = repositorioTeste.SelecionarPorId(idSelecionado);
 
-            CarregarTestes();
+            if (SemSeleção(testeSelecionado)) return;
 
-            TelaPrincipalForm
-                .Instancia
-                .AtualizarRodape($"O registro \"{testeSelecionado}\" foi excluído com sucesso!");
+            TelaTesteForm telaTeste = new(contexto);
+
+            telaTeste.Teste = testeSelecionado;
+
+            DialogResult resultado = telaTeste.ShowDialog();
+
+            if (resultado != DialogResult.OK) return;
+
+            Teste testeDuplicado = telaTeste.Teste;
+
+            RealizarAcao(
+                () => repositorioTeste.Cadastrar(testeDuplicado),
+                testeDuplicado, "duplicado");
         }
         #endregion
 
@@ -81,6 +94,12 @@ namespace Gerador_de_Testes.ModuloTeste
                 return true;
             }
             return false;
+        }
+        private void RealizarAcao(Action acao, Teste teste, string texto)
+        {
+            acao();
+            CarregarTestes();
+            CarregarMensagem(teste, texto);
         }
     }
 }

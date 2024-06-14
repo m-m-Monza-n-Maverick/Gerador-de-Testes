@@ -31,8 +31,11 @@ namespace Gerador_de_Testes
 
 
             Disciplina disciplina1 = new("disciplina");
+            disciplina1.Id = 1;
             Disciplina disciplina2 = new("aaaaaa");
+            disciplina2.Id = 2;
             Disciplina disciplina3 = new("bbbbbb");
+            disciplina3.Id = 3;
 
             Materia materia = new();
             Materia materia2 = new();
@@ -76,6 +79,11 @@ namespace Gerador_de_Testes
             => controlador.Editar();
         private void btnExcluir_Click_1(object sender, EventArgs e)
             => controlador.Excluir();
+        private void btnDuplicar_Click(object sender, EventArgs e)
+        {
+            if (controlador is IControladorDuplicavel controladorDuplicavel)
+                controladorDuplicavel.DuplicarTeste();
+        }
         #endregion
 
         #region Auxiliares
@@ -90,16 +98,22 @@ namespace Gerador_de_Testes
         private void ConfigurarToolBox(ControladorBase controladorSelecionado)
         {
             btnAdicionar.Enabled = true;
-            btnEditar.Enabled = true;
+            btnEditar.Enabled = controladorSelecionado is not ControladorTeste;
             btnExcluir.Enabled = true;
+            btnDuplicar.Enabled = controladorSelecionado is IControladorDuplicavel;
 
             ConfigurarToolTips(controladorSelecionado);
         }
         private void ConfigurarToolTips(ControladorBase controladorSelecionado)
         {
             btnAdicionar.ToolTipText = controladorSelecionado.ToolTipAdicionar;
-            btnEditar.ToolTipText = controladorSelecionado.ToolTipEditar;
             btnExcluir.ToolTipText = controladorSelecionado.ToolTipExcluir;
+
+            if (controladorSelecionado is not ControladorTeste)
+                btnEditar.ToolTipText = controladorSelecionado.ToolTipEditar;
+
+            if (controladorSelecionado is IControladorDuplicavel controladorDuplicavel)
+                btnDuplicar.ToolTipText = controladorDuplicavel.ToolTipDuplicarTeste;
         }
         private void ConfigurarListagem(ControladorBase controladorSelecionado)
         {

@@ -1,4 +1,6 @@
 ﻿using Gerador_de_Testes.Compartilhado;
+using Gerador_de_Testes.ModuloMateria;
+using Gerador_de_Testes.ModuloTeste;
 namespace Gerador_de_Testes.ModuloDisciplina
 {
     public partial class TelaDisciplinaForm : Form
@@ -14,28 +16,47 @@ namespace Gerador_de_Testes.ModuloDisciplina
             get => disciplina;
         }
         ContextoDados contexto;
+        readonly int id;
 
         public TelaDisciplinaForm(int id, ContextoDados contexto)
         {
             InitializeComponent();
             txtId.Text = id.ToString();
             this.contexto = contexto;
+            this.id = id;
         }
+
 
         private void btnGravar_Click(object sender, EventArgs e)
         {
             string nome = txtNome.Text;
 
+            if (ValidarNome(nome)) return;
+
             disciplina = new(nome);
 
-            ValidacaoDeCampos(disciplina, nome);
+            ValidacaoDeCampos(disciplina);
         }
-        private void ValidacaoDeCampos(EntidadeBase entidade, string nome)
+
+
+        private bool ValidarNome(string nome)
+        {
+            foreach (Disciplina d in contexto.Disciplinas)
+                if (d.Nome.ToLower() == nome.ToLower())
+                    if (d.Id != id)
+                    {
+                        TelaPrincipalForm.Instancia.AtualizarRodape(
+                            $"Já existe uma disciplina com o nome \"{nome.ToTitleCase()}\". Tente novamente.");
+
+                        DialogResult = DialogResult.None;
+                        return true;
+                    }
+
+            return false;
+        }
+        private void ValidacaoDeCampos(EntidadeBase entidade)
         {
             List<string> erros = entidade.Validar();
-
-            if (contexto.Disciplinas.Exists(d => d.Nome == nome))
-                erros.Add($"Já existe uma disciplina com o nome \"{nome.ToTitleCase()}\". Tente novamente.");
 
             if (erros.Count > 0)
             {

@@ -13,6 +13,17 @@ namespace Gerador_de_Testes.ModuloTeste
             get => teste;
             set
             {
+                txtTitulo.Text = value.Titulo;
+                cmbDisciplina.SelectedItem = value.Disciplina;
+
+                rdbRecuperacao.Enabled = true;
+                rdbRecuperacao.Checked = value.Recuperacao;
+
+                CarregarMaterias();
+                cmbMateria.SelectedItem = value.Materia;
+
+                txtQntQuestoes.Enabled = true;
+                txtQntQuestoes.Value = value.QntQuestoes;
             }
         }
         ContextoDados contexto;
@@ -46,7 +57,7 @@ namespace Gerador_de_Testes.ModuloTeste
             cmbMateria.SelectedItem = null;
             rdbRecuperacao.Enabled = true;
 
-            CarregarMaterias(disciplinaSelecionada);
+            CarregarMaterias();
 
             ResetarInformações();
 
@@ -55,11 +66,11 @@ namespace Gerador_de_Testes.ModuloTeste
         #endregion
 
         #region Matérias
-        public void CarregarMaterias(Disciplina disciplina)
+        public void CarregarMaterias()
         {
             cmbMateria.Items.Clear();
 
-            foreach (Materia materia in disciplina.Materias)
+            foreach (Materia materia in ((Disciplina)cmbDisciplina.SelectedItem).Materias)
                 cmbMateria.Items.Add(materia);
         }
         private void cmbMateria_SelectionChangeCommitted(object sender, EventArgs e)
@@ -155,6 +166,9 @@ namespace Gerador_de_Testes.ModuloTeste
         private void btnGravar_Click_1(object sender, EventArgs e)
         {
             string titulo = txtTitulo.Text;
+
+            if (ValidarTitulo(titulo)) return;
+
             Disciplina disciplina = (Disciplina)cmbDisciplina.SelectedItem;
             Materia materia = (Materia)cmbMateria.SelectedItem;
             int qntQuestoes = Convert.ToInt32(txtQntQuestoes.Value);
@@ -203,6 +217,19 @@ namespace Gerador_de_Testes.ModuloTeste
                 lblAvisoAumentarQnt.Text = "Aumente a qnt.de questões";
             else
                 lblAvisoAumentarQnt.Text = null;
+        }
+        private bool ValidarTitulo(string titulo)
+        {
+            if (contexto.Testes.Exists(t => t.Titulo == titulo))
+            {
+                TelaPrincipalForm.Instancia.AtualizarRodape(
+                    $"Já existe um teste com o título \"{titulo.ToTitleCase()}\". Tente novamente.");
+
+                DialogResult = DialogResult.None;
+                return true;
+            }
+
+            return false;
         }
         private void ValidacaoDeCampos(EntidadeBase entidade, string titulo)
         {
