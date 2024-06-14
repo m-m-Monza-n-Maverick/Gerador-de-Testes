@@ -1,35 +1,44 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using Gerador_de_Testes.Compartilhado;
 using Gerador_de_Testes.ModuloMateria;
 
 namespace Gerador_de_Testes.ModuloQuestao
 {
-    public class Questao
+    public class Questao : EntidadeBase
     {
-        public Materia Materia
+        public Materia Materia { get; set; }
+        public string Enunciado { get; set; }
+        public string Resposta { get; set; }    
+        public List<Alternativa> Alternativas { get; set; }
+        public Questao()
         {
-            get => default;
-            set
-            {
-            }
         }
-
-        public string Enunciado
+        public Questao(string enunciado, Materia materia, List<Alternativa> alternativas, string resposta)
         {
-            get => default;
-            set
-            {
-            }
+            Enunciado = enunciado;
+            Materia = materia;
+            Alternativas = alternativas;
+            Resposta = resposta;
         }
-
-        public string[] Alternativas
+        public override void AtualizarRegistro(EntidadeBase novoRegistro)
         {
-            get => default;
-            set
-            {
-            }
+            Questao atualizado = (Questao)novoRegistro;
+
+            Enunciado = atualizado.Enunciado;
+            Materia = atualizado.Materia;
+            Alternativas = atualizado.Alternativas;
+            Resposta = atualizado.Resposta;
+        }
+        public override List<string> Validar()
+        {
+            List<string> erros = [];
+
+            VerificaNulo(ref erros, Enunciado, "enunciado");
+
+            return erros;
+        }
+        public override string ToString()
+        {
+            return $"{Enunciado}";
         }
     }
 }

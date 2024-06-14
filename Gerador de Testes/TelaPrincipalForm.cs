@@ -1,6 +1,7 @@
 using Gerador_de_Testes.Compartilhado;
 using Gerador_de_Testes.ModuloDisciplina;
 using Gerador_de_Testes.ModuloMateria;
+using Gerador_de_Testes.ModuloQuestao;
 namespace Gerador_de_Testes
 {
     public partial class TelaPrincipalForm : Form
@@ -11,8 +12,9 @@ namespace Gerador_de_Testes
 
         IRepositorioDisciplina repositorioDisciplina;
         IRepositorioMateria repositorioMateria;
-        //IRepositorioQuestao repositorioQuestao;
+        IRepositorioQuestao repositorioQuestao;
         //IRepositorioTeste repositorioTeste;
+        
         public static TelaPrincipalForm Instancia { get; private set; }
 
         public TelaPrincipalForm()
@@ -25,7 +27,7 @@ namespace Gerador_de_Testes
 
             repositorioDisciplina = new RepositorioDisciplinaEmArquivo(contexto);
             repositorioMateria = new RepositorioMateria(contexto);
-            //repositorioQuestao = new RepositorioQuestaoEmArquivo(contexto);
+            repositorioQuestao = new RepositorioQuestao(contexto);
             //repositorioTeste = new RepositorioTesteEmArquivo(contexto);
 
             Instancia = this;
@@ -39,15 +41,22 @@ namespace Gerador_de_Testes
             => SelecionaModulo(ref controlador, () => controlador = new ControladorDisciplina(repositorioDisciplina, contexto));
         private void materiasMenuItem_Click(object sender, EventArgs e)
             => SelecionaModulo(ref controlador, () => controlador = new ControladorMateria(repositorioMateria, contexto));
+        private void questoesMenuItem_Click(object sender, EventArgs e)
+            => SelecionaModulo(ref controlador, () => controlador = new ControladorQuestao(repositorioQuestao));
         #endregion
 
         #region Botões
         private void btnAdicionar_Click_1(object sender, EventArgs e)
             => controlador.Adicionar();
-        private void btnEditar_Click_1(object sender, EventArgs e)
+        private void btnEditar_Click(object sender, EventArgs e)
             => controlador.Editar();
-        private void btnExcluir_Click_1(object sender, EventArgs e)
+        private void btnExcluir_Click(object sender, EventArgs e)
             => controlador.Excluir();
+        private void btnDetalhes_Click(object sender, EventArgs e)
+        {
+            if (controlador is IControladorDetalhes controladorDetalhe)
+                controladorDetalhe.VisualizarDetalhes();
+        }
         #endregion
 
         #region Auxiliares
@@ -64,6 +73,8 @@ namespace Gerador_de_Testes
             btnAdicionar.Enabled = true;
             btnEditar.Enabled = true;
             btnExcluir.Enabled = true;
+
+            btnDetalhes.Enabled = controladorSelecionado is ControladorQuestao;
 
             ConfigurarToolTips(controladorSelecionado);
         }

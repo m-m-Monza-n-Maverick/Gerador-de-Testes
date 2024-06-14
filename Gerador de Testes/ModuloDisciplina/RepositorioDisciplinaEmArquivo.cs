@@ -1,4 +1,5 @@
 ﻿using Gerador_de_Testes.Compartilhado;
+
 namespace Gerador_de_Testes.ModuloDisciplina
 {
     internal class RepositorioDisciplinaEmArquivo : RepositorioBaseEmArquivo<Disciplina>, IRepositorioDisciplina

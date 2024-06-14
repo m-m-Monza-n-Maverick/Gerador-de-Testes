@@ -75,34 +75,35 @@
             // disciplinasMenuItem
             // 
             disciplinasMenuItem.Name = "disciplinasMenuItem";
-            disciplinasMenuItem.Size = new Size(149, 24);
+            disciplinasMenuItem.Size = new Size(180, 24);
             disciplinasMenuItem.Text = "Disciplinas";
             disciplinasMenuItem.Click += disciplinasMenuItem_Click;
             // 
             // materiasMenuItem
             // 
             materiasMenuItem.Name = "materiasMenuItem";
-            materiasMenuItem.Size = new Size(149, 24);
+            materiasMenuItem.Size = new Size(180, 24);
             materiasMenuItem.Text = "Matérias";
             materiasMenuItem.Click += materiasMenuItem_Click;
             // 
             // questoesMenuItem
             // 
             questoesMenuItem.Name = "questoesMenuItem";
-            questoesMenuItem.Size = new Size(149, 24);
+            questoesMenuItem.Size = new Size(180, 24);
             questoesMenuItem.Text = "Questões";
+            questoesMenuItem.Click += questoesMenuItem_Click;
             // 
             // testesMenuItem
             // 
             testesMenuItem.Name = "testesMenuItem";
-            testesMenuItem.Size = new Size(149, 24);
+            testesMenuItem.Size = new Size(180, 24);
             testesMenuItem.Text = "Testes";
             // 
             // statusStrip1
             // 
             statusStrip1.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             statusStrip1.Items.AddRange(new ToolStripItem[] { statusLabelPrincipal });
-            statusStrip1.Location = new Point(0, 425);
+            statusStrip1.Location = new Point(0, 515);
             statusStrip1.Name = "statusStrip1";
             statusStrip1.Size = new Size(800, 25);
             statusStrip1.TabIndex = 1;
@@ -133,7 +134,7 @@
             btnAdicionar.Name = "btnAdicionar";
             btnAdicionar.Padding = new Padding(5);
             btnAdicionar.Size = new Size(38, 38);
-            btnAdicionar.Click += btnAdicionar_Click_1;
+            btnAdicionar.Click += btnAdicionar_Click;
             // 
             // btnEditar
             // 
@@ -145,7 +146,7 @@
             btnEditar.Name = "btnEditar";
             btnEditar.Padding = new Padding(5);
             btnEditar.Size = new Size(38, 38);
-            btnEditar.Click += btnEditar_Click_1;
+            btnEditar.Click += btnEditar_Click;
             // 
             // btnExcluir
             // 
@@ -157,7 +158,7 @@
             btnExcluir.Name = "btnExcluir";
             btnExcluir.Padding = new Padding(5);
             btnExcluir.Size = new Size(38, 38);
-            btnExcluir.Click += btnExcluir_Click_1;
+            btnExcluir.Click += btnExcluir_Click;
             // 
             // toolStripSeparator2
             // 
@@ -201,6 +202,7 @@
             btnDetalhes.Name = "btnDetalhes";
             btnDetalhes.Padding = new Padding(5);
             btnDetalhes.Size = new Size(38, 38);
+            btnDetalhes.Click += btnDetalhes_Click;
             // 
             // btnPdf
             // 
@@ -241,14 +243,14 @@
             pnlRegistros.Dock = DockStyle.Fill;
             pnlRegistros.Location = new Point(0, 69);
             pnlRegistros.Name = "pnlRegistros";
-            pnlRegistros.Size = new Size(800, 356);
+            pnlRegistros.Size = new Size(800, 446);
             pnlRegistros.TabIndex = 3;
             // 
             // TelaPrincipalForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(800, 540);
             Controls.Add(pnlRegistros);
             Controls.Add(toolStrip1);
             Controls.Add(statusStrip1);
