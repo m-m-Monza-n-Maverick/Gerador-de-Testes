@@ -1,43 +1,55 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using Gerador_de_Testes.Compartilhado;
 using Gerador_de_Testes.ModuloDisciplina;
-
+using Gerador_de_Testes.ModuloQuestao;
 namespace Gerador_de_Testes.ModuloMateria
 {
-    public class Materia
+    public class Materia : EntidadeBase
     {
-        public string Nome
+        public string Nome { get; set; }
+        public string Serie { get; set; }
+        public Disciplina Disciplina { get; set; }
+        public List<Questao> Questoes { get; set; }
+
+
+        public Materia() { }
+    
+        public Materia(string nome, string serie, Disciplina disciplina)
         {
-            get => default;
-            set
-            {
-            }
+            Nome = nome;
+            Serie = serie;
+            Disciplina = disciplina;
+        }
+        public override List<string> Validar()
+        {
+            List<string> erros = new List<string>();
+
+            //Usei a função que te falei no whatsapp
+            VerificaNulo(ref erros, Nome, "Nome");
+
+            //Sobrecarreguei o mesmo método, com novos parâmetros (olhar linha 53)
+            VerificaNulo(ref erros, Disciplina);
+
+            VerificaNulo(ref erros, Serie, "Série");
+
+            return erros;
+        }
+        public override void AtualizarRegistro(EntidadeBase novoRegistro)
+        {
+            Materia atualizado = (Materia)novoRegistro;
+
+            Nome = atualizado.Nome;
+            Serie = atualizado.Serie;
+            Disciplina = atualizado.Disciplina;
+        }
+        public override string ToString()
+        {
+            return $"{Nome.ToTitleCase()}";
         }
 
-        public Disciplina Disciplina
+        protected void VerificaNulo(ref List<string> erros, Disciplina campoTestado)
         {
-            get => default;
-            set
-            {
-            }
-        }
-
-        public string Serie
-        {
-            get => default;
-            set
-            {
-            }
-        }
-
-        public List<ModuloQuestao.Questao> Questoes
-        {
-            get => default;
-            set
-            {
-            }
+            if (campoTestado == null)
+                erros.Add("\nÉ necessário informar uma \"Disciplina\". Tente novamente ");
         }
     }
 }
