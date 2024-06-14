@@ -84,6 +84,11 @@ namespace Gerador_de_Testes
             if (controlador is IControladorDuplicavel controladorDuplicavel)
                 controladorDuplicavel.DuplicarTeste();
         }
+        private void btnDetalhes_Click(object sender, EventArgs e)
+        {
+            if (controlador is IControladorDetalhes controladorDetalhes)
+                controladorDetalhes.VisualizarDetalhes();
+        }
         #endregion
 
         #region Auxiliares
@@ -101,6 +106,7 @@ namespace Gerador_de_Testes
             btnEditar.Enabled = controladorSelecionado is not ControladorTeste;
             btnExcluir.Enabled = true;
             btnDuplicar.Enabled = controladorSelecionado is IControladorDuplicavel;
+            btnDetalhes.Enabled = controladorSelecionado is IControladorDetalhes;
 
             ConfigurarToolTips(controladorSelecionado);
         }
@@ -114,6 +120,10 @@ namespace Gerador_de_Testes
 
             if (controladorSelecionado is IControladorDuplicavel controladorDuplicavel)
                 btnDuplicar.ToolTipText = controladorDuplicavel.ToolTipDuplicarTeste;
+
+            if (controladorSelecionado is IControladorDetalhes controladorDetalhes)
+                btnDetalhes.ToolTipText = controladorDetalhes.ToolTipVisualizarDetalhes;
+
         }
         private void ConfigurarListagem(ControladorBase controladorSelecionado)
         {

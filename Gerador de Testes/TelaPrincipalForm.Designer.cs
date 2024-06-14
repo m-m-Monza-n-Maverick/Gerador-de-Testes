@@ -202,6 +202,7 @@
             btnDetalhes.Name = "btnDetalhes";
             btnDetalhes.Padding = new Padding(5);
             btnDetalhes.Size = new Size(38, 38);
+            btnDetalhes.Click += btnDetalhes_Click;
             // 
             // btnPdf
             // 

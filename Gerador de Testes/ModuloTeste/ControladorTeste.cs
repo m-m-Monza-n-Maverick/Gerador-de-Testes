@@ -1,7 +1,7 @@
 ﻿using Gerador_de_Testes.Compartilhado;
 namespace Gerador_de_Testes.ModuloTeste
 {
-    internal class ControladorTeste(IRepositorioTeste repositorioTeste, ContextoDados contexto) : ControladorBase, IControladorDuplicavel
+    internal class ControladorTeste(IRepositorioTeste repositorioTeste, ContextoDados contexto) : ControladorBase, IControladorDuplicavel, IControladorDetalhes
     {
         private IRepositorioTeste repositorioTeste = repositorioTeste;
         private TabelaTesteControl tabelaTeste;
@@ -12,6 +12,7 @@ namespace Gerador_de_Testes.ModuloTeste
         public override string ToolTipEditar => throw new NotImplementedException();
         public override string ToolTipExcluir { get => "Excluir um teste"; }
         public string ToolTipDuplicarTeste { get => "Duplicar um teste"; }
+        public string ToolTipVisualizarDetalhes { get => "Visualizar detalhes de um teste"; }
         #endregion
 
         #region CRUD
@@ -68,6 +69,10 @@ namespace Gerador_de_Testes.ModuloTeste
             RealizarAcao(
                 () => repositorioTeste.Cadastrar(testeDuplicado),
                 testeDuplicado, "duplicado");
+        }
+        public void VisualizarDetalhes()
+        {
+            throw new NotImplementedException();
         }
         #endregion
 
