@@ -9,9 +9,8 @@ namespace Gerador_de_Testes
 
         ContextoDados contexto;
 
-        RepositorioMateria repositorioMateria;
         //IRepositorioDisciplina repositorioDisciplina;
-        //IRepositorioMateria repositorioMateria;
+        IRepositorioMateria repositorioMateria;
         //IRepositorioQuestao repositorioQuestao;
         //IRepositorioTeste repositorioTeste;
         public static TelaPrincipalForm Instancia { get; private set; }

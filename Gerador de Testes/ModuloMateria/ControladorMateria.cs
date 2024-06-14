@@ -2,9 +2,9 @@
 using Gerador_de_Testes.ModuloDisciplina;
 namespace Gerador_de_Testes.ModuloMateria
 {
-    internal class ControladorMateria (RepositorioMateria repositorioMateria /*, RepositorioDisciplina repositorioDisciplina*/, ContextoDados contexto) : ControladorBase
+    internal class ControladorMateria (IRepositorioMateria repositorioMateria /*, RepositorioDisciplina repositorioDisciplina*/, ContextoDados contexto) : ControladorBase
     {
-        private RepositorioMateria repositorioMateria = repositorioMateria;
+        private IRepositorioMateria repositorioMateria = repositorioMateria;
         //private RepositorioDisciplina repositorioDisciplina = repositorioDisciplina;
         private TabelaMateriaControl tabelaMateria;
 

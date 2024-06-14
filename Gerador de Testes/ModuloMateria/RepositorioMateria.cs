@@ -1,7 +1,7 @@
 ﻿using Gerador_de_Testes.Compartilhado;
 namespace Gerador_de_Testes.ModuloMateria
 {
-    internal class RepositorioMateria : RepositorioBaseEmArquivo<Materia>
+    internal class RepositorioMateria : RepositorioBaseEmArquivo<Materia>, IRepositorioMateria
     {
         public RepositorioMateria(ContextoDados contexto) : base(contexto) { }
         
