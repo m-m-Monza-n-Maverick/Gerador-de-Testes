@@ -30,10 +30,10 @@
         {
             menuStrip1 = new MenuStrip();
             cadastrosToolStripMenuItem = new ToolStripMenuItem();
-            clientesMenuItem = new ToolStripMenuItem();
-            temasMenuItem = new ToolStripMenuItem();
-            alugueisMenuItem = new ToolStripMenuItem();
-            testesToolStripMenuItem = new ToolStripMenuItem();
+            disciplinasMenuItem = new ToolStripMenuItem();
+            materiasMenuItem = new ToolStripMenuItem();
+            questoesMenuItem = new ToolStripMenuItem();
+            testesMenuItem = new ToolStripMenuItem();
             statusStrip1 = new StatusStrip();
             statusLabelPrincipal = new ToolStripStatusLabel();
             toolStrip1 = new ToolStrip();
@@ -67,35 +67,36 @@
             // 
             // cadastrosToolStripMenuItem
             // 
-            cadastrosToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { clientesMenuItem, temasMenuItem, alugueisMenuItem, testesToolStripMenuItem });
+            cadastrosToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { disciplinasMenuItem, materiasMenuItem, questoesMenuItem, testesMenuItem });
             cadastrosToolStripMenuItem.Name = "cadastrosToolStripMenuItem";
             cadastrosToolStripMenuItem.Size = new Size(86, 24);
             cadastrosToolStripMenuItem.Text = "Cadastros";
             // 
-            // clientesMenuItem
+            // disciplinasMenuItem
             // 
-            clientesMenuItem.Name = "clientesMenuItem";
-            clientesMenuItem.Size = new Size(149, 24);
-            clientesMenuItem.Text = "Disciplinas";
+            disciplinasMenuItem.Name = "disciplinasMenuItem";
+            disciplinasMenuItem.Size = new Size(149, 24);
+            disciplinasMenuItem.Text = "Disciplinas";
+            disciplinasMenuItem.Click += disciplinasMenuItem_Click;
             // 
-            // temasMenuItem
+            // materiasMenuItem
             // 
-            temasMenuItem.Name = "temasMenuItem";
-            temasMenuItem.Size = new Size(149, 24);
-            temasMenuItem.Text = "Matérias";
-            temasMenuItem.Click += temasMenuItem_Click;
+            materiasMenuItem.Name = "materiasMenuItem";
+            materiasMenuItem.Size = new Size(149, 24);
+            materiasMenuItem.Text = "Matérias";
+            materiasMenuItem.Click += materiasMenuItem;
             // 
-            // alugueisMenuItem
+            // questoesMenuItem
             // 
-            alugueisMenuItem.Name = "alugueisMenuItem";
-            alugueisMenuItem.Size = new Size(149, 24);
-            alugueisMenuItem.Text = "Questões";
+            questoesMenuItem.Name = "questoesMenuItem";
+            questoesMenuItem.Size = new Size(149, 24);
+            questoesMenuItem.Text = "Questões";
             // 
-            // testesToolStripMenuItem
+            // testesMenuItem
             // 
-            testesToolStripMenuItem.Name = "testesToolStripMenuItem";
-            testesToolStripMenuItem.Size = new Size(149, 24);
-            testesToolStripMenuItem.Text = "Testes";
+            testesMenuItem.Name = "testesMenuItem";
+            testesMenuItem.Size = new Size(149, 24);
+            testesMenuItem.Text = "Testes";
             // 
             // statusStrip1
             // 
@@ -257,7 +258,7 @@
             Name = "TelaPrincipalForm";
             ShowIcon = false;
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Festas Infantis";
+            Text = "Gerador de Testes";
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
             statusStrip1.ResumeLayout(false);
@@ -284,11 +285,11 @@
         private ToolStripButton btnGabarito;
         private ToolStripButton btnAlternativas;
         private ToolStripSeparator toolStripSeparator4;
-        private ToolStripMenuItem clientesMenuItem;
-        private ToolStripMenuItem temasMenuItem;
-        private ToolStripMenuItem alugueisMenuItem;
+        private ToolStripMenuItem disciplinasMenuItem;
+        private ToolStripMenuItem materiasMenuItem;
+        private ToolStripMenuItem questoesMenuItem;
         private object Properties;
-        private ToolStripMenuItem testesToolStripMenuItem;
+        private ToolStripMenuItem testesMenuItem;
         private ToolStripButton btnDuplicar;
         private ToolStripButton btnDetalhes;
         private ToolStripButton btnPdf;

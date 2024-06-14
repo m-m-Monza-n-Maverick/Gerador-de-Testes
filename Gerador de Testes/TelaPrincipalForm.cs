@@ -9,7 +9,7 @@ namespace Gerador_de_Testes
 
         ContextoDados contexto;
 
-        //IRepositorioDisciplina repositorioDisciplina;
+        IRepositorioDisciplina repositorioDisciplina;
         IRepositorioMateria repositorioMateria;
         //IRepositorioQuestao repositorioQuestao;
         //IRepositorioTeste repositorioTeste;
@@ -25,6 +25,8 @@ namespace Gerador_de_Testes
 
             //repositorioDisciplina = new RepositorioDisciplinaEmArquivo(contexto);
             repositorioMateria = new RepositorioMateria(contexto);
+            repositorioDisciplina = new RepositorioDisciplinaEmArquivo(contexto);
+            repositorioMateria = new RepositorioMateria(contexto);
             //repositorioQuestao = new RepositorioQuestaoEmArquivo(contexto);
             //repositorioTeste = new RepositorioTesteEmArquivo(contexto);
 
@@ -34,14 +36,14 @@ namespace Gerador_de_Testes
         public void AtualizarRodape(string texto) => statusLabelPrincipal.Text = texto;
 
 
-        #region Seleção de módulo
-
-        private void temasMenuItem_Click(object sender, EventArgs e)
+        #region SeleÃ§Ã£o de mÃ³dulo
+        private void disciplinasMenuItem_Click(object sender, EventArgs e)
+            => SelecionaModulo(ref controlador, () => controlador = new ControladorDisciplina(repositorioDisciplina, contexto));
+        private void materiasMenuItem_Click(object sender, EventArgs e)
             => SelecionaModulo(ref controlador, () => controlador = new ControladorMateria(repositorioMateria, contexto));
-
         #endregion
 
-        #region Botões
+        #region BotÃµes
         private void btnAdicionar_Click_1(object sender, EventArgs e)
             => controlador.Adicionar();
         private void btnEditar_Click_1(object sender, EventArgs e)
