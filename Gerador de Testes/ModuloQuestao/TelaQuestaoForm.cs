@@ -1,4 +1,5 @@
 ﻿using Gerador_de_Testes.ModuloMateria;
+using System.Windows.Forms;
 
 namespace Gerador_de_Testes.ModuloQuestao
 {
@@ -7,7 +8,7 @@ namespace Gerador_de_Testes.ModuloQuestao
         private Questao questao;
         public Questao Questao
         {
-            get => questao;
+            get { return questao; } 
             set
             {
                 txtId.Text = value.Id.ToString();
@@ -15,6 +16,9 @@ namespace Gerador_de_Testes.ModuloQuestao
                 cmbMateria.SelectedItem = value.Materia;
                 foreach (Alternativa alternativa in value.Alternativas)
                 {
+                    if (alternativa.Correta)
+                         
+
                     alternativa.Letra = letra;
 
                     listBox.Items.Add(alternativa);
@@ -25,11 +29,26 @@ namespace Gerador_de_Testes.ModuloQuestao
         public TelaQuestaoForm(int id)
         {
             InitializeComponent();
+            listBox.HandleCreated += new EventHandler(CheckedListBox_HandleCreated);
+            
             txtId.Text = id.ToString();
         }
 
         private int countAlternativas = 0;
         public char letra = 'A';
+
+        private void CheckedListBox_HandleCreated(object sender, EventArgs e)
+        {
+            for (int i = 0; i < listBox.Items.Count; i++)
+            {
+                Alternativa alternativa = (Alternativa)listBox.Items[i];
+                if (alternativa.Correta)
+                {
+                    listBox.SetItemChecked(i, true);
+                    break;
+                }
+            }
+        }
 
         public void CheckedListBox1_ItemCheck(object sender, ItemCheckEventArgs e)
         {
@@ -99,18 +118,19 @@ namespace Gerador_de_Testes.ModuloQuestao
             if (countAlternativas < 2) return;
                 
             string enunciado = txtEnunciado.Text;
-
             Materia materia = (Materia)cmbMateria.SelectedItem;
 
             List<Alternativa> alternativas = new();
 
-            foreach (Alternativa alternativa in listBox.Items)
-            {
-                if (alternativa == listBox.SelectedItem)
-                    alternativa.Correta = true;
+            foreach (Alternativa alternativa in listBox.Items)            
                 alternativas.Add(alternativa);
-            }
             
+            foreach (Alternativa alternativa in alternativas)
+            {
+                if (listBox.CheckedItems.Contains(alternativa))
+                    alternativa.Correta = true;
+            }
+
             questao = new Questao(enunciado, materia, alternativas);
         }
 
