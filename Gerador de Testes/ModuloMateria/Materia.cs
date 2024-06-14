@@ -8,10 +8,6 @@ namespace Gerador_de_Testes.ModuloMateria
         public string Nome { get; set; }
         public string Serie { get; set; }
         public Disciplina Disciplina { get; set; }
-
-        //Essa lista de questões só vai armazenar as questões que forem cadastradas na matéria selecionada
-        //ou seja, quando cadastrarmos uma questão, e selecionarmos a matéria "x", essa questão vai ser também armazenada aqui 
-        //por isso essa lista não é preenchida no cadastro de uma nova matéria, nem conseguimos alterar ela
         public List<Questao> Questoes { get; set; }
 
 

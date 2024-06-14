@@ -2,7 +2,7 @@
 using Gerador_de_Testes.ModuloDisciplina;
 namespace Gerador_de_Testes.ModuloMateria
 {
-    internal class ControladorMateria (RepositorioMateria repositorioMateria /*, RepositorioDisciplina repositorioDisciplina*/) : ControladorBase
+    internal class ControladorMateria (RepositorioMateria repositorioMateria /*, RepositorioDisciplina repositorioDisciplina*/, ContextoDados contexto) : ControladorBase
     {
         private RepositorioMateria repositorioMateria = repositorioMateria;
         //private RepositorioDisciplina repositorioDisciplina = repositorioDisciplina;
@@ -20,9 +20,8 @@ namespace Gerador_de_Testes.ModuloMateria
         {
             int id = repositorioMateria.PegarId();
 
-            TelaMateriaForm telaMateria = new(id);
+            TelaMateriaForm telaMateria = new(id, contexto);
 
-            //Adicionei essa linha (olhar linha 120)
             CarregarDisciplinas(telaMateria);
 
             DialogResult resultado = telaMateria.ShowDialog();
@@ -44,7 +43,7 @@ namespace Gerador_de_Testes.ModuloMateria
         {
             int idSelecionado = tabelaMateria.ObterRegistroSelecionado();
 
-            TelaMateriaForm telaMateria = new(idSelecionado);
+            TelaMateriaForm telaMateria = new(idSelecionado, contexto);
 
             Materia materiaSelecionada =
                 repositorioMateria.SelecionarPorId(idSelecionado);
@@ -72,7 +71,7 @@ namespace Gerador_de_Testes.ModuloMateria
 
             TelaPrincipalForm
                 .Instancia
-                .AtualizarRodape($"O registro \"{MateriaEditada.Nome}\" foi excluído com sucesso!");
+                .AtualizarRodape($"O registro \"{MateriaEditada.Nome}\" foi editado com sucesso!");
         }
 
         public override void Excluir()
@@ -122,8 +121,6 @@ namespace Gerador_de_Testes.ModuloMateria
 
         private void CarregarDisciplinas(TelaMateriaForm telaMateria)
         {
-            //Tive que chamar o repositório de disciplinas aqui, pra ter acesso às disciplinas cadastradas (olhar linha 8)
-
             List<Disciplina> disciplinasCadastradas/* = repositorioDisciplina.SelecionarTodos();
 
             telaMateria.CarregarDisciplinas(disciplinasCadastradas)*/;

@@ -4,20 +4,33 @@ namespace Gerador_de_Testes.ModuloMateria
 {
     public partial class TelaMateriaForm : Form
     {
-        //Ajustei a tela, de acordo com as configurações que eles pediram (posição inicial e bla bla bla)
-
         private Materia materia;
-        public Materia Materia { get { return materia; } set { } }
+        public Materia Materia 
+        { 
+            get { return materia; } 
+            set 
+            {
+                txtNome.Text = value.Nome;
+                cmbDisciplina.SelectedItem = value.Disciplina;
+                if (value.Serie == "1ª série")
+                    radio1Serie.Checked = true;
+                else
+                    radio2Serie.Checked = true;
+            } 
+        }
+        public ContextoDados contexto;
+        readonly int id = 0;
 
-        public TelaMateriaForm(int id)
+        public TelaMateriaForm(int id, ContextoDados contexto)
         {
             InitializeComponent();
             txtId.Text = id.ToString();
+            this.contexto = contexto;
+            this.id = id;
         }
 
         public void CarregarDisciplinas(List<Disciplina> disciplinas)
         {
-            //Mudei de "boxDisciplina" para "cmbDisciplina", pra ficar no padrão do Tiago
             cmbDisciplina.Items.Clear();
 
             foreach (Disciplina d in disciplinas)
@@ -27,28 +40,38 @@ namespace Gerador_de_Testes.ModuloMateria
         private void btnGravar_Click(object sender, EventArgs e)
         {
             string nome = txtNome.Text;
-            //Troquei o nome dos botões -> de "radio1" para "radio1Serie"
-            //Criei essa validação:
+
+            if (ValidarNome(nome)) return;
+
             string serie = "";
 
             if (radio1Serie.Checked) serie = "1ª série";
             if (radio2Serie.Checked) serie = "2ª série";
 
-            //Para as disciplinas, olhar a linha: 26 do ControladorMateria
-
             Disciplina disciplina = (Disciplina)cmbDisciplina.SelectedItem;
-
-            //Sobre a List<Questao>, olhar a linha: 12 de Materia
 
             materia = new Materia(nome, serie, disciplina);
 
-            //Validação dos campos (linha 47):
-            ValidarCampos(materia);
+            ValidarCampos(materia, nome);
         }
 
-        private void ValidarCampos(EntidadeBase entidade)
+        private bool ValidarNome(string nome)
         {
-            //Olhar linha 26 de Materia
+            foreach (Materia m in contexto.Materias)
+                if (m.Nome == nome)
+                    if (m.Id != id)
+                    {
+                        TelaPrincipalForm.Instancia.AtualizarRodape(
+                            $"Já existe uma matéria com o nome {nome.ToTitleCase()}. Tente novamente.");
+
+                        DialogResult = DialogResult.None;
+                        return true;
+                    }
+
+            return false;
+        }
+        private void ValidarCampos(EntidadeBase entidade, string nome)
+        {
             List<string> erros = entidade.Validar();
 
             if (erros.Count > 0)

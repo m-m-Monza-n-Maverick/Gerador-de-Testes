@@ -23,6 +23,7 @@ namespace Gerador_de_Testes
             lblTipoCadastro.Text = string.Empty;
 
             contexto = new(carregarDados: true);
+
             //repositorioDisciplina = new RepositorioDisciplinaEmArquivo(contexto);
             repositorioMateria = new RepositorioMateria(contexto);
             //repositorioQuestao = new RepositorioQuestaoEmArquivo(contexto);
@@ -37,7 +38,7 @@ namespace Gerador_de_Testes
         #region Seleção de módulo
 
         private void temasMenuItem_Click(object sender, EventArgs e)
-            => SelecionaModulo(ref controlador, () => controlador = new ControladorMateria(repositorioMateria));
+            => SelecionaModulo(ref controlador, () => controlador = new ControladorMateria(repositorioMateria, contexto));
 
         #endregion
 
