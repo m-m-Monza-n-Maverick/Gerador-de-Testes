@@ -81,6 +81,8 @@ namespace Gerador_de_Testes.ModuloMateria
             Materia materiaSelecionada = 
                 repositorioMateria.SelecionarPorId(idSelecionado);
 
+            if (!DesejaRealmenteExcluir(materiaSelecionada)) return;
+
             if (materiaSelecionada == null)
             {
                 MessageBox.Show(
