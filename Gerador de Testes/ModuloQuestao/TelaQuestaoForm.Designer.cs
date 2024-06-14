@@ -48,7 +48,7 @@
             // lblMateria
             // 
             lblMateria.AutoSize = true;
-            lblMateria.Location = new Point(36, 62);
+            lblMateria.Location = new Point(36, 46);
             lblMateria.Name = "lblMateria";
             lblMateria.Size = new Size(50, 15);
             lblMateria.TabIndex = 0;
@@ -57,7 +57,7 @@
             // lblEnunciado
             // 
             lblEnunciado.AutoSize = true;
-            lblEnunciado.Location = new Point(20, 131);
+            lblEnunciado.Location = new Point(20, 115);
             lblEnunciado.Name = "lblEnunciado";
             lblEnunciado.Size = new Size(66, 15);
             lblEnunciado.TabIndex = 1;
@@ -66,7 +66,7 @@
             // lblResposta
             // 
             lblResposta.AutoSize = true;
-            lblResposta.Location = new Point(29, 199);
+            lblResposta.Location = new Point(29, 183);
             lblResposta.Name = "lblResposta";
             lblResposta.Size = new Size(57, 15);
             lblResposta.TabIndex = 2;
@@ -75,7 +75,7 @@
             // btnGravar
             // 
             btnGravar.DialogResult = DialogResult.OK;
-            btnGravar.Location = new Point(268, 446);
+            btnGravar.Location = new Point(382, 430);
             btnGravar.Name = "btnGravar";
             btnGravar.Size = new Size(87, 34);
             btnGravar.TabIndex = 5;
@@ -86,7 +86,7 @@
             // btnCancelar
             // 
             btnCancelar.DialogResult = DialogResult.Cancel;
-            btnCancelar.Location = new Point(372, 446);
+            btnCancelar.Location = new Point(12, 430);
             btnCancelar.Name = "btnCancelar";
             btnCancelar.Size = new Size(87, 34);
             btnCancelar.TabIndex = 4;
@@ -95,7 +95,7 @@
             // 
             // btnAdicionar
             // 
-            btnAdicionar.Location = new Point(361, 191);
+            btnAdicionar.Location = new Point(361, 175);
             btnAdicionar.Name = "btnAdicionar";
             btnAdicionar.Size = new Size(83, 31);
             btnAdicionar.TabIndex = 3;
@@ -106,14 +106,14 @@
             // cmbMateria
             // 
             cmbMateria.FormattingEnabled = true;
-            cmbMateria.Location = new Point(92, 59);
+            cmbMateria.Location = new Point(92, 43);
             cmbMateria.Name = "cmbMateria";
             cmbMateria.Size = new Size(200, 23);
             cmbMateria.TabIndex = 0;
             // 
             // txtResposta
             // 
-            txtResposta.Location = new Point(92, 191);
+            txtResposta.Location = new Point(92, 175);
             txtResposta.Multiline = true;
             txtResposta.Name = "txtResposta";
             txtResposta.Size = new Size(263, 31);
@@ -131,7 +131,7 @@
             // 
             // txtEnunciado
             // 
-            txtEnunciado.Location = new Point(92, 93);
+            txtEnunciado.Location = new Point(92, 77);
             txtEnunciado.Multiline = true;
             txtEnunciado.Name = "txtEnunciado";
             txtEnunciado.Size = new Size(352, 92);
@@ -140,7 +140,7 @@
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(66, 32);
+            label4.Location = new Point(66, 16);
             label4.Name = "label4";
             label4.Size = new Size(20, 15);
             label4.TabIndex = 9;
@@ -149,17 +149,17 @@
             // txtId
             // 
             txtId.Enabled = false;
-            txtId.Location = new Point(92, 29);
+            txtId.Location = new Point(92, 13);
             txtId.Name = "txtId";
             txtId.Size = new Size(66, 23);
             txtId.TabIndex = 10;
             // 
             // groupBox1
             // 
-            groupBox1.BackColor = SystemColors.Window;
+            groupBox1.BackColor = SystemColors.ButtonFace;
             groupBox1.Controls.Add(btnRemoverlist);
             groupBox1.Controls.Add(listBox);
-            groupBox1.Location = new Point(36, 246);
+            groupBox1.Location = new Point(36, 230);
             groupBox1.Name = "groupBox1";
             groupBox1.Size = new Size(408, 194);
             groupBox1.TabIndex = 11;
@@ -180,7 +180,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(481, 492);
+            ClientSize = new Size(481, 472);
             Controls.Add(groupBox1);
             Controls.Add(txtId);
             Controls.Add(label4);
@@ -193,6 +193,9 @@
             Controls.Add(lblResposta);
             Controls.Add(lblEnunciado);
             Controls.Add(lblMateria);
+            FormBorderStyle = FormBorderStyle.FixedDialog;
+            MaximizeBox = false;
+            MinimizeBox = false;
             Name = "TelaQuestaoForm";
             StartPosition = FormStartPosition.CenterParent;
             Text = "Cadastro de Questões";

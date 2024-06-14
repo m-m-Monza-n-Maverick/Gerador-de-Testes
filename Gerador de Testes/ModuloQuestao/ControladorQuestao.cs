@@ -2,7 +2,7 @@
 
 namespace Gerador_de_Testes.ModuloQuestao
 {
-    internal class ControladorQuestao(IRepositorioQuestao repositorioQuestao, ContextoDados contexto) : ControladorBase, IControladorDetalhes
+    internal class ControladorQuestao(IRepositorioQuestao repositorioQuestao) : ControladorBase, IControladorDetalhes
     {
         private IRepositorioQuestao RepositorioQuestao = repositorioQuestao;
         private TabelaQuestaoControl tabelaQuestao;
@@ -124,7 +124,7 @@ namespace Gerador_de_Testes.ModuloQuestao
                 );
                 return;
             }
-            telaQuestao.VizualizarMode();
+            telaQuestao.VisualizarMode();
 
             telaQuestao.Questao = questaoSelecionada;
 

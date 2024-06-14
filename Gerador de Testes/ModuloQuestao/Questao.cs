@@ -12,11 +12,12 @@ namespace Gerador_de_Testes.ModuloQuestao
         public Questao()
         {
         }
-        public Questao(string enunciado, Materia materia, List<Alternativa> alternativas)
+        public Questao(string enunciado, Materia materia, List<Alternativa> alternativas, string resposta)
         {
             Enunciado = enunciado;
             Materia = materia;
             Alternativas = alternativas;
+            Resposta = resposta;
         }
         public override void AtualizarRegistro(EntidadeBase novoRegistro)
         {
@@ -25,6 +26,7 @@ namespace Gerador_de_Testes.ModuloQuestao
             Enunciado = atualizado.Enunciado;
             Materia = atualizado.Materia;
             Alternativas = atualizado.Alternativas;
+            Resposta = atualizado.Resposta;
         }
         public override List<string> Validar()
         {

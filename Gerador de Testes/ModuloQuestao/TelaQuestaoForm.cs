@@ -1,9 +1,12 @@
 ﻿using Gerador_de_Testes.ModuloMateria;
+using System.Reflection.Metadata.Ecma335;
 
 namespace Gerador_de_Testes.ModuloQuestao
 {
     public partial class TelaQuestaoForm : Form
     {
+        List<string> alternativasCadastradas = [];
+
         private Questao questao;
         public Questao Questao
         {
@@ -15,6 +18,8 @@ namespace Gerador_de_Testes.ModuloQuestao
                 cmbMateria.SelectedItem = value.Materia;
                 foreach (Alternativa alternativa in value.Alternativas)
                 {
+                    alternativasCadastradas.Add(alternativa.Resposta);
+
                     alternativa.Letra = letra;
 
                     listBox.Items.Add(alternativa);
@@ -35,18 +40,17 @@ namespace Gerador_de_Testes.ModuloQuestao
         #region Botões
         public void btnAdicionar_Click(object sender, EventArgs e)
         {
-            if (txtResposta.Text == "") return;
-            if (countAlternativas > 4) return;
+            if (AlternativaVazia() || LimiteMaxDeAlternativas() || AlternativaJaCadastrada()) return;
 
             string resposta = txtResposta.Text;
-            bool correta = false;
 
-            Alternativa alternativa = new Alternativa(letra, resposta, correta);
+            Alternativa alternativa = new Alternativa(letra, resposta, false);
 
             listBox.Items.Add(alternativa);
             letra++;
             countAlternativas++;
             txtResposta.Text = "";
+            alternativasCadastradas.Add(resposta);
         }
         public void btnRemover_Click(object sender, EventArgs e)
         {
@@ -75,6 +79,7 @@ namespace Gerador_de_Testes.ModuloQuestao
 
             string enunciado = txtEnunciado.Text;
             Materia materia = (Materia)cmbMateria.SelectedItem;
+            string resposta = null;
 
             List<Alternativa> alternativas = new();
 
@@ -84,10 +89,13 @@ namespace Gerador_de_Testes.ModuloQuestao
             foreach (Alternativa alternativa in alternativas)
             {
                 if (listBox.CheckedItems.Contains(alternativa))
+                {
                     alternativa.Correta = true;
+                    resposta = alternativa.Resposta;
+                }
                 else alternativa.Correta = false;
             }
-            questao = new(enunciado, materia, alternativas);
+            questao = new(enunciado, materia, alternativas, resposta);
 
             #region Validacoes
 
@@ -110,6 +118,25 @@ namespace Gerador_de_Testes.ModuloQuestao
         #endregion
 
         #region Auxiliares
+        private bool AlternativaVazia() => txtResposta.Text == "";
+        private bool LimiteMaxDeAlternativas()
+        {
+            if (countAlternativas > 4)
+            {
+                TelaPrincipalForm.Instancia.AtualizarRodape("Você atingiu o número máximo de alternativas cadastradas");
+                return true;
+            }
+            return false;
+        }
+        private bool AlternativaJaCadastrada()
+        {
+            if (alternativasCadastradas.Contains(txtResposta.Text))
+            {
+                TelaPrincipalForm.Instancia.AtualizarRodape("Alternativa já cadastrada. Tente novamente");
+                return true;
+            }
+            return false;
+        }
         private void CheckItemCorreto(object sender, EventArgs e)
         {
             for (int i = 0; i < listBox.Items.Count; i++)
@@ -143,12 +170,13 @@ namespace Gerador_de_Testes.ModuloQuestao
             foreach (Materia materia in materias)
                 cmbMateria.Items.Add(materia);
         }
-        public void VizualizarMode()
+        public void VisualizarMode()
         {
             txtEnunciado.Enabled = false;
             txtResposta.Enabled = false;
             listBox.Enabled = false;
             listBox.Dock = DockStyle.Fill;
+            listBox.BackColor = Color.FromArgb(240, 240, 240);
             cmbMateria.Enabled = false;
             lblResposta.Visible = false;
             txtResposta.Visible = false;
