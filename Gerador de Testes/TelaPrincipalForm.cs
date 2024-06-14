@@ -38,8 +38,6 @@ namespace Gerador_de_Testes
             => SelecionaModulo(ref controlador, () => controlador = new ControladorDisciplina(repositorioDisciplina, contexto));
         private void questoesMenuItem_Click(object sender, EventArgs e)
             => SelecionaModulo(ref controlador, () => controlador = new ControladorQuestao(repositorioQuestao, contexto));
-
-
         #endregion
 
         #region Botões
@@ -49,6 +47,11 @@ namespace Gerador_de_Testes
             => controlador.Editar();
         private void btnExcluir_Click(object sender, EventArgs e)
             => controlador.Excluir();
+        private void btnDetalhes_Click(object sender, EventArgs e)
+        {
+            if (controlador is IControladorDetalhes controladorDetalhe)
+                controladorDetalhe.VisualizarDetalhes();
+        }
         #endregion
 
         #region Auxiliares
@@ -65,6 +68,8 @@ namespace Gerador_de_Testes
             btnAdicionar.Enabled = true;
             btnEditar.Enabled = true;
             btnExcluir.Enabled = true;
+
+            btnDetalhes.Enabled = controladorSelecionado is ControladorQuestao;
 
             ConfigurarToolTips(controladorSelecionado);
         }
@@ -84,5 +89,9 @@ namespace Gerador_de_Testes
         }
         #endregion
 
+
+
+
+        
     }
 }

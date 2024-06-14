@@ -31,15 +31,12 @@ namespace Gerador_de_Testes.ModuloQuestao
             List<string> erros = [];
 
             VerificaNulo(ref erros, Enunciado, "enunciado");
-            VerificaNulo(ref erros, Resposta, "resposta");
-            //VerificaNulo(ref erros, Materia, "materia");
-            //VerificaNulo(ref erros, Alternativas, "alternativas");
+
             return erros;
         }
         public override string ToString()
         {
-            return $"{Alternativas}";
+            return $"{Enunciado}";
         }
     }
-    
 }

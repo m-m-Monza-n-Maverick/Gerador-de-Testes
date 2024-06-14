@@ -1,5 +1,4 @@
 ﻿using Gerador_de_Testes.ModuloMateria;
-using System.Windows.Forms;
 
 namespace Gerador_de_Testes.ModuloQuestao
 {
@@ -16,64 +15,25 @@ namespace Gerador_de_Testes.ModuloQuestao
                 cmbMateria.SelectedItem = value.Materia;
                 foreach (Alternativa alternativa in value.Alternativas)
                 {
-                    if (alternativa.Correta)
-                         
-
                     alternativa.Letra = letra;
 
                     listBox.Items.Add(alternativa);
                     letra++;
+                    countAlternativas++;
                 }
             }
         }
         public TelaQuestaoForm(int id)
         {
             InitializeComponent();
-            listBox.HandleCreated += new EventHandler(CheckedListBox_HandleCreated);
-            
             txtId.Text = id.ToString();
         }
 
         private int countAlternativas = 0;
         public char letra = 'A';
 
-        private void CheckedListBox_HandleCreated(object sender, EventArgs e)
-        {
-            for (int i = 0; i < listBox.Items.Count; i++)
-            {
-                Alternativa alternativa = (Alternativa)listBox.Items[i];
-                if (alternativa.Correta)
-                {
-                    listBox.SetItemChecked(i, true);
-                    break;
-                }
-            }
-        }
-
-        public void CheckedListBox1_ItemCheck(object sender, ItemCheckEventArgs e)
-        {
-            if (e.NewValue == CheckState.Checked)
-            {
-                // Desmarca todos os outros itens
-                for (int i = 0; i < listBox.Items.Count; i++)
-                {
-                    if (i != e.Index)
-                    {
-                        listBox.SetItemChecked(i, false);
-                    }
-                }
-            }
-        }
-
-        public void CarregarMaterias(List<Materia> materias)
-        {
-            cmbMateria.Items.Clear();
-
-            foreach (Materia materia in materias)
-                cmbMateria.Items.Add(materia);
-        }
-
-        private void btnAdicionar_Click(object sender, EventArgs e)
+        #region Botões
+        public void btnAdicionar_Click(object sender, EventArgs e)
         {
             if (txtResposta.Text == "") return;
             if (countAlternativas > 4) return;
@@ -88,7 +48,7 @@ namespace Gerador_de_Testes.ModuloQuestao
             countAlternativas++;
             txtResposta.Text = "";
         }
-        private void btnRemoverlist_Click(object sender, EventArgs e)
+        public void btnRemover_Click(object sender, EventArgs e)
         {
             if (listBox.SelectedItem == null) return;
 
@@ -110,13 +70,9 @@ namespace Gerador_de_Testes.ModuloQuestao
                 letra++;
             }
         }
-
         public void btnGravar_Click(object sender, EventArgs e)
         {
-            if (txtEnunciado.Text == null) return;
-            //if (cmbMateria.SelectedItem == null) return;
-            if (countAlternativas < 2) return;
-                
+
             string enunciado = txtEnunciado.Text;
             Materia materia = (Materia)cmbMateria.SelectedItem;
 
@@ -129,13 +85,78 @@ namespace Gerador_de_Testes.ModuloQuestao
             {
                 if (listBox.CheckedItems.Contains(alternativa))
                     alternativa.Correta = true;
+                else alternativa.Correta = false;
             }
+            questao = new(enunciado, materia, alternativas);
 
-            questao = new Questao(enunciado, materia, alternativas);
+            #region Validacoes
+
+            List<string> erros = questao.Validar();
+            
+            //if (cmbMateria.SelectedItem == null)
+            //    erros.Add($"Selecione uma meteria");
+            if (countAlternativas < 2)
+                erros.Add($"O numero minimo de alternativas é 2");
+            if (listBox.CheckedItems.Count == 0)
+                erros.Add($"Selecione a resposta correta");
+            
+            if (erros.Count > 0)
+            {
+                TelaPrincipalForm.Instancia.AtualizarRodape(erros[0]);
+                DialogResult = DialogResult.None;
+            }
+            #endregion
         }
+        #endregion
 
-        
+        #region Auxiliares
+        private void CheckItemCorreto(object sender, EventArgs e)
+        {
+            for (int i = 0; i < listBox.Items.Count; i++)
+            {
+                Alternativa alternativa = (Alternativa)listBox.Items[i];
+                if (alternativa.Correta)
+                {
+                    listBox.SetItemChecked(i, true);
+                    break;
+                }
+            }
+        }
+        public void OnlyOne_ItemCheck(object sender, ItemCheckEventArgs e)
+        {
+            if (e.NewValue == CheckState.Checked)
+            {
+                // Desmarca todos os outros itens
+                for (int i = 0; i < listBox.Items.Count; i++)
+                {
+                    if (i != e.Index)
+                    {
+                        listBox.SetItemChecked(i, false);
+                    }
+                }
+            }
+        }
+        public void CarregarMaterias(List<Materia> materias)
+        {
+            cmbMateria.Items.Clear();
 
-        
+            foreach (Materia materia in materias)
+                cmbMateria.Items.Add(materia);
+        }
+        public void VizualizarMode()
+        {
+            txtEnunciado.Enabled = false;
+            txtResposta.Enabled = false;
+            listBox.Enabled = false;
+            listBox.Dock = DockStyle.Fill;
+            cmbMateria.Enabled = false;
+            lblResposta.Visible = false;
+            txtResposta.Visible = false;
+            btnAdicionar.Visible = false;
+            btnRemoverlist.Visible = false;
+            btnGravar.Visible = false;
+            btnCancelar.Text = "Voltar";
+        }
+        #endregion
     }
 }

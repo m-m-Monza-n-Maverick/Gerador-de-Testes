@@ -2,7 +2,7 @@
 
 namespace Gerador_de_Testes.ModuloQuestao
 {
-    internal class ControladorQuestao(IRepositorioQuestao repositorioQuestao, ContextoDados contexto) : ControladorBase
+    internal class ControladorQuestao(IRepositorioQuestao repositorioQuestao, ContextoDados contexto) : ControladorBase, IControladorDetalhes
     {
         private IRepositorioQuestao RepositorioQuestao = repositorioQuestao;
         private TabelaQuestaoControl tabelaQuestao;
@@ -12,6 +12,8 @@ namespace Gerador_de_Testes.ModuloQuestao
         public override string ToolTipAdicionar => "Adicionar questão";
         public override string ToolTipEditar => "Editar uma questão";
         public override string ToolTipExcluir => "Excluir uma questão";
+
+        public string ToolTipVisualizarDetalhes => "Visualizar detalhes";
         #endregion
 
         #region CRUD
@@ -32,7 +34,7 @@ namespace Gerador_de_Testes.ModuloQuestao
 
             TelaPrincipalForm
                 .Instancia
-                .AtualizarRodape($"O registro \"{novaQuestao.Enunciado}\" foi excluído com sucesso!");
+                .AtualizarRodape($"O registro \"{novaQuestao.Enunciado}\" foi adicionado com sucesso!");
         }
 
         public override void Editar()
@@ -60,15 +62,15 @@ namespace Gerador_de_Testes.ModuloQuestao
             DialogResult resultado = telaQuestao.ShowDialog();
             if (resultado != DialogResult.OK) return;
 
-            Questao clienteEditado = telaQuestao.Questao;
+            Questao questaoEditada = telaQuestao.Questao;
 
-            RepositorioQuestao.Editar(questaoSelecionada.Id, clienteEditado);
+            RepositorioQuestao.Editar(questaoSelecionada.Id, questaoEditada);
 
             CarregarQuestoes();
 
             TelaPrincipalForm
                 .Instancia
-                .AtualizarRodape($"O registro \"{clienteEditado.Enunciado}\" foi editado com sucesso!");
+                .AtualizarRodape($"O registro \"{questaoEditada.Enunciado}\" foi editado com sucesso!");
 
         }
 
@@ -92,6 +94,7 @@ namespace Gerador_de_Testes.ModuloQuestao
         }
         #endregion
 
+        #region Auxiliares
         public override UserControl ObterListagem()
         {
             if (tabelaQuestao == null)
@@ -101,11 +104,40 @@ namespace Gerador_de_Testes.ModuloQuestao
 
             return tabelaQuestao;
         }
+
+        public void VisualizarDetalhes()
+        {
+            int idSelecionado = tabelaQuestao.ObterRegistroSelecionado();
+
+            TelaQuestaoForm telaQuestao = new TelaQuestaoForm(idSelecionado);
+
+            Questao questaoSelecionada =
+                repositorioQuestao.SelecionarPorId(idSelecionado);
+
+            if (questaoSelecionada == null)
+            {
+                MessageBox.Show(
+                    "Não é possível realizar esta ação sem um registro selecionado.",
+                    "Aviso",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
+                return;
+            }
+            telaQuestao.VizualizarMode();
+
+            telaQuestao.Questao = questaoSelecionada;
+
+            DialogResult resultado = telaQuestao.ShowDialog();
+            if (resultado != DialogResult.OK) return;
+        }
+
         private void CarregarQuestoes()
         {
             List<Questao> Questoes = RepositorioQuestao.SelecionarTodos();
 
             tabelaQuestao.AtualizarRegistros(Questoes);
         }
+        #endregion
     }
 }

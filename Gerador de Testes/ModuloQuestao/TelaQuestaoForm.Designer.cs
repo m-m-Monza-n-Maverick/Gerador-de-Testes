@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            label1 = new Label();
-            label2 = new Label();
-            label3 = new Label();
+            lblMateria = new Label();
+            lblEnunciado = new Label();
+            lblResposta = new Label();
             btnGravar = new Button();
             btnCancelar = new Button();
             btnAdicionar = new Button();
@@ -45,32 +45,32 @@
             groupBox1.SuspendLayout();
             SuspendLayout();
             // 
-            // label1
+            // lblMateria
             // 
-            label1.AutoSize = true;
-            label1.Location = new Point(36, 62);
-            label1.Name = "label1";
-            label1.Size = new Size(50, 15);
-            label1.TabIndex = 0;
-            label1.Text = "Matéria:";
+            lblMateria.AutoSize = true;
+            lblMateria.Location = new Point(36, 62);
+            lblMateria.Name = "lblMateria";
+            lblMateria.Size = new Size(50, 15);
+            lblMateria.TabIndex = 0;
+            lblMateria.Text = "Matéria:";
             // 
-            // label2
+            // lblEnunciado
             // 
-            label2.AutoSize = true;
-            label2.Location = new Point(20, 131);
-            label2.Name = "label2";
-            label2.Size = new Size(66, 15);
-            label2.TabIndex = 1;
-            label2.Text = "Enunciado:";
+            lblEnunciado.AutoSize = true;
+            lblEnunciado.Location = new Point(20, 131);
+            lblEnunciado.Name = "lblEnunciado";
+            lblEnunciado.Size = new Size(66, 15);
+            lblEnunciado.TabIndex = 1;
+            lblEnunciado.Text = "Enunciado:";
             // 
-            // label3
+            // lblResposta
             // 
-            label3.AutoSize = true;
-            label3.Location = new Point(29, 199);
-            label3.Name = "label3";
-            label3.Size = new Size(57, 15);
-            label3.TabIndex = 2;
-            label3.Text = "Resposta:";
+            lblResposta.AutoSize = true;
+            lblResposta.Location = new Point(29, 199);
+            lblResposta.Name = "lblResposta";
+            lblResposta.Size = new Size(57, 15);
+            lblResposta.TabIndex = 2;
+            lblResposta.Text = "Resposta:";
             // 
             // btnGravar
             // 
@@ -126,7 +126,8 @@
             listBox.Name = "listBox";
             listBox.Size = new Size(408, 130);
             listBox.TabIndex = 8;
-            listBox.ItemCheck += CheckedListBox1_ItemCheck;
+            listBox.ItemCheck += OnlyOne_ItemCheck;
+            listBox.HandleCreated += CheckItemCorreto;
             // 
             // txtEnunciado
             // 
@@ -173,7 +174,7 @@
             btnRemoverlist.TabIndex = 9;
             btnRemoverlist.Text = "Remover";
             btnRemoverlist.UseVisualStyleBackColor = true;
-            btnRemoverlist.Click += btnRemoverlist_Click;
+            btnRemoverlist.Click += btnRemover_Click;
             // 
             // TelaQuestaoForm
             // 
@@ -189,9 +190,9 @@
             Controls.Add(btnAdicionar);
             Controls.Add(btnCancelar);
             Controls.Add(btnGravar);
-            Controls.Add(label3);
-            Controls.Add(label2);
-            Controls.Add(label1);
+            Controls.Add(lblResposta);
+            Controls.Add(lblEnunciado);
+            Controls.Add(lblMateria);
             Name = "TelaQuestaoForm";
             StartPosition = FormStartPosition.CenterParent;
             Text = "Cadastro de Questões";
@@ -202,9 +203,9 @@
 
         #endregion
 
-        private Label label1;
-        private Label label2;
-        private Label label3;
+        private Label lblMateria;
+        private Label lblEnunciado;
+        private Label lblResposta;
         private Button btnGravar;
         private Button btnCancelar;
         private Button btnAdicionar;

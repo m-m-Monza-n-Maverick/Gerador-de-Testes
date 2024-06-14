@@ -75,27 +75,27 @@
             // disciplinasMenuItem
             // 
             disciplinasMenuItem.Name = "disciplinasMenuItem";
-            disciplinasMenuItem.Size = new Size(180, 24);
+            disciplinasMenuItem.Size = new Size(149, 24);
             disciplinasMenuItem.Text = "Disciplinas";
             disciplinasMenuItem.Click += disciplinasMenuItem_Click;
             // 
             // materiasMenuItem
             // 
             materiasMenuItem.Name = "materiasMenuItem";
-            materiasMenuItem.Size = new Size(180, 24);
+            materiasMenuItem.Size = new Size(149, 24);
             materiasMenuItem.Text = "Matérias";
             // 
             // questoesMenuItem
             // 
             questoesMenuItem.Name = "questoesMenuItem";
-            questoesMenuItem.Size = new Size(180, 24);
+            questoesMenuItem.Size = new Size(149, 24);
             questoesMenuItem.Text = "Questões";
             questoesMenuItem.Click += questoesMenuItem_Click;
             // 
             // testesMenuItem
             // 
             testesMenuItem.Name = "testesMenuItem";
-            testesMenuItem.Size = new Size(180, 24);
+            testesMenuItem.Size = new Size(149, 24);
             testesMenuItem.Text = "Testes";
             // 
             // statusStrip1
@@ -201,6 +201,7 @@
             btnDetalhes.Name = "btnDetalhes";
             btnDetalhes.Padding = new Padding(5);
             btnDetalhes.Size = new Size(38, 38);
+            btnDetalhes.Click += btnDetalhes_Click;
             // 
             // btnPdf
             // 
