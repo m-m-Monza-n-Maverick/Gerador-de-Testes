@@ -10,9 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="ModuloMateria\NewFolder\**" />
-    <EmbeddedResource Remove="ModuloMateria\NewFolder\**" />
-    <None Remove="ModuloMateria\NewFolder\**" />
+    <Folder Include="ModuloMateria\NewFolder\" />
   </ItemGroup>
 
   <ItemGroup>
