@@ -1,5 +1,6 @@
 ﻿using Gerador_de_Testes.Compartilhado;
 using Gerador_de_Testes.ModuloDisciplina;
+
 namespace Gerador_de_Testes.ModuloMateria
 {
     public partial class TelaMateriaForm : Form
@@ -24,6 +25,7 @@ namespace Gerador_de_Testes.ModuloMateria
         public TelaMateriaForm(int id, ContextoDados contexto)
         {
             InitializeComponent();
+            CarregarDisciplinas(contexto.Disciplinas);
             txtId.Text = id.ToString();
             this.contexto = contexto;
             this.id = id;
@@ -33,8 +35,8 @@ namespace Gerador_de_Testes.ModuloMateria
         {
             cmbDisciplina.Items.Clear();
 
-            foreach (Disciplina d in disciplinas)
-                cmbDisciplina.Items.Add(d);
+            foreach (Disciplina diciplina in disciplinas)
+                cmbDisciplina.Items.Add(diciplina);
         }
 
         private void btnGravar_Click(object sender, EventArgs e)
@@ -57,9 +59,9 @@ namespace Gerador_de_Testes.ModuloMateria
 
         private bool ValidarNome(string nome)
         {
-            foreach (Materia m in contexto.Materias)
-                if (m.Nome == nome)
-                    if (m.Id != id)
+            foreach (Materia materia in contexto.Materias)
+                if (materia.Nome == nome)
+                    if (materia.Id != id)
                     {
                         TelaPrincipalForm.Instancia.AtualizarRodape(
                             $"Já existe uma matéria com o nome {nome.ToTitleCase()}. Tente novamente.");

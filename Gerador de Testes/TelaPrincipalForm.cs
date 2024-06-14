@@ -23,8 +23,6 @@ namespace Gerador_de_Testes
 
             contexto = new(carregarDados: true);
 
-            //repositorioDisciplina = new RepositorioDisciplinaEmArquivo(contexto);
-            repositorioMateria = new RepositorioMateria(contexto);
             repositorioDisciplina = new RepositorioDisciplinaEmArquivo(contexto);
             repositorioMateria = new RepositorioMateria(contexto);
             //repositorioQuestao = new RepositorioQuestaoEmArquivo(contexto);
