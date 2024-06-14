@@ -21,7 +21,8 @@ namespace Gerador_de_Testes.ModuloTeste
             Disciplina = disciplina;
             QntQuestoes = qntQuestoes;
             Materia = materia;
-            Serie = materia.Serie;
+            if (materia != null) 
+                Serie = materia.Serie;
             Questoes = questoes;
             Recuperacao = recuperacao;
         }
@@ -44,8 +45,9 @@ namespace Gerador_de_Testes.ModuloTeste
 
             VerificaNulo(ref erros, Titulo, "Título");
             VerificaNulo(ref erros, Disciplina);
-            VerificaNulo(ref erros, QntQuestoes, "Quantidade de questões");
-            VerificaNulo(ref erros, Materia);
+            if (!Recuperacao)
+                VerificaNulo(ref erros, Materia);
+            VerificaNulo(ref erros, Questoes);
 
             return erros;
         }
@@ -62,7 +64,7 @@ namespace Gerador_de_Testes.ModuloTeste
             if (materia == null)
                 erros.Add("\nÉ necessário informar uma \"Matéria\". Tente novamente ");
         }
-        protected void VerificaNulo(ref List<string> erros, List<string> questoes)
+        protected void VerificaNulo(ref List<string> erros, List<Questao> questoes)
         {
             if (questoes.Count == 0)
                 erros.Add("\nÉ necessário sortear as \"Questões\". Tente novamente ");

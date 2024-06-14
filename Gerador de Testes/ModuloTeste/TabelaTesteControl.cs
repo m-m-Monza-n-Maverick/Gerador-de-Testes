@@ -1,4 +1,5 @@
 ﻿using Gerador_de_Testes.Compartilhado;
+using Gerador_de_Testes.ModuloDisciplina;
 namespace Gerador_de_Testes.ModuloTeste
 {
     public partial class TabelaTesteControl : UserControl
@@ -32,6 +33,7 @@ namespace Gerador_de_Testes.ModuloTeste
             [
                 new DataGridViewTextBoxColumn { DataPropertyName = "Id", HeaderText = "Id" },
                 new DataGridViewTextBoxColumn { DataPropertyName = "Nome", HeaderText = "Nome" },
+                new DataGridViewTextBoxColumn { DataPropertyName = "Disciplina", HeaderText = "Disciplina" },
                 new DataGridViewTextBoxColumn { DataPropertyName = "Materia", HeaderText = "Matéria" },
                 new DataGridViewTextBoxColumn { DataPropertyName = "QntQuestoes", HeaderText = "Nº de questões" },
             ];

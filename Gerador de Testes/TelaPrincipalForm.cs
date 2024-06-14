@@ -32,7 +32,8 @@ namespace Gerador_de_Testes
 
             Disciplina disciplina1 = new("disciplina");
             Disciplina disciplina2 = new("aaaaaa");
-            
+            Disciplina disciplina3 = new("bbbbbb");
+
             Materia materia = new();
             Materia materia2 = new();
 
@@ -51,8 +52,9 @@ namespace Gerador_de_Testes
             contexto.Materias.AddRange([materia, materia2]);
 
             disciplina1.Materias.AddRange([materia, materia2]);
+            disciplina2.Materias.Add(materia);
 
-            contexto.Disciplinas.AddRange([disciplina1, disciplina2]);
+            contexto.Disciplinas.AddRange([disciplina1, disciplina2, disciplina3]);
 
             Instancia = this;
         }

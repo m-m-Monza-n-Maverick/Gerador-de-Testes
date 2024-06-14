@@ -41,6 +41,7 @@ namespace Gerador_de_Testes.ModuloTeste
             label4 = new Label();
             rdbRecuperacao = new CheckBox();
             groupBox1 = new GroupBox();
+            lblAvisoAumentarQnt = new Label();
             listaQuestoes = new ListBox();
             btnSortear = new Button();
             ((System.ComponentModel.ISupportInitialize)txtQntQuestoes).BeginInit();
@@ -56,6 +57,7 @@ namespace Gerador_de_Testes.ModuloTeste
             btnGravar.TabIndex = 7;
             btnGravar.Text = "Gravar";
             btnGravar.UseVisualStyleBackColor = true;
+            btnGravar.Click += btnGravar_Click_1;
             // 
             // btnCancelar
             // 
@@ -114,11 +116,10 @@ namespace Gerador_de_Testes.ModuloTeste
             // 
             txtQntQuestoes.Enabled = false;
             txtQntQuestoes.Location = new Point(345, 95);
-            txtQntQuestoes.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             txtQntQuestoes.Name = "txtQntQuestoes";
             txtQntQuestoes.Size = new Size(52, 23);
             txtQntQuestoes.TabIndex = 2;
-            txtQntQuestoes.Value = new decimal(new int[] { 1, 0, 0, 0 });
+            txtQntQuestoes.ValueChanged += txtQntQuestoes_ValueChanged;
             // 
             // cmbMateria
             // 
@@ -141,15 +142,18 @@ namespace Gerador_de_Testes.ModuloTeste
             // rdbRecuperacao
             // 
             rdbRecuperacao.AutoSize = true;
+            rdbRecuperacao.Enabled = false;
             rdbRecuperacao.Location = new Point(253, 66);
             rdbRecuperacao.Name = "rdbRecuperacao";
             rdbRecuperacao.Size = new Size(140, 19);
             rdbRecuperacao.TabIndex = 4;
             rdbRecuperacao.Text = "Prova de recuperação";
             rdbRecuperacao.UseVisualStyleBackColor = true;
+            rdbRecuperacao.CheckedChanged += rdbRecuperacao_CheckedChanged;
             // 
             // groupBox1
             // 
+            groupBox1.Controls.Add(lblAvisoAumentarQnt);
             groupBox1.Controls.Add(listaQuestoes);
             groupBox1.Controls.Add(btnSortear);
             groupBox1.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
@@ -159,6 +163,16 @@ namespace Gerador_de_Testes.ModuloTeste
             groupBox1.TabIndex = 33;
             groupBox1.TabStop = false;
             groupBox1.Text = "Questões Selecionadas";
+            // 
+            // lblAvisoAumentarQnt
+            // 
+            lblAvisoAumentarQnt.AutoSize = true;
+            lblAvisoAumentarQnt.Font = new Font("Segoe UI", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblAvisoAumentarQnt.ForeColor = Color.Red;
+            lblAvisoAumentarQnt.Location = new Point(251, 32);
+            lblAvisoAumentarQnt.Name = "lblAvisoAumentarQnt";
+            lblAvisoAumentarQnt.Size = new Size(0, 13);
+            lblAvisoAumentarQnt.TabIndex = 6;
             // 
             // listaQuestoes
             // 
@@ -211,6 +225,7 @@ namespace Gerador_de_Testes.ModuloTeste
             Text = "TelaTesteForm";
             ((System.ComponentModel.ISupportInitialize)txtQntQuestoes).EndInit();
             groupBox1.ResumeLayout(false);
+            groupBox1.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -236,5 +251,6 @@ namespace Gerador_de_Testes.ModuloTeste
         private GroupBox groupBox1;
         private Button btnSortear;
         private ListBox listaQuestoes;
+        private Label lblAvisoAumentarQnt;
     }
 }

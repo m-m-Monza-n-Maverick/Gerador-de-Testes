@@ -7,7 +7,7 @@ namespace Gerador_de_Testes.ModuloTeste
 {
     public partial class TelaTesteForm : Form
     {
-        private Teste teste;
+        private Teste teste = new();
         public Teste Teste
         {
             get => teste;
@@ -25,6 +25,7 @@ namespace Gerador_de_Testes.ModuloTeste
             CarregarDisciplinas();
         }
 
+        #region Disciplinas
         public void CarregarDisciplinas()
         {
             cmbDisciplina.Items.Clear();
@@ -32,81 +33,176 @@ namespace Gerador_de_Testes.ModuloTeste
             foreach (Disciplina disciplina in contexto.Disciplinas)
                 cmbDisciplina.Items.Add(disciplina);
         }
+        private void cmbDisciplina_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            Disciplina disciplinaSelecionada = (Disciplina)cmbDisciplina.SelectedItem;
+
+            if (DisciplinaSemMaterias(disciplinaSelecionada)) return;
+            if (disciplinaSelecionada == teste.Disciplina) return;
+
+            teste.Disciplina = disciplinaSelecionada;
+            teste.Materia = null;
+
+            cmbMateria.SelectedItem = null;
+            rdbRecuperacao.Enabled = true;
+
+            CarregarMaterias(disciplinaSelecionada);
+
+            ResetarInformações();
+
+            if (!rdbRecuperacao.Checked) ConfigurarCampos(false);
+        }
+        #endregion
+
+        #region Matérias
         public void CarregarMaterias(Disciplina disciplina)
         {
             cmbMateria.Items.Clear();
 
-            if (disciplina == null) return;
-
             foreach (Materia materia in disciplina.Materias)
                 cmbMateria.Items.Add(materia);
         }
+        private void cmbMateria_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            Materia materiaSelecionada = (Materia)cmbMateria.SelectedItem;
 
+            if (materiaSelecionada == teste.Materia) return;
+
+            teste.Materia = materiaSelecionada;
+
+            ResetarInformações();
+            ConfigurarCampos(true);
+        }
+        #endregion
+
+        #region Demais botões
+        private void rdbRecuperacao_CheckedChanged(object sender, EventArgs e)
+        {
+            ResetarInformações();
+
+            if (!rdbRecuperacao.Checked)
+            {
+                cmbMateria.Enabled = true;
+
+                ConfigurarCampos(false);
+                return;
+            }
+
+            cmbMateria.Enabled = false;
+            cmbMateria.SelectedItem = null;
+
+            ConfigurarCampos(true);
+        }
+        private void txtQntQuestoes_ValueChanged(object sender, EventArgs e)
+        {
+            int qntQuestoesDisponiveis = 0;
+
+            Disciplina disciplinaSelecionada = (Disciplina)cmbDisciplina.SelectedItem;
+            Materia materiaSelecionada = (Materia)cmbMateria.SelectedItem;
+
+
+            if (rdbRecuperacao.Checked)
+                foreach (Materia m in disciplinaSelecionada.Materias)
+                    qntQuestoesDisponiveis += m.Questoes.Count;
+            else
+                if (materiaSelecionada != null)
+                qntQuestoesDisponiveis = materiaSelecionada.Questoes.Count;
+
+
+            if (qntQuestoesDisponiveis == 0) 
+                txtQntQuestoes.Maximum = 1;
+            else 
+                txtQntQuestoes.Maximum = qntQuestoesDisponiveis;
+
+            teste.QntQuestoes = (int)txtQntQuestoes.Value;
+        }
         private void btnSortear_Click(object sender, EventArgs e)
         {
             listaQuestoes.Items.Clear();
 
-            Materia materia = (Materia)cmbMateria.SelectedItem;
-            int qntQuestoes = Convert.ToInt32(txtQntQuestoes.Value);
+            AvisoParaAumentarQnt();
 
-            List<int> ids = [];
-            foreach (Questao q in materia.Questoes)
-                ids.Add(q.Id);
-
-            Span<int> Ids = ids.ToArray();
+            List<Materia> materias;
+            List<int> idsDasQuestoes = [];
             Random random = new();
 
-            random.Shuffle<int>(Ids);
+            if (rdbRecuperacao.Checked)
+                materias = teste.Disciplina.Materias;
+            else
+                materias = [teste.Materia];
+
+
+            foreach (Materia m in materias)
+                foreach (Questao q in m.Questoes)
+                    idsDasQuestoes.Add(q.Id);
+
+
+            Span<int> IdsSorteados = idsDasQuestoes.ToArray();
+            random.Shuffle<int>(IdsSorteados);
 
             int i = 0;
-            foreach (int id in Ids)
-                foreach (Questao q in materia.Questoes)
-                    if (q.Id == id)
-                    {
-                        listaQuestoes.Items.Add(q);
-                        i++;
-                        if (i >= qntQuestoes) return;
-                    }
+
+            foreach (int id in IdsSorteados)
+                foreach (Materia m in materias)
+                    foreach (Questao q in m.Questoes)
+                        if (q.Id == id)
+                        {
+                            if (i >= teste.QntQuestoes) return;
+                            listaQuestoes.Items.Add(q);
+                            i++;
+                        }
         }
-        private void btnGravar_Click(object sender, EventArgs e)
+        private void btnGravar_Click_1(object sender, EventArgs e)
         {
             string titulo = txtTitulo.Text;
             Disciplina disciplina = (Disciplina)cmbDisciplina.SelectedItem;
             Materia materia = (Materia)cmbMateria.SelectedItem;
             int qntQuestoes = Convert.ToInt32(txtQntQuestoes.Value);
-            List<Questao> questoes = null;
+            List<Questao> questoes = [];
+
+            foreach (Questao q in listaQuestoes.Items)
+                questoes.Add(q);
+
             bool recuperacao = rdbRecuperacao.Checked;
 
             teste = new(titulo, disciplina, materia, qntQuestoes, questoes, recuperacao);
 
             ValidacaoDeCampos(teste, titulo);
         }
+        #endregion
 
-
-
-        private void cmbDisciplina_SelectionChangeCommitted(object sender, EventArgs e)
+        #region Auxiliares
+        private bool DisciplinaSemMaterias(Disciplina disciplinaSelecionada)
         {
-            cmbMateria.Text = null;
+            if (disciplinaSelecionada.Materias.Count == 0)
+            {
+                MessageBox.Show(
+                    "Esta disciplina não possui matérias cadastradas",
+                    "Aviso",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
 
-            AlterarBotoes(false);
-            listaQuestoes.Items.Clear();
-
-            Disciplina disciplina = (Disciplina)cmbDisciplina.SelectedItem;
-            CarregarMaterias(disciplina);
+                if (teste != null) cmbDisciplina.SelectedItem = teste.Disciplina;
+                return true;
+            }
+            return false;
         }
-        private void cmbMateria_SelectionChangeCommitted(object sender, EventArgs e)
+        private void ResetarInformações()
         {
-            AlterarBotoes(true);
+            txtQntQuestoes.Value = 0;
             listaQuestoes.Items.Clear();
-
-            Materia materia = (Materia)cmbMateria.SelectedItem;
-            txtQntQuestoes.Maximum = materia.Questoes.Count;
         }
-        private void AlterarBotoes(bool ativo)
+        private void ConfigurarCampos(bool ativo)
         {
             btnSortear.Enabled = ativo;
             txtQntQuestoes.Enabled = ativo;
-            txtQntQuestoes.Value = 1;
+        }
+        private void AvisoParaAumentarQnt()
+        {
+            if (txtQntQuestoes.Value == 0)
+                lblAvisoAumentarQnt.Text = "Aumente a qnt.de questões";
+            else
+                lblAvisoAumentarQnt.Text = null;
         }
         private void ValidacaoDeCampos(EntidadeBase entidade, string titulo)
         {
@@ -121,5 +217,6 @@ namespace Gerador_de_Testes.ModuloTeste
                 DialogResult = DialogResult.None;
             }
         }
+        #endregion
     }
 }
