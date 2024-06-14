@@ -1,5 +1,6 @@
 using Gerador_de_Testes.Compartilhado;
 using Gerador_de_Testes.ModuloDisciplina;
+using Gerador_de_Testes.ModuloMateria;
 using Gerador_de_Testes.ModuloQuestao;
 namespace Gerador_de_Testes
 {
@@ -10,9 +11,10 @@ namespace Gerador_de_Testes
         ContextoDados contexto;
 
         IRepositorioDisciplina repositorioDisciplina;
-        //IRepositorioMateria repositorioMateria;
+        IRepositorioMateria repositorioMateria;
         IRepositorioQuestao repositorioQuestao;
         //IRepositorioTeste repositorioTeste;
+        
         public static TelaPrincipalForm Instancia { get; private set; }
 
         public TelaPrincipalForm()
@@ -22,8 +24,9 @@ namespace Gerador_de_Testes
             lblTipoCadastro.Text = string.Empty;
 
             contexto = new(carregarDados: true);
+
             repositorioDisciplina = new RepositorioDisciplinaEmArquivo(contexto);
-            //repositorioMateria = new RepositorioMateriaEmArquivo(contexto);
+            repositorioMateria = new RepositorioMateria(contexto);
             repositorioQuestao = new RepositorioQuestao(contexto);
             //repositorioTeste = new RepositorioTesteEmArquivo(contexto);
 
@@ -33,15 +36,17 @@ namespace Gerador_de_Testes
         public void AtualizarRodape(string texto) => statusLabelPrincipal.Text = texto;
 
 
-        #region Seleção de módulo
+        #region SeleÃ§Ã£o de mÃ³dulo
         private void disciplinasMenuItem_Click(object sender, EventArgs e)
             => SelecionaModulo(ref controlador, () => controlador = new ControladorDisciplina(repositorioDisciplina, contexto));
+        private void materiasMenuItem_Click(object sender, EventArgs e)
+            => SelecionaModulo(ref controlador, () => controlador = new ControladorMateria(repositorioMateria, contexto));
         private void questoesMenuItem_Click(object sender, EventArgs e)
             => SelecionaModulo(ref controlador, () => controlador = new ControladorQuestao(repositorioQuestao));
         #endregion
 
-        #region Botões
-        private void btnAdicionar_Click(object sender, EventArgs e)
+        #region BotÃµes
+        private void btnAdicionar_Click_1(object sender, EventArgs e)
             => controlador.Adicionar();
         private void btnEditar_Click(object sender, EventArgs e)
             => controlador.Editar();
