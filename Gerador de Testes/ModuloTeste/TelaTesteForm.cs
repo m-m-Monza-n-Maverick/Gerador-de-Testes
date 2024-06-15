@@ -134,35 +134,15 @@ namespace Gerador_de_Testes.ModuloTeste
 
             AvisoParaAumentarQnt();
 
-            List<Materia> materias;
-            List<int> idsDasQuestoes = [];
+            List<Materia> materias = materiasParaSorteio();
+
             Random random = new();
 
-            if (rdbRecuperacao.Checked)
-                materias = teste.Disciplina.Materias;
-            else
-                materias = [teste.Materia];
+            Span<int> IdsSorteados = idsParaSorteio(materias).ToArray();
 
-
-            foreach (Materia m in materias)
-                foreach (Questao q in m.Questoes)
-                    idsDasQuestoes.Add(q.Id);
-
-
-            Span<int> IdsSorteados = idsDasQuestoes.ToArray();
             random.Shuffle<int>(IdsSorteados);
 
-            int i = 0;
-
-            foreach (int id in IdsSorteados)
-                foreach (Materia m in materias)
-                    foreach (Questao q in m.Questoes)
-                        if (q.Id == id)
-                        {
-                            if (i >= teste.QntQuestoes) return;
-                            listaQuestoes.Items.Add(q);
-                            i++;
-                        }
+            Sortear(materias, IdsSorteados);
         }
         private void btnGravar_Click_1(object sender, EventArgs e)
         {
@@ -218,6 +198,38 @@ namespace Gerador_de_Testes.ModuloTeste
                 lblAvisoAumentarQnt.Text = "Aumente a qnt.de questões";
             else
                 lblAvisoAumentarQnt.Text = null;
+        }
+        private List<Materia> materiasParaSorteio()
+        {
+            List<Materia> materias;
+            if (rdbRecuperacao.Checked)
+                materias = teste.Disciplina.Materias;
+            else
+                materias = [teste.Materia];
+            return materias;
+        }
+        private static List<int> idsParaSorteio(List<Materia> materias)
+        {
+            List<int> idsDasQuestoes = [];
+
+            foreach (Materia m in materias)
+                foreach (Questao q in m.Questoes)
+                    idsDasQuestoes.Add(q.Id);
+
+            return idsDasQuestoes;
+        }
+        private void Sortear(List<Materia> materias, Span<int> IdsSorteados)
+        {
+            int i = 0;
+            foreach (int id in IdsSorteados)
+                foreach (Materia m in materias)
+                    foreach (Questao q in m.Questoes)
+                        if (q.Id == id)
+                        {
+                            if (i >= teste.QntQuestoes) return;
+                            listaQuestoes.Items.Add(q);
+                            i++;
+                        }
         }
         private bool ValidarTitulo(string titulo)
         {
