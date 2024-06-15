@@ -43,7 +43,7 @@
             // 
             // btnVoltar
             // 
-            btnVoltar.DialogResult = DialogResult.Cancel;
+            btnVoltar.DialogResult = DialogResult.OK;
             btnVoltar.Location = new Point(12, 365);
             btnVoltar.Name = "btnVoltar";
             btnVoltar.Size = new Size(75, 23);
@@ -133,7 +133,7 @@
             // 
             // btnPdfConcluido
             // 
-            btnPdfConcluido.DialogResult = DialogResult.Cancel;
+            btnPdfConcluido.DialogResult = DialogResult.OK;
             btnPdfConcluido.Location = new Point(358, 365);
             btnPdfConcluido.Name = "btnPdfConcluido";
             btnPdfConcluido.Size = new Size(75, 23);

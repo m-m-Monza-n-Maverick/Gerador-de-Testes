@@ -18,11 +18,11 @@
         #endregion
 
         #region Auxiliares
-        public void CarregarMensagem(EntidadeBase disciplina, string texto)
+        public void CarregarMensagem(EntidadeBase entidade, string texto)
         {
             TelaPrincipalForm
                 .Instancia
-                .AtualizarRodape($"O registro \"{disciplina}\" foi {texto} com sucesso!");
+                .AtualizarRodape($"O registro \"{entidade}\" foi {texto} com sucesso!");
         }
         public bool SemSeleção(EntidadeBase entidadeSelecionada)
         {

@@ -24,7 +24,12 @@ namespace Gerador_de_Testes.ModuloTeste
                     if (gerarPDF)
                     {
                         /*foreach (Alternativa a in q.Alternativas)
-                            listaQuestoes.Items.Add("    " + a);*/
+                          {
+                            if (gabarito && a.Solucao)
+                                listaQuestoes.Items.Add("    " + a + "      -> Resposta");
+                            else 
+                                listaQuestoes.Items.Add("    " + a);
+                          }*/
 
                         listaQuestoes.Items.Add("\n");
                     }

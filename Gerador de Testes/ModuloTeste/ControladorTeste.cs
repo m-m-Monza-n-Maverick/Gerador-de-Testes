@@ -1,5 +1,4 @@
 ﻿using Gerador_de_Testes.Compartilhado;
-using Gerador_de_Testes.ModuloQuestao;
 namespace Gerador_de_Testes.ModuloTeste
 {
     internal class ControladorTeste(IRepositorioTeste repositorioTeste, ContextoDados contexto) : ControladorBase, IControladorDuplicavel, IControladorDetalhes, IControladorPDF
@@ -15,6 +14,7 @@ namespace Gerador_de_Testes.ModuloTeste
         public string ToolTipDuplicarTeste { get => "Duplicar um teste"; }
         public string ToolTipVisualizarDetalhes { get => "Visualizar detalhes"; }
         public string ToolTipGerarPDF { get => "Gerar PDF"; }
+        public string ToolTipGerarPdfGabarito { get => "Gerar PDF do gabarito"; }
         #endregion
 
         #region CRUD
@@ -100,18 +100,39 @@ namespace Gerador_de_Testes.ModuloTeste
             telaDetalhesTeste.Teste = testeSelecionado;
 
             telaDetalhesTeste.ShowDialog();
+
+            TelaPrincipalForm
+                .Instancia
+                .AtualizarRodape($"O PDF do registro \"{testeSelecionado}\" foi gerado com sucesso!");
+        }
+        public void GerarPdfGabarito()
+        {
+            int idSelecionado = tabelaTeste.ObterRegistroSelecionado();
+            Teste testeSelecionado = repositorioTeste.SelecionarPorId(idSelecionado);
+
+            if (SemSeleção(testeSelecionado)) return;
+
+            TelaDetalhesTesteForm telaDetalhesTeste = new(true, true);
+
+            telaDetalhesTeste.Teste = testeSelecionado;
+
+            telaDetalhesTeste.ShowDialog();
+
+            TelaPrincipalForm
+                .Instancia
+                .AtualizarRodape($"O PDF gabarito do registro \"{testeSelecionado}\" foi gerado com sucesso!");
         }
         #endregion
 
         #region Auxiliares
         public override UserControl ObterListagem()
-        {
-            tabelaTeste ??= new();
+            {
+                tabelaTeste ??= new();
 
-            CarregarTestes();
+                CarregarTestes();
 
-            return tabelaTeste;
-        }
+                return tabelaTeste;
+            }
         private void CarregarTestes()
             => tabelaTeste.AtualizarRegistros(repositorioTeste.SelecionarTodos());
         private bool SemDisciplinaOuMateria()

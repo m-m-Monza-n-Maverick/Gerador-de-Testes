@@ -208,6 +208,7 @@
             btnGabarito.Name = "btnGabarito";
             btnGabarito.Padding = new Padding(5);
             btnGabarito.Size = new Size(38, 38);
+            btnGabarito.Click += btnGabarito_Click;
             // 
             // toolStripSeparator4
             // 
