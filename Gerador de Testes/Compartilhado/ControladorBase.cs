@@ -18,6 +18,12 @@
         #endregion
 
         #region Auxiliares
+        public void CarregarMensagem(EntidadeBase entidade, string texto)
+        {
+            TelaPrincipalForm
+                .Instancia
+                .AtualizarRodape($"O registro \"{entidade}\" foi {texto} com sucesso!");
+        }
         public bool SemSeleção(EntidadeBase entidadeSelecionada)
         {
             if (entidadeSelecionada == null)

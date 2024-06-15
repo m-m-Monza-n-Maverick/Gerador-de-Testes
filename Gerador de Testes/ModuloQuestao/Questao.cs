@@ -40,5 +40,19 @@ namespace Gerador_de_Testes.ModuloQuestao
         {
             return $"{Enunciado}";
         }
+
+        public override void AtualizarRegistro(EntidadeBase novoRegistro)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override List<string> Validar()
+        {
+            throw new NotImplementedException();
+        }
+        public override string ToString()
+        {
+            return Id.ToString();
+        }
     }
 }

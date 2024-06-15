@@ -1,4 +1,6 @@
 ﻿using Gerador_de_Testes.Compartilhado;
+using Gerador_de_Testes.ModuloMateria;
+using Gerador_de_Testes.ModuloTeste;
 namespace Gerador_de_Testes.ModuloDisciplina
 {
     public partial class TelaDisciplinaForm : Form
@@ -24,18 +26,19 @@ namespace Gerador_de_Testes.ModuloDisciplina
             this.id = id;
         }
 
+
         private void btnGravar_Click(object sender, EventArgs e)
         {
             string nome = txtNome.Text;
 
-            if (ValidarNomeJaExistente(nome)) return;
+            if (ValidarNome(nome)) return;
 
             disciplina = new(nome);
 
             ValidacaoDeCampos(disciplina);
         }
-
-        private bool ValidarNomeJaExistente(string nome)
+        
+        private bool ValidarNome(string nome)
         {
             foreach (Disciplina d in contexto.Disciplinas)
                 if (d.Nome.ToLower() == nome.ToLower())
@@ -47,7 +50,6 @@ namespace Gerador_de_Testes.ModuloDisciplina
                         DialogResult = DialogResult.None;
                         return true;
                     }
-
             return false;
         }
         private void ValidacaoDeCampos(EntidadeBase entidade)

@@ -19,8 +19,7 @@ namespace Gerador_de_Testes.ModuloDisciplina
 
                 return false;
             }
-
-/*            if (contexto.Testes.Exists(t => t.Disciplina.Id == id))
+            if (contexto.Testes.Exists(t => t.Disciplina.Id == id))
             {
                 MessageBox.Show(
                     "Registro sendo utilizado por um Teste.\nNão é possível excluir!",
@@ -29,8 +28,7 @@ namespace Gerador_de_Testes.ModuloDisciplina
                     MessageBoxIcon.Warning);
 
                 return false;
-            }*/
-
+            }
             return base.Excluir(id);
         }
     }

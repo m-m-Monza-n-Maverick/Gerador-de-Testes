@@ -2,8 +2,11 @@
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="Gerador_de_Testes.ModuloDisciplina.Disciplina">
     <Position X="3" Y="0.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAEAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAACAAAAAAQAAIAAAAAEAAAA=</HashCode>
       <FileName>ModuloDisciplina\Disciplina.cs</FileName>
     </TypeIdentifier>
     <ShowAsCollectionAssociation>
@@ -35,12 +38,14 @@
   </Class>
   <Class Name="Gerador_de_Testes.ModuloTeste.Teste">
     <Position X="5.5" Y="2.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAEAAAAAAAAAAAQAAAACAAAgCAAAABE=</HashCode>
+      <HashCode>AAAAAAgAIAAAAAEEAAAAAACAAAQAAQACAAAgAAAAABE=</HashCode>
       <FileName>ModuloTeste\Teste.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Property Name="Diciplina" />
       <Property Name="Materia" />
     </ShowAsAssociation>
     <ShowAsCollectionAssociation>

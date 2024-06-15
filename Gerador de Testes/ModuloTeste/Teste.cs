@@ -1,68 +1,74 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using Gerador_de_Testes.Compartilhado;
 using Gerador_de_Testes.ModuloDisciplina;
 using Gerador_de_Testes.ModuloMateria;
-
+using Gerador_de_Testes.ModuloQuestao;
 namespace Gerador_de_Testes.ModuloTeste
 {
-    public class Teste
+    public class Teste : EntidadeBase
     {
-        public string Titulo
+        public string Titulo { get; set; }
+        public Disciplina Disciplina { get; set; }
+        public int QntQuestoes { get; set; }
+        public Materia Materia { get; set; }
+        public string Serie { get; set; }
+        public List<Questao> Questoes { get; set; }
+        public bool Recuperacao { get; set; }
+
+        public Teste() { }
+        public Teste(string titulo, Disciplina disciplina, Materia materia, int qntQuestoes, List<Questao> questoes, bool recuperacao)
         {
-            get => default;
-            set
-            {
-            }
+            Titulo = titulo;
+            Disciplina = disciplina;
+            QntQuestoes = qntQuestoes;
+            Materia = materia;
+            if (materia != null) 
+                Serie = materia.Serie;
+            Questoes = questoes;
+            Recuperacao = recuperacao;
         }
 
-        public Disciplina Diciplina
+        public override void AtualizarRegistro(EntidadeBase novoRegistro)
         {
-            get => default;
-            set
-            {
-            }
-        }
+/*            Teste atualizado = (Teste)novoRegistro;
 
-        public Materia Materia
+            Titulo = atualizado.Titulo;
+            Diciplina = atualizado.Diciplina;
+            Materia = atualizado.Materia;
+            Serie = atualizado.Serie;
+            QntQuestoes = atualizado.QntQuestoes;
+            Questoes = atualizado.Questoes;
+            Recuperacao = atualizado.Recuperacao;
+*/        }
+        public override List<string> Validar()
         {
-            get => default;
-            set
-            {
-            }
-        }
+            List<string> erros = [];
 
-        public string Serie
-        {
-            get => default;
-            set
-            {
-            }
-        }
+            VerificaNulo(ref erros, Titulo, "Título");
+            VerificaNulo(ref erros, Disciplina);
+            if (!Recuperacao)
+                VerificaNulo(ref erros, Materia);
+            VerificaNulo(ref erros, Questoes);
 
-        public int QntQuestoes
-        {
-            get => default;
-            set
-            {
-            }
+            return erros;
         }
+        public override string ToString() => Titulo.ToTitleCase();
 
-        public List<ModuloQuestao.Questao> Questoes
+        #region Auxiliares de validação
+        protected void VerificaNulo(ref List<string> erros, Disciplina disciplina)
         {
-            get => default;
-            set
-            {
-            }
+            if (disciplina == null)
+                erros.Add("\nÉ necessário informar uma \"Disciplina\". Tente novamente ");
         }
-
-        public bool Recuperacao
+        protected void VerificaNulo(ref List<string> erros, Materia materia)
         {
-            get => default;
-            set
-            {
-            }
+            if (materia == null)
+                erros.Add("\nÉ necessário informar uma \"Matéria\". Tente novamente ");
         }
+        protected void VerificaNulo(ref List<string> erros, List<Questao> questoes)
+        {
+            if (questoes.Count == 0)
+                erros.Add("\nÉ necessário sortear as \"Questões\". Tente novamente ");
+        }
+        #endregion
     }
 }

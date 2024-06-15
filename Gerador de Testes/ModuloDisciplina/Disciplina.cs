@@ -1,13 +1,18 @@
 ﻿using Gerador_de_Testes.Compartilhado;
+using Gerador_de_Testes.ModuloMateria;
 namespace Gerador_de_Testes.ModuloDisciplina
 {
     public class Disciplina : EntidadeBase
     {
         public string Nome { get; set; }
-        public List<ModuloMateria.Materia> Materias { get; set; }
+        public List<Materia> Materias { get; set; }
 
         public Disciplina() {}
-        public Disciplina(string nome) => Nome = nome;
+        public Disciplina(string nome)
+        {
+            Nome = nome;
+            Materias = [];
+        }
 
         public override void AtualizarRegistro(EntidadeBase novoRegistro)
         {
@@ -17,15 +22,10 @@ namespace Gerador_de_Testes.ModuloDisciplina
         public override List<string> Validar()
         {
             List<string> erros = [];
-
-            if (string.IsNullOrEmpty(Nome.Trim()))
-                erros.Add("O campo \"nome\" é obrigatório");
+            VerificaNulo(ref erros, Nome, "Nome");
 
             return erros;
         }
-        public override string ToString()
-        {
-            return $"{Nome}";
-        }
+        public override string ToString() => Nome.ToTitleCase();
     }
 }

@@ -26,7 +26,7 @@
 
             contexto.Gravar();
         }
-        public bool Editar(int id, T novaEntidade)
+        public virtual bool Editar(int id, T novaEntidade)
         {
             T registro = SelecionarPorId(id);
 

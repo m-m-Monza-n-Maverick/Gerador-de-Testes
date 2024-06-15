@@ -1,6 +1,7 @@
 ﻿using Gerador_de_Testes.Compartilhado;
 using Gerador_de_Testes.ModuloDisciplina;
 using Gerador_de_Testes.ModuloQuestao;
+
 namespace Gerador_de_Testes.ModuloMateria
 {
     public class Materia : EntidadeBase
