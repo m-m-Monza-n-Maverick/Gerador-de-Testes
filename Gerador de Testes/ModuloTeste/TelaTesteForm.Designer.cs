@@ -117,6 +117,7 @@ namespace Gerador_de_Testes.ModuloTeste
             txtQntQuestoes.Enabled = false;
             txtQntQuestoes.Location = new Point(345, 95);
             txtQntQuestoes.Name = "txtQntQuestoes";
+            txtQntQuestoes.ReadOnly = true;
             txtQntQuestoes.Size = new Size(52, 23);
             txtQntQuestoes.TabIndex = 2;
             txtQntQuestoes.ValueChanged += txtQntQuestoes_ValueChanged;
