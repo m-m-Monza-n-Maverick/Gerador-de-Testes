@@ -1,9 +1,9 @@
 ﻿using Gerador_de_Testes.Compartilhado;
 namespace Gerador_de_Testes.ModuloDisciplina
 {
-    internal class RepositorioDisciplinaEmArquivo : RepositorioBaseEmArquivo<Disciplina>, IRepositorioDisciplina
+    internal class RepositorioDisciplina : RepositorioBaseEmArquivo<Disciplina>, IRepositorioDisciplina
     {
-        public RepositorioDisciplinaEmArquivo(ContextoDados contexto) : base(contexto) { }
+        public RepositorioDisciplina(ContextoDados contexto) : base(contexto) { }
 
         protected override List<Disciplina> ObterRegistros() => contexto.Disciplinas;
         public override bool Excluir(int id)

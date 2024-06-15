@@ -24,10 +24,10 @@ namespace Gerador_de_Testes
             lblTipoCadastro.Text = string.Empty;
 
             contexto = new(carregarDados: true);
-            repositorioDisciplina = new RepositorioDisciplinaEmArquivo(contexto);
+            repositorioDisciplina = new RepositorioDisciplina(contexto);
             //repositorioMateria = new RepositorioMateriaEmArquivo(contexto);
             //repositorioQuestao = new RepositorioQuestaoEmArquivo(contexto);
-            repositorioTeste = new RepositorioTesteEmArquivo(contexto);
+            repositorioTeste = new RepositorioTeste(contexto);
 
 
             Disciplina disciplina1 = new("disciplina");

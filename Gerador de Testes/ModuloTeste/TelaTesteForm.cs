@@ -2,7 +2,6 @@
 using Gerador_de_Testes.ModuloDisciplina;
 using Gerador_de_Testes.ModuloMateria;
 using Gerador_de_Testes.ModuloQuestao;
-using System.Drawing.Drawing2D;
 namespace Gerador_de_Testes.ModuloTeste
 {
     public partial class TelaTesteForm : Form
@@ -10,14 +9,15 @@ namespace Gerador_de_Testes.ModuloTeste
         private Teste teste = new();
         public Teste Teste
         {
-            get => teste;
             set
             {
                 txtTitulo.Text = value.Titulo;
+
                 cmbDisciplina.SelectedItem = value.Disciplina;
 
                 rdbRecuperacao.Enabled = true;
                 rdbRecuperacao.Checked = value.Recuperacao;
+                rdbRecuperacao.Checked = true;
 
                 CarregarMaterias();
                 cmbMateria.SelectedItem = value.Materia;
@@ -25,6 +25,7 @@ namespace Gerador_de_Testes.ModuloTeste
                 txtQntQuestoes.Enabled = true;
                 txtQntQuestoes.Value = value.QntQuestoes;
             }
+            get => teste;
         }
         ContextoDados contexto;
 

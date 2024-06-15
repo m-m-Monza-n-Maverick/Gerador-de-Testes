@@ -1,4 +1,5 @@
 ﻿using Gerador_de_Testes.Compartilhado;
+using Gerador_de_Testes.ModuloQuestao;
 namespace Gerador_de_Testes.ModuloTeste
 {
     internal class ControladorTeste(IRepositorioTeste repositorioTeste, ContextoDados contexto) : ControladorBase, IControladorDuplicavel, IControladorDetalhes
@@ -12,7 +13,7 @@ namespace Gerador_de_Testes.ModuloTeste
         public override string ToolTipEditar => throw new NotImplementedException();
         public override string ToolTipExcluir { get => "Excluir um teste"; }
         public string ToolTipDuplicarTeste { get => "Duplicar um teste"; }
-        public string ToolTipVisualizarDetalhes { get => "Visualizar detalhes de um teste"; }
+        public string ToolTipVisualizarDetalhes { get => "Visualizar detalhes"; }
         #endregion
 
         #region CRUD
@@ -72,7 +73,16 @@ namespace Gerador_de_Testes.ModuloTeste
         }
         public void VisualizarDetalhes()
         {
-            throw new NotImplementedException();
+            int idSelecionado = tabelaTeste.ObterRegistroSelecionado();
+            Teste testeSelecionado = repositorioTeste.SelecionarPorId(idSelecionado);
+
+            if (SemSeleção(testeSelecionado)) return;
+
+            TelaDetalhesTesteForm telaDetalhesTeste = new();
+
+            telaDetalhesTeste.Teste = testeSelecionado;
+
+            telaDetalhesTeste.ShowDialog();
         }
         #endregion
 
@@ -91,7 +101,7 @@ namespace Gerador_de_Testes.ModuloTeste
             if (contexto.Disciplinas.Count == 0 || contexto.Materias.Count == 0)
             {
                 MessageBox.Show(
-                    "Não é possível cadastrar um teste\n\nNão existem Disciplinas/Matérias cadastradas",
+                    "Não é possível realizar esta ação sem Disciplinas ou Matérias cadastradas",
                     "Aviso",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Warning);
