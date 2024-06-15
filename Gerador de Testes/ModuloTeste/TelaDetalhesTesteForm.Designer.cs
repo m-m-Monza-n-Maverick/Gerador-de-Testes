@@ -37,6 +37,7 @@
             lblTitulo = new Label();
             lblDisciplina = new Label();
             lblMateria = new Label();
+            btnPdfConcluido = new Button();
             groupBox1.SuspendLayout();
             SuspendLayout();
             // 
@@ -130,11 +131,22 @@
             lblMateria.TabIndex = 36;
             lblMateria.Text = "Matéria";
             // 
+            // btnPdfConcluido
+            // 
+            btnPdfConcluido.DialogResult = DialogResult.Cancel;
+            btnPdfConcluido.Location = new Point(358, 365);
+            btnPdfConcluido.Name = "btnPdfConcluido";
+            btnPdfConcluido.Size = new Size(75, 23);
+            btnPdfConcluido.TabIndex = 37;
+            btnPdfConcluido.Text = "Pronto!";
+            btnPdfConcluido.UseVisualStyleBackColor = true;
+            // 
             // TelaDetalhesTesteForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(458, 400);
+            Controls.Add(btnPdfConcluido);
             Controls.Add(lblMateria);
             Controls.Add(lblDisciplina);
             Controls.Add(lblTitulo);
@@ -171,5 +183,6 @@
         private Label lblTitulo;
         private Label lblDisciplina;
         private Label lblMateria;
+        private Button btnPdfConcluido;
     }
 }

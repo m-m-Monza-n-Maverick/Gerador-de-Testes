@@ -1,11 +1,10 @@
-﻿using Gerador_de_Testes.Compartilhado;
-using Gerador_de_Testes.ModuloDisciplina;
-using Gerador_de_Testes.ModuloMateria;
-using Gerador_de_Testes.ModuloQuestao;
+﻿using Gerador_de_Testes.ModuloQuestao;
 namespace Gerador_de_Testes.ModuloTeste
 {
     public partial class TelaDetalhesTesteForm : Form
     {
+        bool gerarPDF, gabarito;
+
         public Teste Teste
         {
             set
@@ -19,10 +18,30 @@ namespace Gerador_de_Testes.ModuloTeste
                     lblMateria.Text = value.Materia.Nome;
 
                 foreach (Questao q in value.Questoes)
+                {
                     listaQuestoes.Items.Add(q);
+
+                    if (gerarPDF)
+                    {
+                        /*foreach (Alternativa a in q.Alternativas)
+                            listaQuestoes.Items.Add("    " + a);*/
+
+                        listaQuestoes.Items.Add("\n");
+                    }
+                }
+
+                if (gerarPDF)
+                    btnVoltar.Hide();
+                else
+                    btnPdfConcluido.Hide();
             }
         }
 
-        public TelaDetalhesTesteForm() => InitializeComponent();
+        public TelaDetalhesTesteForm(bool gerarPDF, bool gabarito)
+        {
+            InitializeComponent();
+            this.gerarPDF = gerarPDF;
+            this.gabarito = gabarito;
+        }
     }
 }

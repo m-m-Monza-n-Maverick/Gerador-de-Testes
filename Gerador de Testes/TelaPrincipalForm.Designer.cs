@@ -196,6 +196,7 @@
             btnPdf.Name = "btnPdf";
             btnPdf.Padding = new Padding(5);
             btnPdf.Size = new Size(38, 38);
+            btnPdf.Click += btnPdf_Click;
             // 
             // btnGabarito
             // 

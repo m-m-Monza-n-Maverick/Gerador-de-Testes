@@ -89,6 +89,11 @@ namespace Gerador_de_Testes
             if (controlador is IControladorDetalhes controladorDetalhes)
                 controladorDetalhes.VisualizarDetalhes();
         }
+        private void btnPdf_Click(object sender, EventArgs e)
+        {
+            if (controlador is IControladorPDF controladorPDF)
+                controladorPDF.GerarPDF();
+        }
         #endregion
 
         #region Auxiliares
@@ -107,6 +112,7 @@ namespace Gerador_de_Testes
             btnExcluir.Enabled = true;
             btnDuplicar.Enabled = controladorSelecionado is IControladorDuplicavel;
             btnDetalhes.Enabled = controladorSelecionado is IControladorDetalhes;
+            btnPdf.Enabled = controladorSelecionado is IControladorPDF;
 
             ConfigurarToolTips(controladorSelecionado);
         }
@@ -123,6 +129,9 @@ namespace Gerador_de_Testes
 
             if (controladorSelecionado is IControladorDetalhes controladorDetalhes)
                 btnDetalhes.ToolTipText = controladorDetalhes.ToolTipVisualizarDetalhes;
+
+            if (controladorSelecionado is IControladorPDF controladorPDF)
+                btnPdf.ToolTipText = controladorPDF.ToolTipGerarPDF;
 
         }
         private void ConfigurarListagem(ControladorBase controladorSelecionado)

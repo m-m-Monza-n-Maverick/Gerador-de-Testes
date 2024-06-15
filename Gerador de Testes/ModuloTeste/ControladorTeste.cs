@@ -2,7 +2,7 @@
 using Gerador_de_Testes.ModuloQuestao;
 namespace Gerador_de_Testes.ModuloTeste
 {
-    internal class ControladorTeste(IRepositorioTeste repositorioTeste, ContextoDados contexto) : ControladorBase, IControladorDuplicavel, IControladorDetalhes
+    internal class ControladorTeste(IRepositorioTeste repositorioTeste, ContextoDados contexto) : ControladorBase, IControladorDuplicavel, IControladorDetalhes, IControladorPDF
     {
         private IRepositorioTeste repositorioTeste = repositorioTeste;
         private TabelaTesteControl tabelaTeste;
@@ -14,6 +14,7 @@ namespace Gerador_de_Testes.ModuloTeste
         public override string ToolTipExcluir { get => "Excluir um teste"; }
         public string ToolTipDuplicarTeste { get => "Duplicar um teste"; }
         public string ToolTipVisualizarDetalhes { get => "Visualizar detalhes"; }
+        public string ToolTipGerarPDF { get => "Gerar PDF"; }
         #endregion
 
         #region CRUD
@@ -50,6 +51,9 @@ namespace Gerador_de_Testes.ModuloTeste
                 () => repositorioTeste.Excluir(testeSelecionado.Id),
                 testeSelecionado, "excluído");
         }
+        #endregion
+
+        #region Demais botões
         public void DuplicarTeste()
         {
             int idSelecionado = tabelaTeste.ObterRegistroSelecionado();
@@ -78,7 +82,20 @@ namespace Gerador_de_Testes.ModuloTeste
 
             if (SemSeleção(testeSelecionado)) return;
 
-            TelaDetalhesTesteForm telaDetalhesTeste = new();
+            TelaDetalhesTesteForm telaDetalhesTeste = new(false, false);
+
+            telaDetalhesTeste.Teste = testeSelecionado;
+
+            telaDetalhesTeste.ShowDialog();
+        }
+        public void GerarPDF()
+        {
+            int idSelecionado = tabelaTeste.ObterRegistroSelecionado();
+            Teste testeSelecionado = repositorioTeste.SelecionarPorId(idSelecionado);
+
+            if (SemSeleção(testeSelecionado)) return;
+
+            TelaDetalhesTesteForm telaDetalhesTeste = new(true, false);
 
             telaDetalhesTeste.Teste = testeSelecionado;
 
@@ -86,6 +103,7 @@ namespace Gerador_de_Testes.ModuloTeste
         }
         #endregion
 
+        #region Auxiliares
         public override UserControl ObterListagem()
         {
             tabelaTeste ??= new();
@@ -116,5 +134,6 @@ namespace Gerador_de_Testes.ModuloTeste
             CarregarTestes();
             CarregarMensagem(teste, texto);
         }
+        #endregion
     }
 }
