@@ -1,11 +1,14 @@
-﻿using Gerador_de_Testes.ModuloMateria;
-using System.Reflection.Metadata.Ecma335;
-
+﻿using Gerador_de_Testes.Compartilhado;
+using Gerador_de_Testes.ModuloMateria;
 namespace Gerador_de_Testes.ModuloQuestao
 {
     public partial class TelaQuestaoForm : Form
     {
         List<string> alternativasCadastradas = [];
+        ContextoDados contexto;
+        private int countAlternativas = 0;
+        public char letra = 'A';
+        int id;
 
         private Questao questao;
         public Questao Questao
@@ -13,6 +16,7 @@ namespace Gerador_de_Testes.ModuloQuestao
             get { return questao; } 
             set
             {
+                CarregarMaterias(contexto.Materias);
                 txtId.Text = value.Id.ToString();
                 txtEnunciado.Text = value.Enunciado;
                 cmbMateria.SelectedItem = value.Materia;
@@ -28,14 +32,22 @@ namespace Gerador_de_Testes.ModuloQuestao
                 }
             }
         }
-        public TelaQuestaoForm(int id)
+
+        public TelaQuestaoForm(int id, ContextoDados contexto)
         {
             InitializeComponent();
             txtId.Text = id.ToString();
+            this.id = id;
+            this.contexto = contexto;
         }
 
-        private int countAlternativas = 0;
-        public char letra = 'A';
+        public void CarregarMaterias(List<Materia> materias)
+        {
+            cmbMateria.Items.Clear();
+
+            foreach (Materia materia in materias)
+                cmbMateria.Items.Add(materia);
+        }
 
         #region Botões
         public void btnAdicionar_Click(object sender, EventArgs e)
@@ -44,7 +56,7 @@ namespace Gerador_de_Testes.ModuloQuestao
 
             string resposta = txtResposta.Text;
 
-            Alternativa alternativa = new Alternativa(letra, resposta, false);
+            Alternativa alternativa = new(letra, resposta, false);
 
             listBox.Items.Add(alternativa);
             letra++;
@@ -80,34 +92,23 @@ namespace Gerador_de_Testes.ModuloQuestao
             string enunciado = txtEnunciado.Text;
             Materia materia = (Materia)cmbMateria.SelectedItem;
             string resposta = null;
+            List<Alternativa> alternativas = CadastrarAlternativas(ref resposta);
 
-            List<Alternativa> alternativas = new();
+            ValidarQuestaoJaExistente(materia, enunciado);
 
-            foreach (Alternativa alternativa in listBox.Items)            
-                alternativas.Add(alternativa);
-            
-            foreach (Alternativa alternativa in alternativas)
-            {
-                if (listBox.CheckedItems.Contains(alternativa))
-                {
-                    alternativa.Correta = true;
-                    resposta = alternativa.Resposta;
-                }
-                else alternativa.Correta = false;
-            }
             questao = new(enunciado, materia, alternativas, resposta);
 
             #region Validacoes
 
             List<string> erros = questao.Validar();
-            
-            //if (cmbMateria.SelectedItem == null)
-            //    erros.Add($"Selecione uma meteria");
+
+            if (cmbMateria.SelectedItem == null)
+                erros.Add($"Selecione uma matéria");
             if (countAlternativas < 2)
-                erros.Add($"O numero minimo de alternativas é 2");
+                erros.Add($"O numero mínimo de alternativas é 2");
             if (listBox.CheckedItems.Count == 0)
                 erros.Add($"Selecione a resposta correta");
-            
+
             if (erros.Count > 0)
             {
                 TelaPrincipalForm.Instancia.AtualizarRodape(erros[0]);
@@ -115,6 +116,7 @@ namespace Gerador_de_Testes.ModuloQuestao
             }
             #endregion
         }
+
         #endregion
 
         #region Auxiliares
@@ -163,12 +165,40 @@ namespace Gerador_de_Testes.ModuloQuestao
                 }
             }
         }
-        public void CarregarMaterias(List<Materia> materias)
+        private List<Alternativa> CadastrarAlternativas(ref string resposta)
         {
-            cmbMateria.Items.Clear();
+            List<Alternativa> alternativas = new();
 
-            foreach (Materia materia in materias)
-                cmbMateria.Items.Add(materia);
+            foreach (Alternativa alternativa in listBox.Items)
+                alternativas.Add(alternativa);
+
+            foreach (Alternativa alternativa in alternativas)
+            {
+                if (listBox.CheckedItems.Contains(alternativa))
+                {
+                    alternativa.Correta = true;
+                    resposta = alternativa.ToString();
+                }
+                else alternativa.Correta = false;
+            }
+
+            return alternativas;
+        }
+        private bool ValidarQuestaoJaExistente(Materia materia, string enunciado)
+        {
+            foreach (Questao questao in contexto.Questoes)
+                if (questao.Materia == materia)
+                    if (questao.Enunciado == enunciado)
+                        if (questao.Id != id)
+                        {
+                            TelaPrincipalForm.Instancia.AtualizarRodape(
+                                $"Esta questão já existe. Tente novamente.");
+
+                            DialogResult = DialogResult.None;
+                            return true;
+                        }
+
+            return false;
         }
         public void VisualizarMode()
         {

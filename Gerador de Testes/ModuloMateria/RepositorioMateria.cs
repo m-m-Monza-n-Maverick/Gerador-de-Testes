@@ -15,7 +15,7 @@ namespace Gerador_de_Testes.ModuloMateria
             if (contexto.Questoes.Exists(q => q.Materia == SelecionarPorId(id)))
             {
                 MessageBox.Show(
-                    "Não é possível excluir este registro, pois ele está sendo utilizado por uma questão",
+                    "Registro sendo utilizado por uma Questão.\nNão é possível excluir!",
                     "Aviso",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Warning

@@ -1,6 +1,5 @@
 ﻿using Gerador_de_Testes.Compartilhado;
 using Gerador_de_Testes.ModuloDisciplina;
-
 namespace Gerador_de_Testes.ModuloMateria
 {
     public partial class TelaMateriaForm : Form
@@ -42,33 +41,34 @@ namespace Gerador_de_Testes.ModuloMateria
         private void btnGravar_Click(object sender, EventArgs e)
         {
             string nome = txtNome.Text;
-
-            if (ValidarNome(nome)) return;
+            Disciplina disciplina = (Disciplina)cmbDisciplina.SelectedItem;
 
             string serie = "";
 
             if (radio1Serie.Checked) serie = "1ª série";
             if (radio2Serie.Checked) serie = "2ª série";
 
-            Disciplina disciplina = (Disciplina)cmbDisciplina.SelectedItem;
+            if (ValidarMateriaJaExistente(nome, disciplina, serie)) return;
 
             materia = new Materia(nome, serie, disciplina);
 
             ValidarCampos(materia, nome);
         }
 
-        private bool ValidarNome(string nome)
+        private bool ValidarMateriaJaExistente(string nome, Disciplina disciplina, string serie)
         {
             foreach (Materia materia in contexto.Materias)
-                if (materia.Nome == nome)
-                    if (materia.Id != id)
-                    {
-                        TelaPrincipalForm.Instancia.AtualizarRodape(
-                            $"Já existe uma matéria com o nome {nome.ToTitleCase()}. Tente novamente.");
+                if (materia.Nome.ToLower() == nome.ToLower())
+                    if (materia.Disciplina == disciplina)
+                        if (materia.Serie == serie)
+                            if (materia.Id != id)
+                            {
+                                TelaPrincipalForm.Instancia.AtualizarRodape(
+                                    $"Esta matéria já existe. Tente novamente.");
 
-                        DialogResult = DialogResult.None;
-                        return true;
-                    }
+                                DialogResult = DialogResult.None;
+                                return true;
+                            }
 
             return false;
         }

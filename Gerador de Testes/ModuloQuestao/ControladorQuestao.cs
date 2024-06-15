@@ -1,8 +1,8 @@
 ﻿using Gerador_de_Testes.Compartilhado;
-
+using Gerador_de_Testes.ModuloMateria;
 namespace Gerador_de_Testes.ModuloQuestao
 {
-    internal class ControladorQuestao(IRepositorioQuestao repositorioQuestao) : ControladorBase, IControladorDetalhes
+    internal class ControladorQuestao(IRepositorioQuestao repositorioQuestao, ContextoDados contexto) : ControladorBase, IControladorDetalhes
     {
         private IRepositorioQuestao RepositorioQuestao = repositorioQuestao;
         private TabelaQuestaoControl tabelaQuestao;
@@ -19,9 +19,13 @@ namespace Gerador_de_Testes.ModuloQuestao
         #region CRUD
         public override void Adicionar()
         {
+            if (SemMaterias()) return;
             int id = repositorioQuestao.PegarId();
 
-            TelaQuestaoForm telaQuestao = new(id);
+            TelaQuestaoForm telaQuestao = new(id, contexto);
+
+            CarregarMaterias(telaQuestao);
+
             DialogResult resultado = telaQuestao.ShowDialog();
 
             if (DialogResult.OK != resultado) return;
@@ -41,7 +45,7 @@ namespace Gerador_de_Testes.ModuloQuestao
         {
             int idSelecionado = tabelaQuestao.ObterRegistroSelecionado();
 
-            TelaQuestaoForm telaQuestao = new TelaQuestaoForm(idSelecionado);
+            TelaQuestaoForm telaQuestao = new TelaQuestaoForm(idSelecionado, contexto);
 
             Questao questaoSelecionada =
                 repositorioQuestao.SelecionarPorId(idSelecionado);
@@ -104,12 +108,25 @@ namespace Gerador_de_Testes.ModuloQuestao
 
             return tabelaQuestao;
         }
+        private bool SemMaterias()
+        {
+            if (contexto.Materias.Count == 0)
+            {
+                MessageBox.Show(
+                    "Não é possível realizar esta ação sem Matérias cadastradas",
+                    "Aviso",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
 
+                return true;
+            }
+            return false;
+        }
         public void VisualizarDetalhes()
         {
             int idSelecionado = tabelaQuestao.ObterRegistroSelecionado();
 
-            TelaQuestaoForm telaQuestao = new TelaQuestaoForm(idSelecionado);
+            TelaQuestaoForm telaQuestao = new TelaQuestaoForm(idSelecionado, contexto);
 
             Questao questaoSelecionada =
                 repositorioQuestao.SelecionarPorId(idSelecionado);
@@ -131,12 +148,17 @@ namespace Gerador_de_Testes.ModuloQuestao
             DialogResult resultado = telaQuestao.ShowDialog();
             if (resultado != DialogResult.OK) return;
         }
-
         private void CarregarQuestoes()
         {
             List<Questao> Questoes = RepositorioQuestao.SelecionarTodos();
 
             tabelaQuestao.AtualizarRegistros(Questoes);
+        }
+        private void CarregarMaterias(TelaQuestaoForm telaQuestao)
+        {
+            List<Materia> materiasCadastradas = contexto.Materias;
+
+            telaQuestao.CarregarMaterias(contexto.Materias);
         }
         #endregion
     }

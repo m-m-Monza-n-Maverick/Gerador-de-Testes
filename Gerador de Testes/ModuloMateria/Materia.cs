@@ -10,7 +10,6 @@ namespace Gerador_de_Testes.ModuloMateria
         public Disciplina Disciplina { get; set; }
         public List<Questao> Questoes { get; set; }
 
-
         public Materia() { }
     
         public Materia(string nome, string serie, Disciplina disciplina)
@@ -23,12 +22,8 @@ namespace Gerador_de_Testes.ModuloMateria
         {
             List<string> erros = new List<string>();
 
-            //Usei a função que te falei no whatsapp
             VerificaNulo(ref erros, Nome, "Nome");
-
-            //Sobrecarreguei o mesmo método, com novos parâmetros (olhar linha 53)
             VerificaNulo(ref erros, Disciplina);
-
             VerificaNulo(ref erros, Serie, "Série");
 
             return erros;
@@ -43,9 +38,8 @@ namespace Gerador_de_Testes.ModuloMateria
         }
         public override string ToString()
         {
-            return $"{Nome.ToTitleCase()}";
+            return $"{Nome.ToTitleCase()}, {Serie}";
         }
-
         protected void VerificaNulo(ref List<string> erros, Disciplina campoTestado)
         {
             if (campoTestado == null)

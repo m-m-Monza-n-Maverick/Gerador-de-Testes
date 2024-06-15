@@ -2,10 +2,9 @@
 using Gerador_de_Testes.ModuloDisciplina;
 namespace Gerador_de_Testes.ModuloMateria
 {
-    internal class ControladorMateria (IRepositorioMateria repositorioMateria /*, RepositorioDisciplina repositorioDisciplina*/, ContextoDados contexto) : ControladorBase
+    internal class ControladorMateria (IRepositorioMateria repositorioMateria, ContextoDados contexto) : ControladorBase
     {
         private IRepositorioMateria repositorioMateria = repositorioMateria;
-        //private RepositorioDisciplina repositorioDisciplina = repositorioDisciplina;
         private TabelaMateriaControl tabelaMateria;
 
         #region ToolTips
@@ -18,6 +17,8 @@ namespace Gerador_de_Testes.ModuloMateria
         #region CRUD
         public override void Adicionar()
         {
+            if (SemDisciplinas()) return;
+
             int id = repositorioMateria.PegarId();
 
             TelaMateriaForm telaMateria = new(id, contexto);
@@ -48,16 +49,8 @@ namespace Gerador_de_Testes.ModuloMateria
             Materia materiaSelecionada =
                 repositorioMateria.SelecionarPorId(idSelecionado);
 
-            if(materiaSelecionada == null)
-            {
-                MessageBox.Show(
-                    "Não é possível realizar esta ação sem um registro selecionado.",
-                    "Aviso",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning
-                );
-                return;
-            }
+            if (SemSeleção(materiaSelecionada)) return;
+
             telaMateria.Materia = materiaSelecionada;
 
             DialogResult resultado = telaMateria.ShowDialog();
@@ -81,19 +74,9 @@ namespace Gerador_de_Testes.ModuloMateria
             Materia materiaSelecionada = 
                 repositorioMateria.SelecionarPorId(idSelecionado);
 
-            if (!DesejaRealmenteExcluir(materiaSelecionada)) return;
+            if (SemSeleção(materiaSelecionada) || !DesejaRealmenteExcluir(materiaSelecionada)) return;
 
-            if (materiaSelecionada == null)
-            {
-                MessageBox.Show(
-                    "Não é possível realizar esta ação sem um registro selecionado.",
-                    "Aviso",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning
-                );
-                return;
-            }
-            repositorioMateria.Excluir(materiaSelecionada.Id);
+            repositorioMateria.Excluir(idSelecionado);
 
             CarregarMaterias();
 
@@ -113,19 +96,31 @@ namespace Gerador_de_Testes.ModuloMateria
 
             return tabelaMateria;
         }
-        
+        private bool SemDisciplinas()
+        {
+            if (contexto.Disciplinas.Count == 0)
+            {
+                MessageBox.Show(
+                    "Não é possível realizar esta ação sem Disciplinas cadastradas",
+                    "Aviso",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                return true;
+            }
+            return false;
+        }
         private void CarregarMaterias()
         {
             List<Materia> Materias = repositorioMateria.SelecionarTodos();
 
             tabelaMateria.AtualizarRegistros(Materias);
         }
-
         private void CarregarDisciplinas(TelaMateriaForm telaMateria)
         {
-            List<Disciplina> disciplinasCadastradas/* = repositorioDisciplina.SelecionarTodos();
+            List<Disciplina> disciplinasCadastradas = contexto.Disciplinas;
 
-            telaMateria.CarregarDisciplinas(disciplinasCadastradas)*/;
+            telaMateria.CarregarDisciplinas(disciplinasCadastradas);
         }
         #endregion
     }

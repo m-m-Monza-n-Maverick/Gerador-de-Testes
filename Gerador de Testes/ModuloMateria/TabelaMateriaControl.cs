@@ -1,12 +1,8 @@
 ﻿using Gerador_de_Testes.Compartilhado;
-
 namespace Gerador_de_Testes.ModuloMateria
 {
     public partial class TabelaMateriaControl : UserControl
     {
-
-        //Acrescentei a Disciplina na linha 24 e a linha 33
-
         public TabelaMateriaControl()
         {
             InitializeComponent();
@@ -21,7 +17,7 @@ namespace Gerador_de_Testes.ModuloMateria
             grid.Rows.Clear();
 
             foreach (Materia materia in materias) 
-                grid.Rows.Add(materia.Id, materia.Nome, materia.Disciplina, materia.Serie);
+                grid.Rows.Add(materia.Id, materia.Nome.ToTitleCase(), materia.Disciplina, materia.Serie);
         }
         public int ObterRegistroSelecionado() => grid.SelecionarId();
         private static DataGridViewTextBoxColumn[] ObterColunas()
@@ -34,6 +30,5 @@ namespace Gerador_de_Testes.ModuloMateria
                 new DataGridViewTextBoxColumn { DataPropertyName = "Serie", HeaderText = "Série" },
             ];
         }
-
     }
 }

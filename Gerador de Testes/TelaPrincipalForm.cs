@@ -14,7 +14,7 @@ namespace Gerador_de_Testes
         IRepositorioMateria repositorioMateria;
         IRepositorioQuestao repositorioQuestao;
         //IRepositorioTeste repositorioTeste;
-        
+
         public static TelaPrincipalForm Instancia { get; private set; }
 
         public TelaPrincipalForm()
@@ -25,7 +25,7 @@ namespace Gerador_de_Testes
 
             contexto = new(carregarDados: true);
 
-            repositorioDisciplina = new RepositorioDisciplinaEmArquivo(contexto);
+            repositorioDisciplina = new RepositorioDisciplina(contexto);
             repositorioMateria = new RepositorioMateria(contexto);
             repositorioQuestao = new RepositorioQuestao(contexto);
             //repositorioTeste = new RepositorioTesteEmArquivo(contexto);
@@ -42,11 +42,11 @@ namespace Gerador_de_Testes
         private void materiasMenuItem_Click(object sender, EventArgs e)
             => SelecionaModulo(ref controlador, () => controlador = new ControladorMateria(repositorioMateria, contexto));
         private void questoesMenuItem_Click(object sender, EventArgs e)
-            => SelecionaModulo(ref controlador, () => controlador = new ControladorQuestao(repositorioQuestao));
+            => SelecionaModulo(ref controlador, () => controlador = new ControladorQuestao(repositorioQuestao, contexto));
         #endregion
 
         #region Botões
-        private void btnAdicionar_Click_1(object sender, EventArgs e)
+        private void btnAdicionar_Click(object sender, EventArgs e)
             => controlador.Adicionar();
         private void btnEditar_Click(object sender, EventArgs e)
             => controlador.Editar();
