@@ -31,15 +31,12 @@ namespace Gerador_de_Testes.ModuloMateria
 
             Materia novaMateria = telaMateria.Materia;
 
-            repositorioMateria.Cadastrar(novaMateria);
-            
-            CarregarMaterias();
+            RealizarAcao(
+                () => repositorioMateria.Cadastrar(novaMateria), 
+                novaMateria, "cadastrado");
 
-            TelaPrincipalForm
-                .Instancia
-                .AtualizarRodape($"O registro \"{novaMateria.Nome}\" foi cadastrado com sucesso!");
+            AtualizaDisciplina(contexto, novaMateria);
         }
-
         public override void Editar()
         {
             int idSelecionado = tabelaMateria.ObterRegistroSelecionado();
@@ -56,33 +53,28 @@ namespace Gerador_de_Testes.ModuloMateria
             DialogResult resultado = telaMateria.ShowDialog();
             if (resultado != DialogResult.OK) return;
 
-            Materia MateriaEditada = telaMateria.Materia;
+            Materia materiaEditada = telaMateria.Materia;
 
-            repositorioMateria.Editar(idSelecionado, MateriaEditada);
+            AtualizarDisciplina(contexto, materiaSelecionada, materiaEditada);
 
-            CarregarMaterias(); 
-
-            TelaPrincipalForm
-                .Instancia
-                .AtualizarRodape($"O registro \"{MateriaEditada.Nome}\" foi editado com sucesso!");
+            RealizarAcao(
+                () => repositorioMateria.Editar(idSelecionado, materiaEditada), 
+                materiaEditada, "editada");
         }
-
         public override void Excluir()
         {
             int idSelecionado = tabelaMateria.ObterRegistroSelecionado();
 
-            Materia materiaSelecionada = 
+            Materia materiaSelecionada =
                 repositorioMateria.SelecionarPorId(idSelecionado);
 
             if (SemSeleção(materiaSelecionada) || !DesejaRealmenteExcluir(materiaSelecionada)) return;
 
-            repositorioMateria.Excluir(idSelecionado);
+            AtualizarDisciplina(contexto, ref materiaSelecionada);
 
-            CarregarMaterias();
-
-            TelaPrincipalForm
-                .Instancia
-                .AtualizarRodape($"O registro \"{materiaSelecionada.Nome}\" foi excluído com sucesso!");
+            RealizarAcao(
+                () => repositorioMateria.Excluir(idSelecionado), 
+                materiaSelecionada, "excluído");
         }
         #endregion
 
@@ -110,6 +102,43 @@ namespace Gerador_de_Testes.ModuloMateria
             }
             return false;
         }
+        private void AtualizaDisciplina(ContextoDados contexto, Materia novaMateria)
+        {
+            foreach (Disciplina d in contexto.Disciplinas)
+                if (d == novaMateria.Disciplina)
+                    d.Materias.Add(novaMateria);
+        }
+        private void AtualizarDisciplina(ContextoDados contexto, Materia materiaSelecionada, Materia materiaEditada)
+        {
+            if (materiaSelecionada.Disciplina != materiaEditada.Disciplina)
+            {
+                foreach (Disciplina d in contexto.Disciplinas)
+                {
+                    if (d == materiaSelecionada.Disciplina)
+                    {
+                        foreach (Materia m in d.Materias)
+                            if (m.Nome == materiaSelecionada.Nome)
+                                materiaSelecionada = m;
+
+                        d.Materias.Remove(materiaSelecionada);
+                    }
+
+                    if (d == materiaEditada.Disciplina)
+                        d.Materias.Add(materiaEditada);
+                }
+            }
+        }
+        private void AtualizarDisciplina(ContextoDados contexto, ref Materia materiaSelecionada)
+        {
+            foreach (Disciplina d in contexto.Disciplinas)
+            {
+                foreach (Materia m in d.Materias)
+                    if (m.Nome == materiaSelecionada.Nome)
+                        materiaSelecionada = m;
+
+                d.Materias.Remove(materiaSelecionada);
+            }
+        }
         private void CarregarMaterias()
         {
             List<Materia> Materias = repositorioMateria.SelecionarTodos();
@@ -121,6 +150,12 @@ namespace Gerador_de_Testes.ModuloMateria
             List<Disciplina> disciplinasCadastradas = contexto.Disciplinas;
 
             telaMateria.CarregarDisciplinas(disciplinasCadastradas);
+        }
+        private void RealizarAcao(Action acao, Materia materia, string texto)
+        {
+            acao();
+            CarregarMaterias();
+            CarregarMensagem(materia, texto);
         }
         #endregion
     }

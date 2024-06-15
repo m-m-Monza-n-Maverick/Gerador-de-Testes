@@ -1,10 +1,11 @@
 ﻿using Gerador_de_Testes.Compartilhado;
+using Gerador_de_Testes.ModuloDisciplina;
 using Gerador_de_Testes.ModuloMateria;
 namespace Gerador_de_Testes.ModuloQuestao
 {
     internal class ControladorQuestao(IRepositorioQuestao repositorioQuestao, ContextoDados contexto) : ControladorBase, IControladorDetalhes
     {
-        private IRepositorioQuestao RepositorioQuestao = repositorioQuestao;
+        private IRepositorioQuestao repositorioQuestao = repositorioQuestao;
         private TabelaQuestaoControl tabelaQuestao;
 
         #region ToolTips
@@ -12,7 +13,6 @@ namespace Gerador_de_Testes.ModuloQuestao
         public override string ToolTipAdicionar => "Adicionar questão";
         public override string ToolTipEditar => "Editar uma questão";
         public override string ToolTipExcluir => "Excluir uma questão";
-
         public string ToolTipVisualizarDetalhes => "Visualizar detalhes";
         #endregion
 
@@ -32,15 +32,12 @@ namespace Gerador_de_Testes.ModuloQuestao
 
             Questao novaQuestao = telaQuestao.Questao;
 
-            RepositorioQuestao.Cadastrar(novaQuestao);
+            RealizarAcao(
+                () => repositorioQuestao.Cadastrar(novaQuestao),
+                novaQuestao, "cadastrado");
 
-            CarregarQuestoes();
-
-            TelaPrincipalForm
-                .Instancia
-                .AtualizarRodape($"O registro \"{novaQuestao.Enunciado}\" foi adicionado com sucesso!");
+            AtualizaMateria(contexto, novaQuestao);
         }
-
         public override void Editar()
         {
             int idSelecionado = tabelaQuestao.ObterRegistroSelecionado();
@@ -50,16 +47,7 @@ namespace Gerador_de_Testes.ModuloQuestao
             Questao questaoSelecionada =
                 repositorioQuestao.SelecionarPorId(idSelecionado);
 
-            if (questaoSelecionada == null)
-            {
-                MessageBox.Show(
-                    "Não é possível realizar esta ação sem um registro selecionado.",
-                    "Aviso",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning
-                );
-                return;
-            }
+            if (SemSeleção(questaoSelecionada)) return;
 
             telaQuestao.Questao = questaoSelecionada;
 
@@ -68,33 +56,25 @@ namespace Gerador_de_Testes.ModuloQuestao
 
             Questao questaoEditada = telaQuestao.Questao;
 
-            RepositorioQuestao.Editar(questaoSelecionada.Id, questaoEditada);
+            AtualizarMateria(contexto, questaoSelecionada, questaoEditada);
 
-            CarregarQuestoes();
-
-            TelaPrincipalForm
-                .Instancia
-                .AtualizarRodape($"O registro \"{questaoEditada.Enunciado}\" foi editado com sucesso!");
-
+            RealizarAcao(
+                () => repositorioQuestao.Editar(idSelecionado, questaoEditada),
+                questaoEditada, "editada");
         }
-
         public override void Excluir()
         {
             int idSelecionado = tabelaQuestao.ObterRegistroSelecionado();
 
             Questao questaoSelecionada = repositorioQuestao.SelecionarPorId(idSelecionado);
 
-            if (SemSeleção(questaoSelecionada)) return;
+            if (SemSeleção(questaoSelecionada) || !DesejaRealmenteExcluir(questaoSelecionada)) return;
 
-            if (!DesejaRealmenteExcluir(questaoSelecionada)) return;
+            AtualizarMateria(contexto, ref questaoSelecionada);
 
-            repositorioQuestao.Excluir(questaoSelecionada.Id);
-
-            CarregarQuestoes();
-
-            TelaPrincipalForm
-                .Instancia
-                .AtualizarRodape($"O registro \"{questaoSelecionada.Enunciado}\" foi excluído com sucesso!");
+            RealizarAcao(
+                () => repositorioQuestao.Excluir(idSelecionado),
+                questaoSelecionada, "excluído");
         }
         #endregion
 
@@ -121,6 +101,43 @@ namespace Gerador_de_Testes.ModuloQuestao
                 return true;
             }
             return false;
+        }
+        private void AtualizaMateria(ContextoDados contexto, Questao novaQuestao)
+        {
+            foreach (Materia m in contexto.Materias)
+                if (m == novaQuestao.Materia)
+                    m.Questoes.Add(novaQuestao);
+        }
+        private void AtualizarMateria(ContextoDados contexto, Questao questaoSelecionada, Questao questaoEditada)
+        {
+            if (questaoSelecionada.Materia != questaoEditada.Materia)
+            {
+                foreach (Materia m in contexto.Materias)
+                {
+                    if (m == questaoSelecionada.Materia)
+                    {
+                        foreach (Questao q in m.Questoes)
+                            if (q.Enunciado == questaoSelecionada.Enunciado)
+                                questaoSelecionada = q;
+
+                        m.Questoes.Remove(questaoSelecionada);
+                    }
+
+                    if (m == questaoEditada.Materia)
+                        m.Questoes.Add(questaoEditada);
+                }
+            }
+        }
+        private void AtualizarMateria(ContextoDados contexto, ref Questao questaoSelecionada)
+        {
+            foreach (Materia m in contexto.Materias)
+            {
+                foreach (Questao q in m.Questoes)
+                    if (q.Enunciado == questaoSelecionada.Enunciado)
+                        questaoSelecionada = q;
+
+                m.Questoes.Remove(questaoSelecionada);
+            }
         }
         public void VisualizarDetalhes()
         {
@@ -152,7 +169,7 @@ namespace Gerador_de_Testes.ModuloQuestao
         }
         private void CarregarQuestoes()
         {
-            List<Questao> Questoes = RepositorioQuestao.SelecionarTodos();
+            List<Questao> Questoes = repositorioQuestao.SelecionarTodos();
 
             tabelaQuestao.AtualizarRegistros(Questoes);
         }
@@ -161,6 +178,12 @@ namespace Gerador_de_Testes.ModuloQuestao
             List<Materia> materiasCadastradas = contexto.Materias;
 
             telaQuestao.CarregarMaterias(contexto.Materias);
+        }
+        private void RealizarAcao(Action acao, Questao questao, string texto)
+        {
+            acao();
+            CarregarQuestoes();
+            CarregarMensagem(questao, texto);
         }
         #endregion
     }

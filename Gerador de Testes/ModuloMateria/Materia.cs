@@ -18,6 +18,7 @@ namespace Gerador_de_Testes.ModuloMateria
             Nome = nome;
             Serie = serie;
             Disciplina = disciplina;
+            Questoes = [];
         }
         public override List<string> Validar()
         {
@@ -37,10 +38,9 @@ namespace Gerador_de_Testes.ModuloMateria
             Serie = atualizado.Serie;
             Disciplina = atualizado.Disciplina;
         }
-        public override string ToString()
-        {
-            return $"{Nome.ToTitleCase()}, {Serie}";
-        }
+
+
+        public override string ToString() => $"{Nome.ToTitleCase()}, {Serie}";
         protected void VerificaNulo(ref List<string> erros, Disciplina campoTestado)
         {
             if (campoTestado == null)

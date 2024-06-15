@@ -2,7 +2,7 @@
 
 namespace Gerador_de_Testes.ModuloDisciplina
 {
-    internal class RepositorioDisciplina : RepositorioBaseEmArquivo<Disciplina>, IRepositorioDisciplina
+    internal class RepositorioDisciplina : RepositorioBase<Disciplina>, IRepositorioDisciplina
     {
         public RepositorioDisciplina(ContextoDados contexto) : base(contexto) { }
 

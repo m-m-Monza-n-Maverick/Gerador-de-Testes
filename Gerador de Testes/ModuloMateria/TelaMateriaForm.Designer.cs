@@ -103,9 +103,9 @@
             // btnGravar
             // 
             btnGravar.DialogResult = DialogResult.OK;
-            btnGravar.Location = new Point(373, 222);
+            btnGravar.Location = new Point(373, 213);
             btnGravar.Name = "btnGravar";
-            btnGravar.Size = new Size(85, 31);
+            btnGravar.Size = new Size(75, 23);
             btnGravar.TabIndex = 5;
             btnGravar.Text = "Gravar";
             btnGravar.UseVisualStyleBackColor = true;
@@ -116,7 +116,7 @@
             btnCancelar.DialogResult = DialogResult.Cancel;
             btnCancelar.Location = new Point(12, 213);
             btnCancelar.Name = "btnCancelar";
-            btnCancelar.Size = new Size(85, 31);
+            btnCancelar.Size = new Size(75, 23);
             btnCancelar.TabIndex = 4;
             btnCancelar.Text = "Cancelar";
             btnCancelar.UseVisualStyleBackColor = true;
@@ -147,7 +147,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(470, 256);
+            ClientSize = new Size(470, 248);
             Controls.Add(radio2Serie);
             Controls.Add(radio1Serie);
             Controls.Add(btnCancelar);
@@ -164,7 +164,7 @@
             MinimizeBox = false;
             Name = "TelaMateriaForm";
             StartPosition = FormStartPosition.CenterParent;
-            Text = "TelaMateriaForm";
+            Text = "Cadastro de Matéria";
             ResumeLayout(false);
             PerformLayout();
         }

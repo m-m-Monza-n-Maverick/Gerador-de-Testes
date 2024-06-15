@@ -57,7 +57,7 @@
             // lblEnunciado
             // 
             lblEnunciado.AutoSize = true;
-            lblEnunciado.Location = new Point(20, 115);
+            lblEnunciado.Location = new Point(20, 111);
             lblEnunciado.Name = "lblEnunciado";
             lblEnunciado.Size = new Size(66, 15);
             lblEnunciado.TabIndex = 1;
@@ -66,7 +66,7 @@
             // lblResposta
             // 
             lblResposta.AutoSize = true;
-            lblResposta.Location = new Point(29, 183);
+            lblResposta.Location = new Point(29, 175);
             lblResposta.Name = "lblResposta";
             lblResposta.Size = new Size(57, 15);
             lblResposta.TabIndex = 2;
@@ -75,10 +75,10 @@
             // btnGravar
             // 
             btnGravar.DialogResult = DialogResult.OK;
-            btnGravar.Location = new Point(382, 430);
+            btnGravar.Location = new Point(394, 437);
             btnGravar.Name = "btnGravar";
-            btnGravar.Size = new Size(87, 34);
-            btnGravar.TabIndex = 5;
+            btnGravar.Size = new Size(75, 23);
+            btnGravar.TabIndex = 6;
             btnGravar.Text = "Gravar";
             btnGravar.UseVisualStyleBackColor = true;
             btnGravar.Click += btnGravar_Click;
@@ -86,18 +86,18 @@
             // btnCancelar
             // 
             btnCancelar.DialogResult = DialogResult.Cancel;
-            btnCancelar.Location = new Point(12, 430);
+            btnCancelar.Location = new Point(11, 437);
             btnCancelar.Name = "btnCancelar";
-            btnCancelar.Size = new Size(87, 34);
-            btnCancelar.TabIndex = 4;
+            btnCancelar.Size = new Size(75, 23);
+            btnCancelar.TabIndex = 5;
             btnCancelar.Text = "Cancelar";
             btnCancelar.UseVisualStyleBackColor = true;
             // 
             // btnAdicionar
             // 
-            btnAdicionar.Location = new Point(361, 175);
+            btnAdicionar.Location = new Point(361, 172);
             btnAdicionar.Name = "btnAdicionar";
-            btnAdicionar.Size = new Size(83, 31);
+            btnAdicionar.Size = new Size(83, 23);
             btnAdicionar.TabIndex = 3;
             btnAdicionar.Text = "Adicionar";
             btnAdicionar.UseVisualStyleBackColor = true;
@@ -113,25 +113,26 @@
             // 
             // txtResposta
             // 
-            txtResposta.Location = new Point(92, 175);
+            txtResposta.Location = new Point(92, 172);
             txtResposta.Multiline = true;
             txtResposta.Name = "txtResposta";
-            txtResposta.Size = new Size(263, 31);
+            txtResposta.Size = new Size(263, 23);
             txtResposta.TabIndex = 2;
             // 
             // listBox
             // 
             listBox.FormattingEnabled = true;
-            listBox.Location = new Point(0, 58);
+            listBox.Location = new Point(0, 56);
             listBox.Name = "listBox";
-            listBox.Size = new Size(408, 130);
-            listBox.TabIndex = 8;
+            listBox.Size = new Size(408, 148);
+            listBox.TabIndex = 4;
             listBox.ItemCheck += OnlyOne_ItemCheck;
             listBox.HandleCreated += CheckItemCorreto;
             // 
             // txtEnunciado
             // 
-            txtEnunciado.Location = new Point(92, 77);
+            txtEnunciado.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            txtEnunciado.Location = new Point(92, 73);
             txtEnunciado.Multiline = true;
             txtEnunciado.Name = "txtEnunciado";
             txtEnunciado.Size = new Size(352, 92);
@@ -159,9 +160,9 @@
             groupBox1.BackColor = SystemColors.ButtonFace;
             groupBox1.Controls.Add(btnRemoverlist);
             groupBox1.Controls.Add(listBox);
-            groupBox1.Location = new Point(36, 230);
+            groupBox1.Location = new Point(36, 217);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(408, 194);
+            groupBox1.Size = new Size(408, 204);
             groupBox1.TabIndex = 11;
             groupBox1.TabStop = false;
             groupBox1.Text = "Alternativas:";
@@ -170,7 +171,7 @@
             // 
             btnRemoverlist.Location = new Point(6, 22);
             btnRemoverlist.Name = "btnRemoverlist";
-            btnRemoverlist.Size = new Size(81, 29);
+            btnRemoverlist.Size = new Size(81, 23);
             btnRemoverlist.TabIndex = 9;
             btnRemoverlist.Text = "Remover";
             btnRemoverlist.UseVisualStyleBackColor = true;
@@ -198,7 +199,7 @@
             MinimizeBox = false;
             Name = "TelaQuestaoForm";
             StartPosition = FormStartPosition.CenterParent;
-            Text = "Cadastro de Questões";
+            Text = "Cadastro de Questão";
             groupBox1.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();

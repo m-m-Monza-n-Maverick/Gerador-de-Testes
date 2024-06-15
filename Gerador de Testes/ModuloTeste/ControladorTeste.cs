@@ -20,7 +20,7 @@ namespace Gerador_de_Testes.ModuloTeste
         #region CRUD
         public override void Adicionar()
         {
-            if (SemDisciplinaOuMateria()) return;
+            if (SemDisciplinaOuMateriaOuQuestao()) return;
 
             int id = repositorioTeste.PegarId();
 
@@ -103,7 +103,7 @@ namespace Gerador_de_Testes.ModuloTeste
 
             TelaPrincipalForm
                 .Instancia
-                .AtualizarRodape($"O PDF do registro \"{testeSelecionado}\" foi gerado com sucesso!");
+                .AtualizarRodape($"O PDF do teste \"{testeSelecionado}\" foi gerado com sucesso!");
         }
         public void GerarPdfGabarito()
         {
@@ -120,7 +120,7 @@ namespace Gerador_de_Testes.ModuloTeste
 
             TelaPrincipalForm
                 .Instancia
-                .AtualizarRodape($"O PDF gabarito do registro \"{testeSelecionado}\" foi gerado com sucesso!");
+                .AtualizarRodape($"O PDF do gabarito do teste \"{testeSelecionado}\" foi gerado com sucesso!");
         }
         #endregion
 
@@ -135,12 +135,12 @@ namespace Gerador_de_Testes.ModuloTeste
             }
         private void CarregarTestes()
             => tabelaTeste.AtualizarRegistros(repositorioTeste.SelecionarTodos());
-        private bool SemDisciplinaOuMateria()
+        private bool SemDisciplinaOuMateriaOuQuestao()
         {
-            if (contexto.Disciplinas.Count == 0 || contexto.Materias.Count == 0)
+            if (contexto.Disciplinas.Count == 0 || contexto.Materias.Count == 0 || contexto.Questoes.Count == 0)
             {
                 MessageBox.Show(
-                    "Não é possível realizar esta ação sem Disciplinas ou Matérias cadastradas",
+                    "Não é possível realizar esta ação sem Disciplinas, Matérias ou Questões cadastradas",
                     "Aviso",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Warning);

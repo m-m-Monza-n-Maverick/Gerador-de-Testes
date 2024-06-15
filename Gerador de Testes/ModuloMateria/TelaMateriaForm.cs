@@ -7,7 +7,7 @@ namespace Gerador_de_Testes.ModuloMateria
         private Materia materia;
         public Materia Materia 
         { 
-            get { return materia; } 
+            get => materia;
             set 
             {
                 txtNome.Text = value.Nome;
@@ -48,13 +48,31 @@ namespace Gerador_de_Testes.ModuloMateria
             if (radio1Serie.Checked) serie = "1ª série";
             if (radio2Serie.Checked) serie = "2ª série";
 
+            //Validação requisitada
+            if (ValidarNome(nome)) return;
+
+            //Validação que achamos que faz mais sentido:
             if (ValidarMateriaJaExistente(nome, disciplina, serie)) return;
 
             materia = new Materia(nome, serie, disciplina);
 
-            ValidarCampos(materia, nome);
+            ValidarCampos(materia);
         }
 
+        private bool ValidarNome(string nome)
+        {
+            foreach (Materia materia in contexto.Materias)
+                if (materia.Nome.ToLower() == nome.ToLower()) 
+                { 
+                    TelaPrincipalForm.Instancia.AtualizarRodape(
+                        $"Já existe uma matéria com o nome \"{nome}\". Tente novamente.");
+
+                    DialogResult = DialogResult.None;
+                    return true;
+                }
+
+            return false;
+        }
         private bool ValidarMateriaJaExistente(string nome, Disciplina disciplina, string serie)
         {
             foreach (Materia materia in contexto.Materias)
@@ -72,7 +90,7 @@ namespace Gerador_de_Testes.ModuloMateria
 
             return false;
         }
-        private void ValidarCampos(EntidadeBase entidade, string nome)
+        private void ValidarCampos(EntidadeBase entidade)
         {
             List<string> erros = entidade.Validar();
 

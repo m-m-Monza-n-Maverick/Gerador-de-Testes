@@ -6,14 +6,13 @@ namespace Gerador_de_Testes.ModuloQuestao
     {
         List<string> alternativasCadastradas = [];
         ContextoDados contexto;
-        private int countAlternativas = 0;
         public char letra = 'A';
         int id;
 
         private Questao questao;
         public Questao Questao
         {
-            get { return questao; } 
+            get => questao;
             set
             {
                 CarregarMaterias(contexto.Materias);
@@ -24,11 +23,9 @@ namespace Gerador_de_Testes.ModuloQuestao
                 {
                     alternativasCadastradas.Add(alternativa.Resposta);
 
-                    alternativa.Letra = letra;
+                    alternativa.Letra = letra++;
 
                     listBox.Items.Add(alternativa);
-                    letra++;
-                    countAlternativas++;
                 }
             }
         }
@@ -58,33 +55,24 @@ namespace Gerador_de_Testes.ModuloQuestao
 
             Alternativa alternativa = new(letra, resposta, false);
 
-            listBox.Items.Add(alternativa);
             letra++;
-            countAlternativas++;
-            txtResposta.Text = "";
+            txtResposta.Text = null;
+            listBox.Items.Add(alternativa);
             alternativasCadastradas.Add(resposta);
         }
         public void btnRemover_Click(object sender, EventArgs e)
         {
-            if (listBox.SelectedItem == null) return;
+            Alternativa alternativaSelecionada = (Alternativa)listBox.SelectedItem;
 
-            listBox.Items.Remove(listBox.SelectedItem);
-            countAlternativas--;
+            if (alternativaSelecionada == null) return;
 
-            letra = 'A';
+            alternativasCadastradas.Remove(alternativaSelecionada.Resposta);
+            listBox.Items.Remove(alternativaSelecionada);
 
-            List<Alternativa> listaDeItens = [];
-            foreach (Alternativa alternativa in listBox.Items)
-                listaDeItens.Add(alternativa);
+            List<Alternativa> listaDeItens = ListarAlternativas();
 
             listBox.Items.Clear();
-            foreach (Alternativa alternativa in listaDeItens)
-            {
-                alternativa.Letra = letra;
-
-                listBox.Items.Add(alternativa);
-                letra++;
-            }
+            ReorganizarListaDeAlternativas(listaDeItens);
         }
         public void btnGravar_Click(object sender, EventArgs e)
         {
@@ -104,7 +92,7 @@ namespace Gerador_de_Testes.ModuloQuestao
 
             if (cmbMateria.SelectedItem == null)
                 erros.Add($"Selecione uma matéria");
-            if (countAlternativas < 2)
+            if (alternativasCadastradas.Count < 2)
                 erros.Add($"O numero mínimo de alternativas é 2");
             if (listBox.CheckedItems.Count == 0)
                 erros.Add($"Selecione a resposta correta");
@@ -120,10 +108,10 @@ namespace Gerador_de_Testes.ModuloQuestao
         #endregion
 
         #region Auxiliares
-        private bool AlternativaVazia() => txtResposta.Text == "";
+        private bool AlternativaVazia() => string.IsNullOrEmpty(txtResposta.Text.Trim());
         private bool LimiteMaxDeAlternativas()
         {
-            if (countAlternativas > 4)
+            if (alternativasCadastradas.Count >= 4)
             {
                 TelaPrincipalForm.Instancia.AtualizarRodape("Você atingiu o número máximo de alternativas cadastradas");
                 return true;
@@ -138,6 +126,23 @@ namespace Gerador_de_Testes.ModuloQuestao
                 return true;
             }
             return false;
+        }
+        private List<Alternativa> ListarAlternativas()
+        {
+            List<Alternativa> listaDeItens = [];
+            foreach (Alternativa alternativa in listBox.Items)
+                listaDeItens.Add(alternativa);
+            return listaDeItens;
+        }
+        private void ReorganizarListaDeAlternativas(List<Alternativa> listaDeItens)
+        {
+            letra = 'A';
+            foreach (Alternativa alternativa in listaDeItens)
+            {
+                alternativa.Letra = letra++;
+
+                listBox.Items.Add(alternativa);
+            }
         }
         private void CheckItemCorreto(object sender, EventArgs e)
         {
@@ -208,6 +213,7 @@ namespace Gerador_de_Testes.ModuloQuestao
             listBox.Dock = DockStyle.Fill;
             listBox.BackColor = Color.FromArgb(240, 240, 240);
             cmbMateria.Enabled = false;
+            cmbMateria.DropDownStyle = ComboBoxStyle.Simple;
             lblResposta.Visible = false;
             txtResposta.Visible = false;
             btnAdicionar.Visible = false;

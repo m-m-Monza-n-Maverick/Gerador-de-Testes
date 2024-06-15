@@ -1,6 +1,6 @@
 ﻿namespace Gerador_de_Testes.Compartilhado
 {
-    internal abstract class RepositorioBaseEmArquivo<T>(ContextoDados contexto) where T : EntidadeBase
+    internal abstract class RepositorioBase<T>(ContextoDados contexto) where T : EntidadeBase
     {
         protected int contadorId //Baseado no Id do último item cadastrado
         {

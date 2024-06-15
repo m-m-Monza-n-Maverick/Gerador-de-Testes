@@ -1,4 +1,5 @@
 ﻿using Gerador_de_Testes.Compartilhado;
+using Gerador_de_Testes.ModuloDisciplina;
 using Gerador_de_Testes.ModuloMateria;
 
 namespace Gerador_de_Testes.ModuloQuestao
@@ -9,6 +10,7 @@ namespace Gerador_de_Testes.ModuloQuestao
         public string Enunciado { get; set; }
         public string Resposta { get; set; }    
         public List<Alternativa> Alternativas { get; set; }
+
         public Questao()
         {
         }
@@ -19,6 +21,7 @@ namespace Gerador_de_Testes.ModuloQuestao
             Alternativas = alternativas;
             Resposta = resposta;
         }
+
         public override void AtualizarRegistro(EntidadeBase novoRegistro)
         {
             Questao atualizado = (Questao)novoRegistro;
@@ -32,6 +35,7 @@ namespace Gerador_de_Testes.ModuloQuestao
         {
             List<string> erros = [];
 
+            VerificaNulo(ref erros, Materia);
             VerificaNulo(ref erros, Enunciado, "enunciado");
 
             return erros;
@@ -40,19 +44,10 @@ namespace Gerador_de_Testes.ModuloQuestao
         {
             return $"{Enunciado}";
         }
-
-        public override void AtualizarRegistro(EntidadeBase novoRegistro)
+        protected void VerificaNulo(ref List<string> erros, Materia materia)
         {
-            throw new NotImplementedException();
-        }
-
-        public override List<string> Validar()
-        {
-            throw new NotImplementedException();
-        }
-        public override string ToString()
-        {
-            return Id.ToString();
+            if (materia == null)
+                erros.Add("\nÉ necessário informar uma \"Matéria\". Tente novamente ");
         }
     }
 }

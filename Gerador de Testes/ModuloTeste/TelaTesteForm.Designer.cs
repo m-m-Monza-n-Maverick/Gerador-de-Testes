@@ -119,7 +119,7 @@ namespace Gerador_de_Testes.ModuloTeste
             txtQntQuestoes.Name = "txtQntQuestoes";
             txtQntQuestoes.ReadOnly = true;
             txtQntQuestoes.Size = new Size(52, 23);
-            txtQntQuestoes.TabIndex = 2;
+            txtQntQuestoes.TabIndex = 4;
             txtQntQuestoes.ValueChanged += txtQntQuestoes_ValueChanged;
             // 
             // cmbMateria
@@ -147,7 +147,7 @@ namespace Gerador_de_Testes.ModuloTeste
             rdbRecuperacao.Location = new Point(253, 66);
             rdbRecuperacao.Name = "rdbRecuperacao";
             rdbRecuperacao.Size = new Size(140, 19);
-            rdbRecuperacao.TabIndex = 4;
+            rdbRecuperacao.TabIndex = 2;
             rdbRecuperacao.Text = "Prova de recuperação";
             rdbRecuperacao.UseVisualStyleBackColor = true;
             rdbRecuperacao.CheckedChanged += rdbRecuperacao_CheckedChanged;
@@ -223,7 +223,7 @@ namespace Gerador_de_Testes.ModuloTeste
             MinimizeBox = false;
             Name = "TelaTesteForm";
             StartPosition = FormStartPosition.CenterParent;
-            Text = "TelaTesteForm";
+            Text = "Cadastro de Teste";
             ((System.ComponentModel.ISupportInitialize)txtQntQuestoes).EndInit();
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();

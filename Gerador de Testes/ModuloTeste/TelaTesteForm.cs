@@ -17,13 +17,14 @@ namespace Gerador_de_Testes.ModuloTeste
 
                 rdbRecuperacao.Enabled = true;
                 rdbRecuperacao.Checked = value.Recuperacao;
-                rdbRecuperacao.Checked = true;
 
                 CarregarMaterias();
                 cmbMateria.SelectedItem = value.Materia;
 
                 txtQntQuestoes.Enabled = true;
                 txtQntQuestoes.Value = value.QntQuestoes;
+
+                btnSortear.Enabled = true;
             }
             get => teste;
         }
@@ -49,7 +50,7 @@ namespace Gerador_de_Testes.ModuloTeste
         {
             Disciplina disciplinaSelecionada = (Disciplina)cmbDisciplina.SelectedItem;
 
-            if (DisciplinaSemMaterias(disciplinaSelecionada)) return;
+            if (DisciplinaSemMaterias(disciplinaSelecionada) || DisciplinaSemQuestões(disciplinaSelecionada)) return;
             if (disciplinaSelecionada == teste.Disciplina) return;
 
             teste.Disciplina = disciplinaSelecionada;
@@ -79,6 +80,8 @@ namespace Gerador_de_Testes.ModuloTeste
             Materia materiaSelecionada = (Materia)cmbMateria.SelectedItem;
 
             if (materiaSelecionada == teste.Materia) return;
+
+            if (MateriaSemQuestões(materiaSelecionada)) return;
 
             teste.Materia = materiaSelecionada;
 
@@ -182,6 +185,35 @@ namespace Gerador_de_Testes.ModuloTeste
             }
             return false;
         }
+        private bool DisciplinaSemQuestões(Disciplina disciplinaSelecionada)
+        {
+            foreach (Materia m in disciplinaSelecionada.Materias)
+                if (m.Questoes.Count != 0) return false;
+
+            MessageBox.Show(
+                "Esta disciplina não possui questões cadastradas",
+                "Aviso",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Warning);
+
+            if (teste != null) cmbDisciplina.SelectedItem = teste.Disciplina;
+
+            return true;
+        }
+        private bool MateriaSemQuestões(Materia materiaSelecionada)
+        {
+            if (materiaSelecionada.Questoes.Count != 0) return false;
+
+            MessageBox.Show(
+                "Esta matéria não possui questões cadastradas",
+                "Aviso",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Warning);
+
+            if (teste.Materia != null) cmbMateria.SelectedItem = teste.Materia;
+
+            return true;
+        }
         private void ResetarInformações()
         {
             txtQntQuestoes.Value = 0;
@@ -202,10 +234,14 @@ namespace Gerador_de_Testes.ModuloTeste
         private List<Materia> materiasParaSorteio()
         {
             List<Materia> materias;
+            Disciplina disciplina = (Disciplina)cmbDisciplina.SelectedItem;
+            Materia materia = (Materia)cmbMateria.SelectedItem;
+
             if (rdbRecuperacao.Checked)
-                materias = teste.Disciplina.Materias;
+                materias = disciplina.Materias;
             else
-                materias = [teste.Materia];
+                materias = [materia];
+
             return materias;
         }
         private static List<int> idsParaSorteio(List<Materia> materias)
