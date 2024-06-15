@@ -126,10 +126,12 @@ namespace Gerador_de_Testes.ModuloQuestao
         {
             int idSelecionado = tabelaQuestao.ObterRegistroSelecionado();
 
-            TelaQuestaoForm telaQuestao = new TelaQuestaoForm(idSelecionado, contexto);
-
             Questao questaoSelecionada =
                 repositorioQuestao.SelecionarPorId(idSelecionado);
+
+            if (SemSeleção(questaoSelecionada)) return;
+
+            TelaQuestaoForm telaQuestao = new TelaQuestaoForm(idSelecionado, contexto);
 
             if (questaoSelecionada == null)
             {
