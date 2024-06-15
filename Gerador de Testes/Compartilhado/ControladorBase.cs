@@ -49,6 +49,8 @@
             if (resposta != DialogResult.Yes) return false;
             return true;
         }
+        //public override void ExibirDetalhes()
+        //{ }
         #endregion
     }
 }

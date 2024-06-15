@@ -37,8 +37,7 @@ namespace Gerador_de_Testes.ModuloDisciplina
 
             ValidacaoDeCampos(disciplina);
         }
-
-
+        
         private bool ValidarNome(string nome)
         {
             foreach (Disciplina d in contexto.Disciplinas)
@@ -51,7 +50,6 @@ namespace Gerador_de_Testes.ModuloDisciplina
                         DialogResult = DialogResult.None;
                         return true;
                     }
-
             return false;
         }
         private void ValidacaoDeCampos(EntidadeBase entidade)

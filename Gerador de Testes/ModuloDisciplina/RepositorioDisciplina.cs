@@ -1,4 +1,5 @@
 ﻿using Gerador_de_Testes.Compartilhado;
+
 namespace Gerador_de_Testes.ModuloDisciplina
 {
     internal class RepositorioDisciplina : RepositorioBaseEmArquivo<Disciplina>, IRepositorioDisciplina
@@ -8,7 +9,7 @@ namespace Gerador_de_Testes.ModuloDisciplina
         protected override List<Disciplina> ObterRegistros() => contexto.Disciplinas;
         public override bool Excluir(int id)
         {
-/*            if (contexto.Materias.Exists(m => m.Disciplina.Id == id))
+            if (contexto.Materias.Exists(m => m.Disciplina.Id == id))
             {
                 MessageBox.Show(
                     "Registro sendo utilizado por uma Matéria.\nNão é possível excluir!",
@@ -17,8 +18,7 @@ namespace Gerador_de_Testes.ModuloDisciplina
                     MessageBoxIcon.Warning);
 
                 return false;
-            }*/
-
+            }
             if (contexto.Testes.Exists(t => t.Disciplina.Id == id))
             {
                 MessageBox.Show(
@@ -29,7 +29,6 @@ namespace Gerador_de_Testes.ModuloDisciplina
 
                 return false;
             }
-
             return base.Excluir(id);
         }
     }

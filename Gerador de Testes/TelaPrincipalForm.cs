@@ -3,6 +3,7 @@ using Gerador_de_Testes.ModuloDisciplina;
 using Gerador_de_Testes.ModuloMateria;
 using Gerador_de_Testes.ModuloQuestao;
 using Gerador_de_Testes.ModuloTeste;
+
 namespace Gerador_de_Testes
 {
     public partial class TelaPrincipalForm : Form
@@ -11,9 +12,10 @@ namespace Gerador_de_Testes
         ContextoDados contexto;
 
         IRepositorioDisciplina repositorioDisciplina;
-        //IRepositorioMateria repositorioMateria;
-        //IRepositorioQuestao repositorioQuestao;
+        IRepositorioMateria repositorioMateria;
+        IRepositorioQuestao repositorioQuestao;
         IRepositorioTeste repositorioTeste;
+
         public static TelaPrincipalForm Instancia { get; private set; }
 
         public TelaPrincipalForm()
@@ -23,10 +25,11 @@ namespace Gerador_de_Testes
             lblTipoCadastro.Text = string.Empty;
 
             contexto = new(carregarDados: true);
+
             repositorioDisciplina = new RepositorioDisciplina(contexto);
-            //repositorioMateria = new RepositorioMateriaEmArquivo(contexto);
-            //repositorioQuestao = new RepositorioQuestaoEmArquivo(contexto);
-            repositorioTeste = new RepositorioTeste(contexto);
+            repositorioMateria = new RepositorioMateria(contexto);
+            repositorioQuestao = new RepositorioQuestao(contexto);
+            repositorioTeste = new RepositorioTesteEmArquivo(contexto);
 
             Instancia = this;
         }
@@ -34,7 +37,7 @@ namespace Gerador_de_Testes
         public void AtualizarRodape(string texto) => statusLabelPrincipal.Text = texto;
 
 
-        #region Seleção de módulo
+        #region SeleÃ§Ã£o de mÃ³dulo
         private void disciplinasMenuItem_Click(object sender, EventArgs e)
         {
             SelecionaModulo(ref controlador, () => controlador = new ControladorDisciplina(repositorioDisciplina, contexto));
@@ -45,14 +48,18 @@ namespace Gerador_de_Testes
             SelecionaModulo(ref controlador, () => controlador = new ControladorTeste(repositorioTeste, contexto));
             AtualizarRodape($"Visualizando {contexto.Testes.Count} registro(s)");
         }
+        private void materiasMenuItem_Click(object sender, EventArgs e)
+            => SelecionaModulo(ref controlador, () => controlador = new ControladorMateria(repositorioMateria, contexto));
+        private void questoesMenuItem_Click(object sender, EventArgs e)
+            => SelecionaModulo(ref controlador, () => controlador = new ControladorQuestao(repositorioQuestao, contexto));
         #endregion
 
-        #region Botões
-        private void btnAdicionar_Click_1(object sender, EventArgs e)
+        #region BotÃµes
+        private void btnAdicionar_Click(object sender, EventArgs e)
             => controlador.Adicionar();
-        private void btnEditar_Click_1(object sender, EventArgs e)
+        private void btnEditar_Click(object sender, EventArgs e)
             => controlador.Editar();
-        private void btnExcluir_Click_1(object sender, EventArgs e)
+        private void btnExcluir_Click(object sender, EventArgs e)
             => controlador.Excluir();
         private void btnDuplicar_Click(object sender, EventArgs e)
         {
@@ -94,6 +101,8 @@ namespace Gerador_de_Testes
             btnDetalhes.Enabled = controladorSelecionado is IControladorDetalhes;
             btnPdf.Enabled = controladorSelecionado is IControladorPDF;
             btnGabarito.Enabled = controladorSelecionado is IControladorPDF;
+
+            btnDetalhes.Enabled = controladorSelecionado is ControladorQuestao;
 
             ConfigurarToolTips(controladorSelecionado);
         }
