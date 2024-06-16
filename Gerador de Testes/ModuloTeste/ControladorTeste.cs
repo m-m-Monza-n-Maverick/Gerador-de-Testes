@@ -1,4 +1,9 @@
 ﻿using Gerador_de_Testes.Compartilhado;
+using System.IO;
+using iTextSharp;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
+using Gerador_de_Testes.ModuloQuestao;
 namespace Gerador_de_Testes.ModuloTeste
 {
     internal class ControladorTeste(IRepositorioTeste repositorioTeste, ContextoDados contexto) : ControladorBase, IControladorDuplicavel, IControladorDetalhes, IControladorPDF
@@ -82,7 +87,7 @@ namespace Gerador_de_Testes.ModuloTeste
 
             if (SemSeleção(testeSelecionado)) return;
 
-            TelaDetalhesTesteForm telaDetalhesTeste = new(false, false);
+            TelaDetalhesTesteForm telaDetalhesTeste = new();
 
             telaDetalhesTeste.Teste = testeSelecionado;
 
@@ -95,15 +100,31 @@ namespace Gerador_de_Testes.ModuloTeste
 
             if (SemSeleção(testeSelecionado)) return;
 
-            TelaDetalhesTesteForm telaDetalhesTeste = new(true, false);
+            Document doc = new(PageSize.A4);
+            doc.SetMargins(40, 40, 40, 80);
+            doc.AddCreationDate();
 
-            telaDetalhesTeste.Teste = testeSelecionado;
+            string caminho = $"C:\\temp\\Teste {testeSelecionado}.pdf";
 
-            telaDetalhesTeste.ShowDialog();
+            PdfWriter writer = PdfWriter.GetInstance(doc, new FileStream(caminho, FileMode.Create));
+            Phrase label = new("", new(iTextSharp.text.Font.NORMAL, 10));
+            Phrase conteudo = new("", new((iTextSharp.text.Font.FontFamily)iTextSharp.text.Font.BOLD, 10));
+
+            doc.Open();
+
+            Cabecalho(doc, "TESTE");
+
+            InformacoesSobreTeste(testeSelecionado, doc, label, conteudo);
+
+            Cabecalho(doc, "\nQUESTÕES");
+
+            InformacoesSobreQuestoes(testeSelecionado, doc, label, conteudo);
+
+            doc.Close();
 
             TelaPrincipalForm
                 .Instancia
-                .AtualizarRodape($"O PDF do teste \"{testeSelecionado}\" foi gerado com sucesso!");
+                .AtualizarRodape($"O arquivo \"Teste {testeSelecionado}.pdf\" foi gerado com sucesso na pasta \"temp\"");
         }
         public void GerarPdfGabarito()
         {
@@ -112,15 +133,31 @@ namespace Gerador_de_Testes.ModuloTeste
 
             if (SemSeleção(testeSelecionado)) return;
 
-            TelaDetalhesTesteForm telaDetalhesTeste = new(true, true);
+            Document doc = new(PageSize.A4);
+            doc.SetMargins(40, 40, 40, 80);
+            doc.AddCreationDate();
 
-            telaDetalhesTeste.Teste = testeSelecionado;
+            string caminho = $"C:\\temp\\Gabarito - Teste {testeSelecionado}.pdf";
 
-            telaDetalhesTeste.ShowDialog();
+            PdfWriter writer = PdfWriter.GetInstance(doc, new FileStream(caminho, FileMode.Create));
+            Phrase label = new("", new(iTextSharp.text.Font.NORMAL, 10));
+            Phrase conteudo = new("", new((iTextSharp.text.Font.FontFamily)iTextSharp.text.Font.BOLD, 10));
+
+            doc.Open();
+
+            Cabecalho(doc, "GABARITO DO TESTE");
+
+            InformacoesSobreTeste(testeSelecionado, doc, label, conteudo);
+
+            Cabecalho(doc, "\nQUESTÕES");
+
+            InformacoesSobreQuestoesComResposta(testeSelecionado, doc, label, conteudo);
+
+            doc.Close();
 
             TelaPrincipalForm
                 .Instancia
-                .AtualizarRodape($"O PDF do gabarito do teste \"{testeSelecionado}\" foi gerado com sucesso!");
+                .AtualizarRodape($"O arquivo \"Gabarito - Teste {testeSelecionado}.pdf\" foi gerado com sucesso na pasta \"C:\\temp\"");
         }
         #endregion
 
@@ -154,6 +191,80 @@ namespace Gerador_de_Testes.ModuloTeste
             acao();
             CarregarTestes();
             CarregarMensagem(teste, texto);
+        }
+
+        private static void AdicionaParagrafoAoPDF(Document doc, Phrase label, Phrase conteudo)
+        {
+            conteudo.Add("\n");
+
+            doc.Add(label);
+            doc.Add(conteudo);
+
+            label.Clear();
+            conteudo.Clear();
+        }
+        private static void Cabecalho(Document doc, string texto)
+        {
+            Paragraph cabecalho = new($"{texto}\n", new iTextSharp.text.Font((iTextSharp.text.Font.FontFamily)iTextSharp.text.Font.BOLD, 10))
+            {
+                Alignment = Element.ALIGN_CENTER,
+            };
+            doc.Add(cabecalho);
+        }
+        private static void InformacoesSobreTeste(Teste testeSelecionado, Document doc, Phrase label, Phrase conteudo)
+        {
+            label.Add("Título: ");
+            conteudo.Add($"{testeSelecionado.Titulo}");
+            AdicionaParagrafoAoPDF(doc, label, conteudo);
+
+            label.Add("Disciplina: ");
+            conteudo.Add($"{testeSelecionado.Disciplina}");
+            AdicionaParagrafoAoPDF(doc, label, conteudo);
+
+            label.Add("Matéria: ");
+            if (testeSelecionado.Recuperacao)
+                conteudo.Add($"Recuperação");
+            else
+                conteudo.Add($"{testeSelecionado.Materia}");
+            AdicionaParagrafoAoPDF(doc, label, conteudo);
+        }
+        private static void InformacoesSobreQuestoes(Teste testeSelecionado, Document doc, Phrase label, Phrase conteudo)
+        {
+            int numQuestao = 1;
+
+            foreach (Questao q in testeSelecionado.Questoes)
+            {
+                label.Add($"{numQuestao++}. {q}\n");
+
+                foreach (Alternativa a in q.Alternativas)
+                {
+                    string[] alternativa = a.ToString().Split("-> ");
+                    label.Add("    " + alternativa[0] + alternativa[1] + "\n");
+                }
+
+                AdicionaParagrafoAoPDF(doc, label, conteudo);
+            }
+        }
+        private static void InformacoesSobreQuestoesComResposta(Teste testeSelecionado, Document doc, Phrase label, Phrase conteudo)
+        {
+            int numQuestao = 1;
+
+            foreach (Questao q in testeSelecionado.Questoes)
+            {
+                label.Add($"{numQuestao++}. {q}\n");
+
+                foreach (Alternativa a in q.Alternativas)
+                {
+                    string[] alternativa = a.ToString().Split("-> ");
+
+                    if (a.Correta)
+                        label.Add("    " + alternativa[0] + alternativa[1] + " -> RESPOSTA\n");
+                    else
+                        label.Add("    " + alternativa[0] + alternativa[1] + "\n");
+                }
+
+                AdicionaParagrafoAoPDF(doc, label, conteudo);
+            }
         }
         #endregion
     }

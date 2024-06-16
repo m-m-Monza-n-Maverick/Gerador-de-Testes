@@ -36,7 +36,7 @@ namespace Gerador_de_Testes.ModuloTeste
             Materia = atualizado.Materia;
             Serie = atualizado.Serie;
             QntQuestoes = atualizado.QntQuestoes;
-            Questoes = atualizado.Questoes;
+            InformacoesSobreQuestoes = atualizado.InformacoesSobreQuestoes;
             Recuperacao = atualizado.Recuperacao;
 */        }
         public override List<string> Validar()
