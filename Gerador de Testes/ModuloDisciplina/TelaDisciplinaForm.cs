@@ -1,19 +1,22 @@
 ﻿using Gerador_de_Testes.Compartilhado;
 using Gerador_de_Testes.ModuloMateria;
-using Gerador_de_Testes.ModuloTeste;
+using static System.Net.Mime.MediaTypeNames;
 namespace Gerador_de_Testes.ModuloDisciplina
 {
     public partial class TelaDisciplinaForm : Form
     {
+        private List<Materia> materias = [];
         private Disciplina disciplina;
         public Disciplina Disciplina
         {
+            get => disciplina;
             set
             {
                 txtId.Text = value.Id.ToString();
                 txtNome.Text = value.Nome;
+                foreach (Materia m in value.Materias)
+                    materias.Add(m);
             }
-            get => disciplina;
         }
         ContextoDados contexto;
         readonly int id;
@@ -33,7 +36,7 @@ namespace Gerador_de_Testes.ModuloDisciplina
 
             if (ValidarNome(nome)) return;
 
-            disciplina = new(nome);
+            disciplina = new(nome, materias);
 
             ValidacaoDeCampos(disciplina);
         }
@@ -41,7 +44,7 @@ namespace Gerador_de_Testes.ModuloDisciplina
         private bool ValidarNome(string nome)
         {
             foreach (Disciplina d in contexto.Disciplinas)
-                if (d.Nome.ToLower().Trim() == nome.ToLower().Trim())
+                if (d.Nome.Validation() == nome.Validation())
                     if (d.Id != id)
                     {
                         TelaPrincipalForm.Instancia.AtualizarRodape(

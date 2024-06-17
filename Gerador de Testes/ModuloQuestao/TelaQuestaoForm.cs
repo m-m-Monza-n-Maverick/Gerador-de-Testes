@@ -7,7 +7,7 @@ namespace Gerador_de_Testes.ModuloQuestao
         List<string> alternativasCadastradas = [];
         ContextoDados contexto;
         public char letra = 'A';
-        int id;
+        readonly int id;
 
         private Questao questao;
         public Questao Questao
@@ -108,7 +108,8 @@ namespace Gerador_de_Testes.ModuloQuestao
         #endregion
 
         #region Auxiliares
-        private bool AlternativaVazia() => string.IsNullOrEmpty(txtResposta.Text.Trim());
+        private bool AlternativaVazia() 
+            => string.IsNullOrEmpty(txtResposta.Text.Trim());
         private bool LimiteMaxDeAlternativas()
         {
             if (alternativasCadastradas.Count >= 4)
@@ -193,7 +194,7 @@ namespace Gerador_de_Testes.ModuloQuestao
         {
             foreach (Questao questao in contexto.Questoes)
                 if (questao.Materia == materia)
-                    if (questao.Enunciado == enunciado)
+                    if (questao.Enunciado.Validation() == enunciado.Validation())
                         if (questao.Id != id)
                         {
                             TelaPrincipalForm.Instancia.AtualizarRodape(

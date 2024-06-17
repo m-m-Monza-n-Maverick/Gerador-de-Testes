@@ -13,12 +13,12 @@ namespace Gerador_de_Testes.ModuloMateria
 
         public Materia() { }
     
-        public Materia(string nome, string serie, Disciplina disciplina)
+        public Materia(string nome, string serie, Disciplina disciplina, List<Questao> questoes)
         {
             Nome = nome;
             Serie = serie;
             Disciplina = disciplina;
-            Questoes = [];
+            Questoes = questoes;
         }
         public override List<string> Validar()
         {
@@ -37,6 +37,7 @@ namespace Gerador_de_Testes.ModuloMateria
             Nome = atualizado.Nome;
             Serie = atualizado.Serie;
             Disciplina = atualizado.Disciplina;
+            Questoes = atualizado.Questoes;
         }
 
 

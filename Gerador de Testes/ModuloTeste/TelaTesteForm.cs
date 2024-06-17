@@ -269,7 +269,7 @@ namespace Gerador_de_Testes.ModuloTeste
         }
         private bool ValidarTitulo(string titulo)
         {
-            if (contexto.Testes.Exists(t => t.Titulo.Trim() == titulo.Trim()))
+            if (contexto.Testes.Exists(t => t.Titulo.Validation() == titulo.Validation()))
             {
                 TelaPrincipalForm.Instancia.AtualizarRodape(
                     $"Já existe um teste com o título \"{titulo.ToTitleCase().Trim()}\". Tente novamente.");

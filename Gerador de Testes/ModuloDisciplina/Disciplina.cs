@@ -8,16 +8,18 @@ namespace Gerador_de_Testes.ModuloDisciplina
         public List<Materia> Materias { get; set; }
 
         public Disciplina() {}
-        public Disciplina(string nome)
+        public Disciplina(string nome, List<Materia> materias)
         {
             Nome = nome;
-            Materias = [];
+            Materias = materias;
         }
 
         public override void AtualizarRegistro(EntidadeBase novoRegistro)
         {
             Disciplina atualizada = (Disciplina)novoRegistro;
+
             Nome = atualizada.Nome;
+            Materias = atualizada.Materias;
         }
         public override List<string> Validar()
         {

@@ -1,9 +1,12 @@
 ﻿using Gerador_de_Testes.Compartilhado;
 using Gerador_de_Testes.ModuloDisciplina;
+using Gerador_de_Testes.ModuloQuestao;
 namespace Gerador_de_Testes.ModuloMateria
 {
     public partial class TelaMateriaForm : Form
     {
+        private List<Questao> questoes = [];
+
         private Materia materia;
         public Materia Materia
         {
@@ -12,10 +15,13 @@ namespace Gerador_de_Testes.ModuloMateria
             {
                 txtNome.Text = value.Nome;
                 cmbDisciplina.SelectedItem = value.Disciplina;
+                foreach (Questao q in value.Questoes) 
+                    questoes.Add(q);
+
                 if (value.Serie == "1ª série")
                     radio1Serie.Checked = true;
                 else
-                    radio2Serie.Checked = true;
+                    radio2Serie.Checked = true;                
             }
         }
         public ContextoDados contexto;
@@ -49,12 +55,12 @@ namespace Gerador_de_Testes.ModuloMateria
             if (radio2Serie.Checked) serie = "2ª série";
 
             //Validação requisitada
-            if (ValidarNome(nome)) return;
+            //if (ValidarNome(nome)) return;
 
             //Validação que achamos que faz mais sentido:
             if (ValidarMateriaJaExistente(nome, disciplina, serie)) return;
 
-            materia = new Materia(nome, serie, disciplina);
+            materia = new Materia(nome, serie, disciplina, questoes);
 
             ValidarCampos(materia);
         }
@@ -62,7 +68,7 @@ namespace Gerador_de_Testes.ModuloMateria
         private bool ValidarNome(string nome)
         {
             foreach (Materia materia in contexto.Materias)
-                if (materia.Nome.ToLower().Trim() == nome.ToLower().Trim())
+                if (materia.Nome.Validation() == nome.Validation())
                 {
                     TelaPrincipalForm.Instancia.AtualizarRodape(
                         $"Já existe uma matéria com o nome \"{nome.ToTitleCase().Trim()}\". Tente novamente.");

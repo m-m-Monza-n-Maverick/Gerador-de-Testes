@@ -1,7 +1,5 @@
 ﻿using Gerador_de_Testes.Compartilhado;
-using Gerador_de_Testes.ModuloDisciplina;
 using Gerador_de_Testes.ModuloMateria;
-using Gerador_de_Testes.ModuloTeste;
 namespace Gerador_de_Testes.ModuloQuestao
 {
     internal class ControladorQuestao(IRepositorioQuestao repositorioQuestao, ContextoDados contexto) : ControladorBase, IControladorDetalhes
@@ -33,17 +31,17 @@ namespace Gerador_de_Testes.ModuloQuestao
 
             Questao novaQuestao = telaQuestao.Questao;
 
+            AdicionarQuestaoNaMateria(novaQuestao, id);
+
             RealizarAcao(
                 () => repositorioQuestao.Cadastrar(novaQuestao),
                 novaQuestao, "cadastrado");
-
-            AtualizaMateria(contexto, novaQuestao);
         }
         public override void Editar()
         {
             int idSelecionado = tabelaQuestao.ObterRegistroSelecionado();
 
-            TelaQuestaoForm telaQuestao = new TelaQuestaoForm(idSelecionado, contexto);
+            TelaQuestaoForm telaQuestao = new(idSelecionado, contexto);
 
             Questao questaoSelecionada =
                 repositorioQuestao.SelecionarPorId(idSelecionado);
@@ -57,7 +55,9 @@ namespace Gerador_de_Testes.ModuloQuestao
 
             Questao questaoEditada = telaQuestao.Questao;
 
-            AtualizarMateria(contexto, questaoSelecionada, questaoEditada);
+            RemoverQuestaoNaMateria(questaoSelecionada);
+
+            AdicionarQuestaoNaMateria(questaoEditada, idSelecionado);
 
             RealizarAcao(
                 () => repositorioQuestao.Editar(idSelecionado, questaoEditada),
@@ -70,6 +70,8 @@ namespace Gerador_de_Testes.ModuloQuestao
             Questao questaoSelecionada = repositorioQuestao.SelecionarPorId(idSelecionado);
 
             if (SemSeleção(questaoSelecionada) || !DesejaRealmenteExcluir(questaoSelecionada)) return;
+
+            RemoverQuestaoNaMateria(questaoSelecionada);
 
             RealizarAcao(
                 () => repositorioQuestao.Excluir(idSelecionado),
@@ -101,33 +103,27 @@ namespace Gerador_de_Testes.ModuloQuestao
             }
             return false;
         }
-        private void AtualizaMateria(ContextoDados contexto, Questao novaQuestao)
+        private void AdicionarQuestaoNaMateria(Questao novaQuestao, int id)
         {
+            novaQuestao.Id = id;
+
             foreach (Materia m in contexto.Materias)
                 if (m == novaQuestao.Materia)
-                    m.Questoes.Add(novaQuestao);
-
-            contexto.Gravar();
-        }
-        private void AtualizarMateria(ContextoDados contexto, Questao questaoSelecionada, Questao questaoEditada)
-        {
-            if (questaoSelecionada.Materia != questaoEditada.Materia)
-            {
-                foreach (Materia m in contexto.Materias)
                 {
-                    if (m == questaoSelecionada.Materia)
-                    {
-                        foreach (Questao q in m.Questoes)
-                            if (q.Enunciado == questaoSelecionada.Enunciado)
-                                questaoSelecionada = q;
-
-                        m.Questoes.Remove(questaoSelecionada);
-                    }
-
-                    if (m == questaoEditada.Materia)
-                        m.Questoes.Add(questaoEditada);
+                    m.Questoes.Add(novaQuestao);
+                    m.AtualizarRegistro(m);
                 }
-            }
+        }
+        private void RemoverQuestaoNaMateria(Questao questaoSelecionada)
+        {
+            foreach (Materia m in contexto.Materias)
+                foreach (Questao q in m.Questoes)
+                    if (q.Enunciado == questaoSelecionada.Enunciado)
+                    {
+                        m.Questoes.Remove(q);
+                        m.AtualizarRegistro(m);
+                        return;
+                    }
         }
         public void VisualizarDetalhes()
         {

@@ -27,18 +27,7 @@ namespace Gerador_de_Testes.ModuloTeste
             Recuperacao = recuperacao;
         }
 
-        public override void AtualizarRegistro(EntidadeBase novoRegistro)
-        {
-/*            Teste atualizado = (Teste)novoRegistro;
-
-            Titulo = atualizado.Titulo;
-            Diciplina = atualizado.Diciplina;
-            Materia = atualizado.Materia;
-            Serie = atualizado.Serie;
-            QntQuestoes = atualizado.QntQuestoes;
-            InformacoesSobreQuestoes = atualizado.InformacoesSobreQuestoes;
-            Recuperacao = atualizado.Recuperacao;
-*/        }
+        public override void AtualizarRegistro(EntidadeBase novoRegistro) { }
         public override List<string> Validar()
         {
             List<string> erros = [];

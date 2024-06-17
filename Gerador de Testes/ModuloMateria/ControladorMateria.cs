@@ -31,11 +31,11 @@ namespace Gerador_de_Testes.ModuloMateria
 
             Materia novaMateria = telaMateria.Materia;
 
+            AdicionarMateriaEmDisciplina(novaMateria, id);
+
             RealizarAcao(
                 () => repositorioMateria.Cadastrar(novaMateria), 
                 novaMateria, "cadastrado");
-
-            AtualizaDisciplina(contexto, novaMateria);
         }
         public override void Editar()
         {
@@ -55,7 +55,11 @@ namespace Gerador_de_Testes.ModuloMateria
 
             Materia materiaEditada = telaMateria.Materia;
 
-            AtualizarDisciplina(contexto, materiaSelecionada, materiaEditada);
+            materiaEditada.Questoes = materiaSelecionada.Questoes;
+
+            RemoverMateriaEmDisciplina(materiaSelecionada);
+
+            AdicionarMateriaEmDisciplina(materiaEditada, idSelecionado);
 
             RealizarAcao(
                 () => repositorioMateria.Editar(idSelecionado, materiaEditada), 
@@ -70,7 +74,7 @@ namespace Gerador_de_Testes.ModuloMateria
 
             if (SemSeleção(materiaSelecionada) || !DesejaRealmenteExcluir(materiaSelecionada)) return;
 
-            AtualizarDisciplina(contexto, ref materiaSelecionada);
+            RemoverMateriaEmDisciplina(materiaSelecionada);
 
             RealizarAcao(
                 () => repositorioMateria.Excluir(idSelecionado), 
@@ -102,43 +106,25 @@ namespace Gerador_de_Testes.ModuloMateria
             }
             return false;
         }
-        private void AtualizaDisciplina(ContextoDados contexto, Materia novaMateria)
+        private void AdicionarMateriaEmDisciplina(Materia novaMateria, int id)
         {
+            novaMateria.Id = id;
+
             foreach (Disciplina d in contexto.Disciplinas)
                 if (d == novaMateria.Disciplina)
                     d.Materias.Add(novaMateria);
-
-            contexto.Gravar();
         }
-        private void AtualizarDisciplina(ContextoDados contexto, Materia materiaSelecionada, Materia materiaEditada)
-        {
-            if (materiaSelecionada.Disciplina != materiaEditada.Disciplina)
-            {
-                foreach (Disciplina d in contexto.Disciplinas)
-                {
-                    if (d == materiaSelecionada.Disciplina)
-                    {
-                        foreach (Materia m in d.Materias)
-                            if (m.Nome == materiaSelecionada.Nome)
-                                materiaSelecionada = m;
-
-                        d.Materias.Remove(materiaSelecionada);
-                    }
-
-                    if (d == materiaEditada.Disciplina)
-                        d.Materias.Add(materiaEditada);
-                }
-            }
-        }
-        private void AtualizarDisciplina(ContextoDados contexto, ref Materia materiaSelecionada)
+        private void RemoverMateriaEmDisciplina(Materia materiaSelecionada)
         {
             foreach (Disciplina d in contexto.Disciplinas)
             {
                 foreach (Materia m in d.Materias)
                     if (m.Nome == materiaSelecionada.Nome)
-                        materiaSelecionada = m;
-
-                d.Materias.Remove(materiaSelecionada);
+                    {
+                        d.Materias.Remove(m);
+                        d.AtualizarRegistro(d);
+                        return;
+                    }
             }
         }
         private void CarregarMaterias()

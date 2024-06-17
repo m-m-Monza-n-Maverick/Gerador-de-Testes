@@ -10,7 +10,7 @@ namespace Gerador_de_Testes.ModuloQuestao
         public override bool Excluir(int id)
         {
             foreach (Teste t in contexto.Testes)
-                if (t.Materia.Questoes.Exists(q => q.Id == id))
+                if (t.Questoes.Exists(q => q.Id == id))
                 {
                     MessageBox.Show(
                         "Registro sendo utilizado por um teste.\nNão é possível excluir!",
@@ -21,23 +21,7 @@ namespace Gerador_de_Testes.ModuloQuestao
                     return false;
                 }
 
-            AtualizarMateria(id);
-
             return base.Excluir(id);
-        }
-
-        private void AtualizarMateria(int id)
-        {
-            Questao questaoSelecionada = SelecionarPorId(id);
-
-            foreach (Materia m in contexto.Materias)
-            {
-                foreach (Questao q in m.Questoes)
-                    if (q.Enunciado == questaoSelecionada.Enunciado)
-                        questaoSelecionada = q;
-
-                m.Questoes.Remove(questaoSelecionada);
-            }
         }
     }
 }
