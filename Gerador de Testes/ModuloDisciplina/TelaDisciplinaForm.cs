@@ -41,11 +41,11 @@ namespace Gerador_de_Testes.ModuloDisciplina
         private bool ValidarNome(string nome)
         {
             foreach (Disciplina d in contexto.Disciplinas)
-                if (d.Nome.ToLower() == nome.ToLower())
+                if (d.Nome.ToLower().Trim() == nome.ToLower().Trim())
                     if (d.Id != id)
                     {
                         TelaPrincipalForm.Instancia.AtualizarRodape(
-                            $"Já existe uma disciplina com o nome \"{nome.ToTitleCase()}\". Tente novamente.");
+                            $"Já existe uma disciplina com o nome \"{nome.ToTitleCase().Trim()}\". Tente novamente.");
 
                         DialogResult = DialogResult.None;
                         return true;

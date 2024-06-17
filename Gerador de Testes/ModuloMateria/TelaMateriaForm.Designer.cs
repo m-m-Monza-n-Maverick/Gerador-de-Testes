@@ -90,6 +90,7 @@
             cmbDisciplina.Name = "cmbDisciplina";
             cmbDisciplina.Size = new Size(121, 23);
             cmbDisciplina.TabIndex = 1;
+            cmbDisciplina.KeyPress += cmbDisciplina_KeyPress;
             // 
             // label4
             // 

@@ -51,7 +51,7 @@ namespace Gerador_de_Testes.ModuloQuestao
         {
             if (AlternativaVazia() || LimiteMaxDeAlternativas() || AlternativaJaCadastrada()) return;
 
-            string resposta = txtResposta.Text;
+            string resposta = txtResposta.Text.Trim();
 
             Alternativa alternativa = new(letra, resposta, false);
 
@@ -120,7 +120,7 @@ namespace Gerador_de_Testes.ModuloQuestao
         }
         private bool AlternativaJaCadastrada()
         {
-            if (alternativasCadastradas.Contains(txtResposta.Text))
+            if (alternativasCadastradas.Contains(txtResposta.Text.Trim()))
             {
                 TelaPrincipalForm.Instancia.AtualizarRodape("Alternativa já cadastrada. Tente novamente");
                 return true;
@@ -221,6 +221,8 @@ namespace Gerador_de_Testes.ModuloQuestao
             btnGravar.Visible = false;
             btnCancelar.Text = "Voltar";
         }
+        private void cmbMateria_KeyPress(object sender, KeyPressEventArgs e) => e.Handled = true;   
         #endregion
+
     }
 }

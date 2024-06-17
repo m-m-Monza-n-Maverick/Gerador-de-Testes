@@ -102,6 +102,7 @@ namespace Gerador_de_Testes.ModuloTeste
             cmbDisciplina.Size = new Size(152, 23);
             cmbDisciplina.TabIndex = 1;
             cmbDisciplina.SelectionChangeCommitted += cmbDisciplina_SelectionChangeCommitted;
+            cmbDisciplina.KeyPress += cmbDisciplina_KeyPress;
             // 
             // label3
             // 
@@ -130,6 +131,7 @@ namespace Gerador_de_Testes.ModuloTeste
             cmbMateria.Size = new Size(152, 23);
             cmbMateria.TabIndex = 3;
             cmbMateria.SelectionChangeCommitted += cmbMateria_SelectionChangeCommitted;
+            cmbMateria.KeyPress += cmbMateria_KeyPress;
             // 
             // label4
             // 

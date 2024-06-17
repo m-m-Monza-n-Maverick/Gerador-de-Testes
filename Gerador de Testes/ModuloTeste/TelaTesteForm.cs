@@ -124,9 +124,9 @@ namespace Gerador_de_Testes.ModuloTeste
                 qntQuestoesDisponiveis = materiaSelecionada.Questoes.Count;
 
 
-            if (qntQuestoesDisponiveis == 0) 
+            if (qntQuestoesDisponiveis == 0)
                 txtQntQuestoes.Maximum = 1;
-            else 
+            else
                 txtQntQuestoes.Maximum = qntQuestoesDisponiveis;
 
             teste.QntQuestoes = (int)txtQntQuestoes.Value;
@@ -269,10 +269,10 @@ namespace Gerador_de_Testes.ModuloTeste
         }
         private bool ValidarTitulo(string titulo)
         {
-            if (contexto.Testes.Exists(t => t.Titulo == titulo))
+            if (contexto.Testes.Exists(t => t.Titulo.Trim() == titulo.Trim()))
             {
                 TelaPrincipalForm.Instancia.AtualizarRodape(
-                    $"Já existe um teste com o título \"{titulo.ToTitleCase()}\". Tente novamente.");
+                    $"Já existe um teste com o título \"{titulo.ToTitleCase().Trim()}\". Tente novamente.");
 
                 DialogResult = DialogResult.None;
                 return true;
@@ -294,5 +294,9 @@ namespace Gerador_de_Testes.ModuloTeste
             }
         }
         #endregion
+
+        private void cmbDisciplina_KeyPress(object sender, KeyPressEventArgs e) => e.Handled = true;
+        private void cmbMateria_KeyPress(object sender, KeyPressEventArgs e) => e.Handled = true;
+
     }
 }

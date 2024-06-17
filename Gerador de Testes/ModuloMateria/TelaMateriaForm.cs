@@ -5,10 +5,10 @@ namespace Gerador_de_Testes.ModuloMateria
     public partial class TelaMateriaForm : Form
     {
         private Materia materia;
-        public Materia Materia 
-        { 
+        public Materia Materia
+        {
             get => materia;
-            set 
+            set
             {
                 txtNome.Text = value.Nome;
                 cmbDisciplina.SelectedItem = value.Disciplina;
@@ -16,7 +16,7 @@ namespace Gerador_de_Testes.ModuloMateria
                     radio1Serie.Checked = true;
                 else
                     radio2Serie.Checked = true;
-            } 
+            }
         }
         public ContextoDados contexto;
         readonly int id = 0;
@@ -62,10 +62,10 @@ namespace Gerador_de_Testes.ModuloMateria
         private bool ValidarNome(string nome)
         {
             foreach (Materia materia in contexto.Materias)
-                if (materia.Nome.ToLower() == nome.ToLower()) 
-                { 
+                if (materia.Nome.ToLower().Trim() == nome.ToLower().Trim())
+                {
                     TelaPrincipalForm.Instancia.AtualizarRodape(
-                        $"Já existe uma matéria com o nome \"{nome}\". Tente novamente.");
+                        $"Já existe uma matéria com o nome \"{nome.ToTitleCase().Trim()}\". Tente novamente.");
 
                     DialogResult = DialogResult.None;
                     return true;
@@ -76,7 +76,7 @@ namespace Gerador_de_Testes.ModuloMateria
         private bool ValidarMateriaJaExistente(string nome, Disciplina disciplina, string serie)
         {
             foreach (Materia materia in contexto.Materias)
-                if (materia.Nome.ToLower() == nome.ToLower())
+                if (materia.Nome.ToLower().Trim() == nome.ToLower().Trim())
                     if (materia.Disciplina == disciplina)
                         if (materia.Serie == serie)
                             if (materia.Id != id)
@@ -101,5 +101,8 @@ namespace Gerador_de_Testes.ModuloMateria
             }
             else DialogResult = DialogResult.OK;
         }
+
+        private void cmbDisciplina_KeyPress(object sender, KeyPressEventArgs e) => e.Handled = true;
+        
     }
 }
