@@ -107,6 +107,8 @@ namespace Gerador_de_Testes.ModuloQuestao
             foreach (Materia m in contexto.Materias)
                 if (m == novaQuestao.Materia)
                     m.Questoes.Add(novaQuestao);
+
+            contexto.Gravar();
         }
         private void AtualizarMateria(ContextoDados contexto, Questao questaoSelecionada, Questao questaoEditada)
         {

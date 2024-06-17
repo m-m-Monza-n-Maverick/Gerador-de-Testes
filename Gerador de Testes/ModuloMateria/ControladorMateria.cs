@@ -107,6 +107,8 @@ namespace Gerador_de_Testes.ModuloMateria
             foreach (Disciplina d in contexto.Disciplinas)
                 if (d == novaMateria.Disciplina)
                     d.Materias.Add(novaMateria);
+
+            contexto.Gravar();
         }
         private void AtualizarDisciplina(ContextoDados contexto, Materia materiaSelecionada, Materia materiaEditada)
         {
