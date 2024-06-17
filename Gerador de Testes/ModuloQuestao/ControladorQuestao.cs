@@ -1,6 +1,7 @@
 ﻿using Gerador_de_Testes.Compartilhado;
 using Gerador_de_Testes.ModuloDisciplina;
 using Gerador_de_Testes.ModuloMateria;
+using Gerador_de_Testes.ModuloTeste;
 namespace Gerador_de_Testes.ModuloQuestao
 {
     internal class ControladorQuestao(IRepositorioQuestao repositorioQuestao, ContextoDados contexto) : ControladorBase, IControladorDetalhes
@@ -70,8 +71,6 @@ namespace Gerador_de_Testes.ModuloQuestao
 
             if (SemSeleção(questaoSelecionada) || !DesejaRealmenteExcluir(questaoSelecionada)) return;
 
-            AtualizarMateria(contexto, ref questaoSelecionada);
-
             RealizarAcao(
                 () => repositorioQuestao.Excluir(idSelecionado),
                 questaoSelecionada, "excluído");
@@ -128,17 +127,6 @@ namespace Gerador_de_Testes.ModuloQuestao
                     if (m == questaoEditada.Materia)
                         m.Questoes.Add(questaoEditada);
                 }
-            }
-        }
-        private void AtualizarMateria(ContextoDados contexto, ref Questao questaoSelecionada)
-        {
-            foreach (Materia m in contexto.Materias)
-            {
-                foreach (Questao q in m.Questoes)
-                    if (q.Enunciado == questaoSelecionada.Enunciado)
-                        questaoSelecionada = q;
-
-                m.Questoes.Remove(questaoSelecionada);
             }
         }
         public void VisualizarDetalhes()

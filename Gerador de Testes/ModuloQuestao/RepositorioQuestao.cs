@@ -1,4 +1,5 @@
 ﻿using Gerador_de_Testes.Compartilhado;
+using Gerador_de_Testes.ModuloMateria;
 using Gerador_de_Testes.ModuloTeste;
 namespace Gerador_de_Testes.ModuloQuestao
 {
@@ -20,7 +21,23 @@ namespace Gerador_de_Testes.ModuloQuestao
                     return false;
                 }
 
+            AtualizarMateria(id);
+
             return base.Excluir(id);
+        }
+
+        private void AtualizarMateria(int id)
+        {
+            Questao questaoSelecionada = SelecionarPorId(id);
+
+            foreach (Materia m in contexto.Materias)
+            {
+                foreach (Questao q in m.Questoes)
+                    if (q.Enunciado == questaoSelecionada.Enunciado)
+                        questaoSelecionada = q;
+
+                m.Questoes.Remove(questaoSelecionada);
+            }
         }
     }
 }
