@@ -33,10 +33,10 @@ namespace Gerador_de_Testes.ModuloQuestao
         public TelaQuestaoForm(int id, ContextoDados contexto)
         {
             InitializeComponent();
-            CarregarMaterias();
             txtId.Text = id.ToString();
-            this.id = id;
             this.contexto = contexto;
+            this.id = id;
+            CarregarMaterias();
         }
 
         public void CarregarMaterias()

@@ -30,10 +30,10 @@ namespace Gerador_de_Testes.ModuloMateria
         public TelaMateriaForm(int id, ContextoDados contexto)
         {
             InitializeComponent();
-            CarregarDisciplinas();
             txtId.Text = id.ToString();
             this.contexto = contexto;
             this.id = id;
+            CarregarDisciplinas();
         }
 
         public void CarregarDisciplinas()
