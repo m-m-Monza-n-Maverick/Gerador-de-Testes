@@ -6,8 +6,9 @@ namespace Gerador_de_Testes.ModuloMateria
     public partial class TelaMateriaForm : Form
     {
         private List<Questao> questoes = [];
+        public ContextoDados contexto;
+        readonly int id = 0;
 
-        private Materia materia;
         public Materia Materia
         {
             get => materia;
@@ -24,24 +25,40 @@ namespace Gerador_de_Testes.ModuloMateria
                     radio2Serie.Checked = true;                
             }
         }
-        public ContextoDados contexto;
-        readonly int id = 0;
+        private Materia materia;
 
         public TelaMateriaForm(int id, ContextoDados contexto)
         {
             InitializeComponent();
-            CarregarDisciplinas(contexto.Disciplinas);
+            CarregarDisciplinas();
             txtId.Text = id.ToString();
             this.contexto = contexto;
             this.id = id;
         }
 
-        public void CarregarDisciplinas(List<Disciplina> disciplinas)
+        public void CarregarDisciplinas()
         {
             cmbDisciplina.Items.Clear();
 
-            foreach (Disciplina diciplina in disciplinas)
+            foreach (Disciplina diciplina in contexto.Disciplinas)
                 cmbDisciplina.Items.Add(diciplina);
+        }
+        private void ValidarCampos()
+        {
+            List<string> erros = materia.Validar();
+
+            //Validação requisitada
+            //materia.ValidarNome(ref erros, contexto.Materias);
+
+            //Validação que achamos que faz mais sentido:
+            materia.ValidarMateriaJaExistente(ref erros, contexto.Materias, id);
+
+            if (erros.Count > 0)
+            {
+                TelaPrincipalForm.Instancia.AtualizarRodape(erros[0]);
+                DialogResult = DialogResult.None;
+            }
+            else DialogResult = DialogResult.OK;
         }
 
         private void btnGravar_Click(object sender, EventArgs e)
@@ -54,58 +71,9 @@ namespace Gerador_de_Testes.ModuloMateria
             if (radio1Serie.Checked) serie = "1ª série";
             if (radio2Serie.Checked) serie = "2ª série";
 
-            //Validação requisitada
-            //if (ValidarNome(nome)) return;
-
-            //Validação que achamos que faz mais sentido:
-            if (ValidarMateriaJaExistente(nome, disciplina, serie)) return;
-
             materia = new Materia(nome, serie, disciplina, questoes);
 
-            ValidarCampos(materia);
-        }
-
-        private bool ValidarNome(string nome)
-        {
-            foreach (Materia materia in contexto.Materias)
-                if (materia.Nome.Validation() == nome.Validation())
-                {
-                    TelaPrincipalForm.Instancia.AtualizarRodape(
-                        $"Já existe uma matéria com o nome \"{nome.ToTitleCase().Trim()}\". Tente novamente.");
-
-                    DialogResult = DialogResult.None;
-                    return true;
-                }
-
-            return false;
-        }
-        private bool ValidarMateriaJaExistente(string nome, Disciplina disciplina, string serie)
-        {
-            foreach (Materia materia in contexto.Materias)
-                if (materia.Nome.ToLower().Trim() == nome.ToLower().Trim())
-                    if (materia.Disciplina == disciplina)
-                        if (materia.Serie == serie)
-                            if (materia.Id != id)
-                            {
-                                TelaPrincipalForm.Instancia.AtualizarRodape(
-                                    $"Esta matéria já existe. Tente novamente.");
-
-                                DialogResult = DialogResult.None;
-                                return true;
-                            }
-
-            return false;
-        }
-        private void ValidarCampos(EntidadeBase entidade)
-        {
-            List<string> erros = entidade.Validar();
-
-            if (erros.Count > 0)
-            {
-                TelaPrincipalForm.Instancia.AtualizarRodape(erros[0]);
-                DialogResult = DialogResult.None;
-            }
-            else DialogResult = DialogResult.OK;
+            ValidarCampos();
         }
     }
 }

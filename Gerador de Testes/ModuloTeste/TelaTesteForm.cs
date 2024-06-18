@@ -6,7 +6,6 @@ namespace Gerador_de_Testes.ModuloTeste
 {
     public partial class TelaTesteForm : Form
     {
-        private Teste teste = new();
         public Teste Teste
         {
             set
@@ -28,6 +27,7 @@ namespace Gerador_de_Testes.ModuloTeste
             }
             get => teste;
         }
+        private Teste teste = new();
         ContextoDados contexto;
 
         public TelaTesteForm(ContextoDados contexto)
@@ -50,8 +50,9 @@ namespace Gerador_de_Testes.ModuloTeste
         {
             Disciplina disciplinaSelecionada = (Disciplina)cmbDisciplina.SelectedItem;
 
-            if (DisciplinaSemMaterias(disciplinaSelecionada) || DisciplinaSemQuestões(disciplinaSelecionada)) return;
-            if (disciplinaSelecionada == teste.Disciplina) return;
+            if (disciplinaSelecionada.DisciplinaSemMaterias(teste, ref cmbDisciplina) ||
+                disciplinaSelecionada.DisciplinaSemQuestões(teste, ref cmbDisciplina) ||
+                disciplinaSelecionada == teste.Disciplina) return;
 
             teste.Disciplina = disciplinaSelecionada;
             teste.Materia = null;
@@ -80,9 +81,8 @@ namespace Gerador_de_Testes.ModuloTeste
         {
             Materia materiaSelecionada = (Materia)cmbMateria.SelectedItem;
 
-            if (materiaSelecionada == teste.Materia) return;
-
-            if (MateriaSemQuestões(materiaSelecionada)) return;
+            if (materiaSelecionada == teste.Materia ||
+                materiaSelecionada.MateriaSemQuestões(teste, ref cmbMateria)) return;
 
             teste.Materia = materiaSelecionada;
 
@@ -138,21 +138,15 @@ namespace Gerador_de_Testes.ModuloTeste
 
             AvisoParaAumentarQnt();
 
-            List<Materia> materias = materiasParaSorteio();
-
-            Random random = new();
-
-            Span<int> IdsSorteados = idsParaSorteio(materias).ToArray();
-
-            random.Shuffle<int>(IdsSorteados);
-
-            Sortear(materias, IdsSorteados);
+            teste.SortearQuestoes(teste, 
+                (Disciplina)cmbDisciplina.SelectedItem, 
+                (Materia)cmbMateria.SelectedItem, 
+                rdbRecuperacao.Checked, 
+                listaQuestoes);
         }
         private void btnGravar_Click_1(object sender, EventArgs e)
         {
             string titulo = txtTitulo.Text;
-
-            if (ValidarTitulo(titulo)) return;
 
             Disciplina disciplina = (Disciplina)cmbDisciplina.SelectedItem;
             Materia materia = (Materia)cmbMateria.SelectedItem;
@@ -166,55 +160,11 @@ namespace Gerador_de_Testes.ModuloTeste
 
             teste = new(titulo, disciplina, materia, qntQuestoes, questoes, recuperacao);
 
-            ValidacaoDeCampos(teste, titulo);
+            ValidacaoDeCampos();
         }
         #endregion
 
         #region Auxiliares
-        private bool DisciplinaSemMaterias(Disciplina disciplinaSelecionada)
-        {
-            if (disciplinaSelecionada.Materias.Count == 0)
-            {
-                MessageBox.Show(
-                    "Esta disciplina não possui matérias cadastradas",
-                    "Aviso",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
-
-                if (teste != null) cmbDisciplina.SelectedItem = teste.Disciplina;
-                return true;
-            }
-            return false;
-        }
-        private bool DisciplinaSemQuestões(Disciplina disciplinaSelecionada)
-        {
-            foreach (Materia m in disciplinaSelecionada.Materias)
-                if (m.Questoes.Count != 0) return false;
-
-            MessageBox.Show(
-                "Esta disciplina não possui questões cadastradas",
-                "Aviso",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Warning);
-
-            if (teste != null) cmbDisciplina.SelectedItem = teste.Disciplina;
-
-            return true;
-        }
-        private bool MateriaSemQuestões(Materia materiaSelecionada)
-        {
-            if (materiaSelecionada.Questoes.Count != 0) return false;
-
-            MessageBox.Show(
-                "Esta matéria não possui questões cadastradas",
-                "Aviso",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Warning);
-
-            if (teste.Materia != null) cmbMateria.SelectedItem = teste.Materia;
-
-            return true;
-        }
         private void ResetarInformações()
         {
             txtQntQuestoes.Value = 0;
@@ -232,61 +182,11 @@ namespace Gerador_de_Testes.ModuloTeste
             else
                 lblAvisoAumentarQnt.Text = null;
         }
-        private List<Materia> materiasParaSorteio()
+        private void ValidacaoDeCampos()
         {
-            List<Materia> materias;
-            Disciplina disciplina = (Disciplina)cmbDisciplina.SelectedItem;
-            Materia materia = (Materia)cmbMateria.SelectedItem;
+            List<string> erros = teste.Validar();
 
-            if (rdbRecuperacao.Checked)
-                materias = disciplina.Materias;
-            else
-                materias = [materia];
-
-            return materias;
-        }
-        private static List<int> idsParaSorteio(List<Materia> materias)
-        {
-            List<int> idsDasQuestoes = [];
-
-            foreach (Materia m in materias)
-                foreach (Questao q in m.Questoes)
-                    idsDasQuestoes.Add(q.Id);
-
-            return idsDasQuestoes;
-        }
-        private void Sortear(List<Materia> materias, Span<int> IdsSorteados)
-        {
-            int i = 0;
-            foreach (int id in IdsSorteados)
-                foreach (Materia m in materias)
-                    foreach (Questao q in m.Questoes)
-                        if (q.Id == id)
-                        {
-                            if (i >= teste.QntQuestoes) return;
-                            listaQuestoes.Items.Add(q);
-                            i++;
-                        }
-        }
-        private bool ValidarTitulo(string titulo)
-        {
-            if (contexto.Testes.Exists(t => t.Titulo.Validation() == titulo.Validation()))
-            {
-                TelaPrincipalForm.Instancia.AtualizarRodape(
-                    $"Já existe um teste com o título \"{titulo.ToTitleCase().Trim()}\". Tente novamente.");
-
-                DialogResult = DialogResult.None;
-                return true;
-            }
-
-            return false;
-        }
-        private void ValidacaoDeCampos(EntidadeBase entidade, string titulo)
-        {
-            List<string> erros = entidade.Validar();
-
-            if (contexto.Testes.Exists(t => t.Titulo == titulo))
-                erros.Add($"Já existe um teste com o título \"{titulo.ToTitleCase()}\". Tente novamente.");
+            teste.ValidarTitulo(ref erros, contexto.Testes);
 
             if (erros.Count > 0)
             {

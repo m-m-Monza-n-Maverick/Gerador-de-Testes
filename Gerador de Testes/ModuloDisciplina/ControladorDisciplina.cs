@@ -1,10 +1,8 @@
 ﻿using Gerador_de_Testes.Compartilhado;
-
 namespace Gerador_de_Testes.ModuloDisciplina
 {
-    internal class ControladorDisciplina(IRepositorioDisciplina repositorioDisciplina, ContextoDados contexto) : ControladorBase
+    public class ControladorDisciplina(IRepositorioDisciplina repositorioDisciplina, ContextoDados contexto) : ControladorBase
     {
-        private IRepositorioDisciplina repositorioDisciplina = repositorioDisciplina;
         private TabelaDisciplinaControl tabelaDisciplina;
 
         #region ToolTips
@@ -68,21 +66,17 @@ namespace Gerador_de_Testes.ModuloDisciplina
         }
         #endregion
 
+        #region Auxiliares
         public override UserControl ObterListagem()
         {
             tabelaDisciplina ??= new();
 
-            CarregarDisciplinas();
+            CarregarRegistros();
 
             return tabelaDisciplina;
         }
-        private void CarregarDisciplinas()
+        protected override void CarregarRegistros()
             => tabelaDisciplina.AtualizarRegistros(repositorioDisciplina.SelecionarTodos());
-        private void RealizarAcao(Action acao, Disciplina disciplina, string texto)
-        {
-            acao();
-            CarregarDisciplinas();
-            CarregarMensagem(disciplina, texto);
-        }
+        #endregion
     }
 }

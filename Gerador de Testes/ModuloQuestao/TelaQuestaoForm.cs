@@ -9,13 +9,12 @@ namespace Gerador_de_Testes.ModuloQuestao
         public char letra = 'A';
         readonly int id;
 
-        private Questao questao;
         public Questao Questao
         {
             get => questao;
             set
             {
-                CarregarMaterias(contexto.Materias);
+                CarregarMaterias();
                 txtId.Text = value.Id.ToString();
                 txtEnunciado.Text = value.Enunciado;
                 cmbMateria.SelectedItem = value.Materia;
@@ -29,20 +28,22 @@ namespace Gerador_de_Testes.ModuloQuestao
                 }
             }
         }
+        private Questao questao;
 
         public TelaQuestaoForm(int id, ContextoDados contexto)
         {
             InitializeComponent();
+            CarregarMaterias();
             txtId.Text = id.ToString();
             this.id = id;
             this.contexto = contexto;
         }
 
-        public void CarregarMaterias(List<Materia> materias)
+        public void CarregarMaterias()
         {
             cmbMateria.Items.Clear();
 
-            foreach (Materia materia in materias)
+            foreach (Materia materia in contexto.Materias)
                 cmbMateria.Items.Add(materia);
         }
 
@@ -76,35 +77,15 @@ namespace Gerador_de_Testes.ModuloQuestao
         }
         public void btnGravar_Click(object sender, EventArgs e)
         {
-
             string enunciado = txtEnunciado.Text;
             Materia materia = (Materia)cmbMateria.SelectedItem;
             string resposta = null;
             List<Alternativa> alternativas = CadastrarAlternativas(ref resposta);
 
-            ValidarQuestaoJaExistente(materia, enunciado);
-
             questao = new(enunciado, materia, alternativas, resposta);
 
-            #region Validacoes
-
-            List<string> erros = questao.Validar();
-
-            if (cmbMateria.SelectedItem == null)
-                erros.Add($"Selecione uma matéria");
-            if (alternativasCadastradas.Count < 2)
-                erros.Add($"O numero mínimo de alternativas é 2");
-            if (listBox.CheckedItems.Count == 0)
-                erros.Add($"Selecione a resposta correta");
-
-            if (erros.Count > 0)
-            {
-                TelaPrincipalForm.Instancia.AtualizarRodape(erros[0]);
-                DialogResult = DialogResult.None;
-            }
-            #endregion
+            ValidarCampos();
         }
-
         #endregion
 
         #region Auxiliares
@@ -128,85 +109,70 @@ namespace Gerador_de_Testes.ModuloQuestao
             }
             return false;
         }
-        private List<Alternativa> ListarAlternativas()
-        {
-            List<Alternativa> listaDeItens = [];
-            foreach (Alternativa alternativa in listBox.Items)
-                listaDeItens.Add(alternativa);
-            return listaDeItens;
-        }
-        private void ReorganizarListaDeAlternativas(List<Alternativa> listaDeItens)
-        {
-            letra = 'A';
-            foreach (Alternativa alternativa in listaDeItens)
-            {
-                alternativa.Letra = letra++;
-
-                listBox.Items.Add(alternativa);
-            }
-        }
         private void CheckItemCorreto(object sender, EventArgs e)
         {
-            for (int i = 0; i < listBox.Items.Count; i++)
+            int i = 0;
+            foreach (Alternativa a in listBox.Items)
             {
-                Alternativa alternativa = (Alternativa)listBox.Items[i];
-                if (alternativa.Correta)
+                if (a.Correta)
                 {
                     listBox.SetItemChecked(i, true);
                     break;
                 }
-            }
-        }
-        public void OnlyOne_ItemCheck(object sender, ItemCheckEventArgs e)
-        {
-            if (e.NewValue == CheckState.Checked)
-            {
-                // Desmarca todos os outros itens
-                for (int i = 0; i < listBox.Items.Count; i++)
-                {
-                    if (i != e.Index)
-                    {
-                        listBox.SetItemChecked(i, false);
-                    }
-                }
+                i++;
             }
         }
         private List<Alternativa> CadastrarAlternativas(ref string resposta)
         {
             List<Alternativa> alternativas = new();
 
-            foreach (Alternativa alternativa in listBox.Items)
-                alternativas.Add(alternativa);
+            foreach (Alternativa a in listBox.Items)
+                alternativas.Add(a);
 
-            foreach (Alternativa alternativa in alternativas)
+            foreach (Alternativa a in alternativas)
             {
-                if (listBox.CheckedItems.Contains(alternativa))
+                if (listBox.CheckedItems.Contains(a))
                 {
-                    alternativa.Correta = true;
-                    resposta = alternativa.ToString();
+                    a.Correta = true;
+                    resposta = a.ToString();
                 }
-                else alternativa.Correta = false;
+                else a.Correta = false;
             }
 
             return alternativas;
         }
-        private bool ValidarQuestaoJaExistente(Materia materia, string enunciado)
+        private List<Alternativa> ListarAlternativas()
         {
-            foreach (Questao questao in contexto.Questoes)
-                if (questao.Materia == materia)
-                    if (questao.Enunciado.Validation() == enunciado.Validation())
-                        if (questao.Id != id)
-                        {
-                            TelaPrincipalForm.Instancia.AtualizarRodape(
-                                $"Esta questão já existe. Tente novamente.");
+            List<Alternativa> listaDeItens = [];
 
-                            DialogResult = DialogResult.None;
-                            return true;
-                        }
+            foreach (Alternativa a in listBox.Items)
+                listaDeItens.Add(a);
 
-            return false;
+            return listaDeItens;
         }
-        public void VisualizarMode()
+        private void ReorganizarListaDeAlternativas(List<Alternativa> listaDeItens)
+        {
+            letra = 'A';
+            foreach (Alternativa a in listaDeItens)
+            {
+                a.Letra = letra++;
+                listBox.Items.Add(a);
+            }
+        }
+
+        private void ValidarCampos()
+        {
+            List<string> erros = questao.Validar();
+
+            questao.ValidarQuestaoJaExistente(ref erros, contexto.Questoes, id);
+
+            if (erros.Count > 0)
+            {
+                TelaPrincipalForm.Instancia.AtualizarRodape(erros[0]);
+                DialogResult = DialogResult.None;
+            }
+        }
+        public void ModoVisualizacao()
         {
             txtEnunciado.Enabled = false;
             txtResposta.Enabled = false;
@@ -221,6 +187,20 @@ namespace Gerador_de_Testes.ModuloQuestao
             btnRemoverlist.Visible = false;
             btnGravar.Visible = false;
             btnCancelar.Text = "Voltar";
+        }
+        public void OnlyOne_ItemCheck(object sender, ItemCheckEventArgs e)
+        {
+            if (e.NewValue == CheckState.Checked)
+            {
+                // Desmarca todos os outros itens
+                for (int i = 0; i < listBox.Items.Count; i++)
+                {
+                    if (i != e.Index)
+                    {
+                        listBox.SetItemChecked(i, false);
+                    }
+                }
+            }
         }
         #endregion
     }

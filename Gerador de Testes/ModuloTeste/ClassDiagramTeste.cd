@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Gerador_de_Testes.ModuloTeste.Teste">
+    <Position X="4.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAIAgABAEEAAAAAACBAAQEAQACAAAgAAAABBE=</HashCode>
+      <FileName>ModuloTeste\Teste.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Disciplina" />
+      <Property Name="Materia" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="Questoes" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Gerador_de_Testes.ModuloDisciplina.Disciplina" Collapsed="true">
+    <Position X="8" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAEAEAAAAAACAAAAAAQAAICAAAAEAAAA=</HashCode>
+      <FileName>ModuloDisciplina\Disciplina.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Gerador_de_Testes.ModuloMateria.Materia" Collapsed="true">
+    <Position X="8" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAIAAAAAAEAQAAAACAAAAAAQAIAAAgAAFAABE=</HashCode>
+      <FileName>ModuloMateria\Materia.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Gerador_de_Testes.ModuloQuestao.Questao" Collapsed="true">
+    <Position X="8" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIgwAAAQAEAEAAAAAACIAAQAAQAAAAAAAAAAAAA=</HashCode>
+      <FileName>ModuloQuestao\Questao.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

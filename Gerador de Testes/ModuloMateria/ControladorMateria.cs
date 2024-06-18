@@ -2,9 +2,8 @@
 using Gerador_de_Testes.ModuloDisciplina;
 namespace Gerador_de_Testes.ModuloMateria
 {
-    internal class ControladorMateria (IRepositorioMateria repositorioMateria, ContextoDados contexto) : ControladorBase
+    public class ControladorMateria (IRepositorioMateria repositorioMateria, ContextoDados contexto) : ControladorBase
     {
-        private IRepositorioMateria repositorioMateria = repositorioMateria;
         private TabelaMateriaControl tabelaMateria;
 
         #region ToolTips
@@ -17,13 +16,11 @@ namespace Gerador_de_Testes.ModuloMateria
         #region CRUD
         public override void Adicionar()
         {
-            if (SemDisciplinas()) return;
+            if (SemDependenciasCadastradas(contexto.Disciplinas.Count, "Disciplinas")) return;
 
             int id = repositorioMateria.PegarId();
 
             TelaMateriaForm telaMateria = new(id, contexto);
-
-            CarregarDisciplinas(telaMateria);
 
             DialogResult resultado = telaMateria.ShowDialog();
 
@@ -31,7 +28,7 @@ namespace Gerador_de_Testes.ModuloMateria
 
             Materia novaMateria = telaMateria.Materia;
 
-            AdicionarMateriaEmDisciplina(novaMateria, id);
+            novaMateria.AdicionarMateriaEmDisciplina(id, contexto.Disciplinas);
 
             RealizarAcao(
                 () => repositorioMateria.Cadastrar(novaMateria), 
@@ -43,8 +40,7 @@ namespace Gerador_de_Testes.ModuloMateria
 
             TelaMateriaForm telaMateria = new(idSelecionado, contexto);
 
-            Materia materiaSelecionada =
-                repositorioMateria.SelecionarPorId(idSelecionado);
+            Materia materiaSelecionada = repositorioMateria.SelecionarPorId(idSelecionado);
 
             if (SemSeleção(materiaSelecionada)) return;
 
@@ -57,9 +53,9 @@ namespace Gerador_de_Testes.ModuloMateria
 
             materiaEditada.Questoes = materiaSelecionada.Questoes;
 
-            RemoverMateriaEmDisciplina(materiaSelecionada);
+            materiaSelecionada.RemoverMateriaEmDisciplina(contexto.Disciplinas);
 
-            AdicionarMateriaEmDisciplina(materiaEditada, idSelecionado);
+            materiaEditada.AdicionarMateriaEmDisciplina(idSelecionado, contexto.Disciplinas);
 
             RealizarAcao(
                 () => repositorioMateria.Editar(idSelecionado, materiaEditada), 
@@ -74,7 +70,7 @@ namespace Gerador_de_Testes.ModuloMateria
 
             if (SemSeleção(materiaSelecionada) || !DesejaRealmenteExcluir(materiaSelecionada)) return;
 
-            RemoverMateriaEmDisciplina(materiaSelecionada);
+            materiaSelecionada.RemoverMateriaEmDisciplina(contexto.Disciplinas);
 
             RealizarAcao(
                 () => repositorioMateria.Excluir(idSelecionado), 
@@ -88,62 +84,15 @@ namespace Gerador_de_Testes.ModuloMateria
             if (tabelaMateria == null)
                 tabelaMateria = new TabelaMateriaControl();
 
-            CarregarMaterias();
+            CarregarRegistros();
 
             return tabelaMateria;
         }
-        private bool SemDisciplinas()
-        {
-            if (contexto.Disciplinas.Count == 0)
-            {
-                MessageBox.Show(
-                    "Não é possível realizar esta ação sem Disciplinas cadastradas",
-                    "Aviso",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
-
-                return true;
-            }
-            return false;
-        }
-        private void AdicionarMateriaEmDisciplina(Materia novaMateria, int id)
-        {
-            novaMateria.Id = id;
-
-            foreach (Disciplina d in contexto.Disciplinas)
-                if (d == novaMateria.Disciplina)
-                    d.Materias.Add(novaMateria);
-        }
-        private void RemoverMateriaEmDisciplina(Materia materiaSelecionada)
-        {
-            foreach (Disciplina d in contexto.Disciplinas)
-            {
-                foreach (Materia m in d.Materias)
-                    if (m.Nome == materiaSelecionada.Nome)
-                    {
-                        d.Materias.Remove(m);
-                        d.AtualizarRegistro(d);
-                        return;
-                    }
-            }
-        }
-        private void CarregarMaterias()
+        protected override void CarregarRegistros()
         {
             List<Materia> Materias = repositorioMateria.SelecionarTodos();
 
             tabelaMateria.AtualizarRegistros(Materias);
-        }
-        private void CarregarDisciplinas(TelaMateriaForm telaMateria)
-        {
-            List<Disciplina> disciplinasCadastradas = contexto.Disciplinas;
-
-            telaMateria.CarregarDisciplinas(disciplinasCadastradas);
-        }
-        private void RealizarAcao(Action acao, Materia materia, string texto)
-        {
-            acao();
-            CarregarMaterias();
-            CarregarMensagem(materia, texto);
         }
         #endregion
     }

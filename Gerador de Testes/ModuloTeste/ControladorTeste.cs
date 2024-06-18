@@ -6,9 +6,8 @@ using iTextSharp.text.pdf;
 using Gerador_de_Testes.ModuloQuestao;
 namespace Gerador_de_Testes.ModuloTeste
 {
-    internal class ControladorTeste(IRepositorioTeste repositorioTeste, ContextoDados contexto) : ControladorBase, IControladorDuplicavel, IControladorDetalhes, IControladorPDF
+    public class ControladorTeste(IRepositorioTeste repositorioTeste, ContextoDados contexto) : ControladorBase, IControladorDuplicavel, IControladorDetalhes, IControladorPDF
     {
-        private IRepositorioTeste repositorioTeste = repositorioTeste;
         private TabelaTesteControl tabelaTeste;
 
         #region ToolTips
@@ -25,7 +24,9 @@ namespace Gerador_de_Testes.ModuloTeste
         #region CRUD
         public override void Adicionar()
         {
-            if (SemDisciplinaOuMateriaOuQuestao()) return;
+            if (SemDependenciasCadastradas(contexto.Disciplinas.Count, "Disciplinas") || 
+                SemDependenciasCadastradas(contexto.Materias.Count, "Matérias") ||
+                SemDependenciasCadastradas(contexto.Questoes.Count, "Questões")) return;
 
             int id = repositorioTeste.PegarId();
 
@@ -56,6 +57,19 @@ namespace Gerador_de_Testes.ModuloTeste
                 () => repositorioTeste.Excluir(testeSelecionado.Id),
                 testeSelecionado, "excluído");
         }
+        public void VisualizarDetalhes()
+        {
+            int idSelecionado = tabelaTeste.ObterRegistroSelecionado();
+            Teste testeSelecionado = repositorioTeste.SelecionarPorId(idSelecionado);
+
+            if (SemSeleção(testeSelecionado)) return;
+
+            TelaDetalhesTesteForm telaDetalhesTeste = new();
+
+            telaDetalhesTeste.Teste = testeSelecionado;
+
+            telaDetalhesTeste.ShowDialog();
+        }
         #endregion
 
         #region Demais botões
@@ -80,19 +94,6 @@ namespace Gerador_de_Testes.ModuloTeste
                 () => repositorioTeste.Cadastrar(testeDuplicado),
                 testeDuplicado, "duplicado");
         }
-        public void VisualizarDetalhes()
-        {
-            int idSelecionado = tabelaTeste.ObterRegistroSelecionado();
-            Teste testeSelecionado = repositorioTeste.SelecionarPorId(idSelecionado);
-
-            if (SemSeleção(testeSelecionado)) return;
-
-            TelaDetalhesTesteForm telaDetalhesTeste = new();
-
-            telaDetalhesTeste.Teste = testeSelecionado;
-
-            telaDetalhesTeste.ShowDialog();
-        }
         public void GerarPDF()
         {
             int idSelecionado = tabelaTeste.ObterRegistroSelecionado();
@@ -100,27 +101,9 @@ namespace Gerador_de_Testes.ModuloTeste
 
             if (SemSeleção(testeSelecionado)) return;
 
-            Document doc = new(PageSize.A4);
-            doc.SetMargins(40, 40, 40, 80);
-            doc.AddCreationDate();
+            GeradorDePDF geradorDePDF = new ($"C:\\temp\\{testeSelecionado}.pdf", testeSelecionado);
 
-            string caminho = $"C:\\temp\\Teste {testeSelecionado}.pdf";
-
-            PdfWriter writer = PdfWriter.GetInstance(doc, new FileStream(caminho, FileMode.Create));
-            Phrase label = new("", new(iTextSharp.text.Font.NORMAL, 10));
-            Phrase conteudo = new("", new((iTextSharp.text.Font.FontFamily)iTextSharp.text.Font.BOLD, 10));
-
-            doc.Open();
-
-            Cabecalho(doc, "TESTE");
-
-            InformacoesSobreTeste(testeSelecionado, doc, label, conteudo);
-
-            Cabecalho(doc, "\nQUESTÕES");
-
-            InformacoesSobreQuestoes(testeSelecionado, doc, label, conteudo);
-
-            doc.Close();
+            geradorDePDF.GerarPDF(false);
 
             TelaPrincipalForm
                 .Instancia
@@ -133,31 +116,13 @@ namespace Gerador_de_Testes.ModuloTeste
 
             if (SemSeleção(testeSelecionado)) return;
 
-            Document doc = new(PageSize.A4);
-            doc.SetMargins(40, 40, 40, 80);
-            doc.AddCreationDate();
+            GeradorDePDF geradorDePDF = new($"C:\\temp\\Gabarito - {testeSelecionado}.pdf", testeSelecionado);
 
-            string caminho = $"C:\\temp\\Gabarito - Teste {testeSelecionado}.pdf";
-
-            PdfWriter writer = PdfWriter.GetInstance(doc, new FileStream(caminho, FileMode.Create));
-            Phrase label = new("", new(iTextSharp.text.Font.NORMAL, 10));
-            Phrase conteudo = new("", new((iTextSharp.text.Font.FontFamily)iTextSharp.text.Font.BOLD, 10));
-
-            doc.Open();
-
-            Cabecalho(doc, "GABARITO DO TESTE");
-
-            InformacoesSobreTeste(testeSelecionado, doc, label, conteudo);
-
-            Cabecalho(doc, "\nQUESTÕES");
-
-            InformacoesSobreQuestoesComResposta(testeSelecionado, doc, label, conteudo);
-
-            doc.Close();
+            geradorDePDF.GerarPDF(true);
 
             TelaPrincipalForm
                 .Instancia
-                .AtualizarRodape($"O arquivo \"Gabarito - Teste {testeSelecionado}.pdf\" foi gerado com sucesso na pasta \"C:\\temp\"");
+                .AtualizarRodape($"O arquivo \"Gabarito - {testeSelecionado}.pdf\" foi gerado com sucesso na pasta \"C:\\temp\"");
         }
         #endregion
 
@@ -166,106 +131,12 @@ namespace Gerador_de_Testes.ModuloTeste
             {
                 tabelaTeste ??= new();
 
-                CarregarTestes();
+                CarregarRegistros();
 
                 return tabelaTeste;
             }
-        private void CarregarTestes()
+        protected override void CarregarRegistros()
             => tabelaTeste.AtualizarRegistros(repositorioTeste.SelecionarTodos());
-        private bool SemDisciplinaOuMateriaOuQuestao()
-        {
-            if (contexto.Disciplinas.Count == 0 || contexto.Materias.Count == 0 || contexto.Questoes.Count == 0)
-            {
-                MessageBox.Show(
-                    "Não é possível realizar esta ação sem Disciplinas, Matérias ou Questões cadastradas",
-                    "Aviso",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
-
-                return true;
-            }
-            return false;
-        }
-        private void RealizarAcao(Action acao, Teste teste, string texto)
-        {
-            acao();
-            CarregarTestes();
-            CarregarMensagem(teste, texto);
-        }
-
-        private static void AdicionaParagrafoAoPDF(Document doc, Phrase label, Phrase conteudo)
-        {
-            conteudo.Add("\n");
-
-            doc.Add(label);
-            doc.Add(conteudo);
-
-            label.Clear();
-            conteudo.Clear();
-        }
-        private static void Cabecalho(Document doc, string texto)
-        {
-            Paragraph cabecalho = new($"{texto}\n", new iTextSharp.text.Font((iTextSharp.text.Font.FontFamily)iTextSharp.text.Font.BOLD, 10))
-            {
-                Alignment = Element.ALIGN_CENTER,
-            };
-            doc.Add(cabecalho);
-        }
-        private static void InformacoesSobreTeste(Teste testeSelecionado, Document doc, Phrase label, Phrase conteudo)
-        {
-            label.Add("Título: ");
-            conteudo.Add($"{testeSelecionado.Titulo}");
-            AdicionaParagrafoAoPDF(doc, label, conteudo);
-
-            label.Add("Disciplina: ");
-            conteudo.Add($"{testeSelecionado.Disciplina}");
-            AdicionaParagrafoAoPDF(doc, label, conteudo);
-
-            label.Add("Matéria: ");
-            if (testeSelecionado.Recuperacao)
-                conteudo.Add($"Recuperação");
-            else
-                conteudo.Add($"{testeSelecionado.Materia}");
-            AdicionaParagrafoAoPDF(doc, label, conteudo);
-        }
-        private static void InformacoesSobreQuestoes(Teste testeSelecionado, Document doc, Phrase label, Phrase conteudo)
-        {
-            int numQuestao = 1;
-
-            foreach (Questao q in testeSelecionado.Questoes)
-            {
-                label.Add($"{numQuestao++}. {q}\n");
-
-                foreach (Alternativa a in q.Alternativas)
-                {
-                    string[] alternativa = a.ToString().Split("-> ");
-                    label.Add("    " + alternativa[0] + alternativa[1] + "\n");
-                }
-
-                AdicionaParagrafoAoPDF(doc, label, conteudo);
-            }
-        }
-        private static void InformacoesSobreQuestoesComResposta(Teste testeSelecionado, Document doc, Phrase label, Phrase conteudo)
-        {
-            int numQuestao = 1;
-
-            foreach (Questao q in testeSelecionado.Questoes)
-            {
-                label.Add($"{numQuestao++}. {q}\n");
-
-                foreach (Alternativa a in q.Alternativas)
-                {
-                    string[] alternativa = a.ToString().Split("-> ");
-
-                    if (a.Correta)
-                        label.Add("    " + alternativa[0] + alternativa[1] + " -> RESPOSTA\n");
-                    else
-                        label.Add("    " + alternativa[0] + alternativa[1] + "\n");
-                }
-
-                AdicionaParagrafoAoPDF(doc, label, conteudo);
-            }
-        }
         #endregion
     }
 }
