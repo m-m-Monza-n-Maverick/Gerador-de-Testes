@@ -96,13 +96,13 @@ namespace Gerador_de_Testes.ModuloTeste
             // 
             // cmbDisciplina
             // 
+            cmbDisciplina.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbDisciplina.FormattingEnabled = true;
             cmbDisciplina.Location = new Point(80, 62);
             cmbDisciplina.Name = "cmbDisciplina";
             cmbDisciplina.Size = new Size(152, 23);
             cmbDisciplina.TabIndex = 1;
             cmbDisciplina.SelectionChangeCommitted += cmbDisciplina_SelectionChangeCommitted;
-            cmbDisciplina.KeyPress += cmbDisciplina_KeyPress;
             // 
             // label3
             // 
@@ -125,13 +125,14 @@ namespace Gerador_de_Testes.ModuloTeste
             // 
             // cmbMateria
             // 
+            cmbMateria.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbMateria.Enabled = false;
             cmbMateria.FormattingEnabled = true;
             cmbMateria.Location = new Point(80, 95);
             cmbMateria.Name = "cmbMateria";
             cmbMateria.Size = new Size(152, 23);
             cmbMateria.TabIndex = 3;
             cmbMateria.SelectionChangeCommitted += cmbMateria_SelectionChangeCommitted;
-            cmbMateria.KeyPress += cmbMateria_KeyPress;
             // 
             // label4
             // 

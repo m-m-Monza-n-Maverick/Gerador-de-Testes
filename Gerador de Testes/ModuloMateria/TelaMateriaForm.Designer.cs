@@ -86,11 +86,12 @@
             // cmbDisciplina
             // 
             cmbDisciplina.FormattingEnabled = true;
+            cmbDisciplina.ImeMode = ImeMode.NoControl;
             cmbDisciplina.Location = new Point(114, 117);
             cmbDisciplina.Name = "cmbDisciplina";
             cmbDisciplina.Size = new Size(121, 23);
             cmbDisciplina.TabIndex = 1;
-            cmbDisciplina.KeyPress += cmbDisciplina_KeyPress;
+            cmbDisciplina.DropDownStyle = ComboBoxStyle.DropDownList;
             // 
             // label4
             // 

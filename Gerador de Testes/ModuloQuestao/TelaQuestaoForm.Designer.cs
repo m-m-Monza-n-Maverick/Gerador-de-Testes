@@ -110,7 +110,7 @@
             cmbMateria.Name = "cmbMateria";
             cmbMateria.Size = new Size(200, 23);
             cmbMateria.TabIndex = 0;
-            cmbMateria.KeyPress += cmbMateria_KeyPress;
+            cmbMateria.DropDownStyle = ComboBoxStyle.DropDownList;
             // 
             // txtResposta
             // 

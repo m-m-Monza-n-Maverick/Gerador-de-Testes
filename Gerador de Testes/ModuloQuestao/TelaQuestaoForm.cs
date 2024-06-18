@@ -222,8 +222,6 @@ namespace Gerador_de_Testes.ModuloQuestao
             btnGravar.Visible = false;
             btnCancelar.Text = "Voltar";
         }
-        private void cmbMateria_KeyPress(object sender, KeyPressEventArgs e) => e.Handled = true;   
         #endregion
-
     }
 }

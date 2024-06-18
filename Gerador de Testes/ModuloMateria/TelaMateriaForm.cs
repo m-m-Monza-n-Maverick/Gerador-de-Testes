@@ -107,8 +107,5 @@ namespace Gerador_de_Testes.ModuloMateria
             }
             else DialogResult = DialogResult.OK;
         }
-
-        private void cmbDisciplina_KeyPress(object sender, KeyPressEventArgs e) => e.Handled = true;
-        
     }
 }

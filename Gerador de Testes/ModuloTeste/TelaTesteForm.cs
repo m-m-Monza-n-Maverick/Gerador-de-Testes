@@ -56,6 +56,7 @@ namespace Gerador_de_Testes.ModuloTeste
             teste.Disciplina = disciplinaSelecionada;
             teste.Materia = null;
 
+            cmbMateria.Enabled = true;
             cmbMateria.SelectedItem = null;
             rdbRecuperacao.Enabled = true;
 
@@ -294,9 +295,5 @@ namespace Gerador_de_Testes.ModuloTeste
             }
         }
         #endregion
-
-        private void cmbDisciplina_KeyPress(object sender, KeyPressEventArgs e) => e.Handled = true;
-        private void cmbMateria_KeyPress(object sender, KeyPressEventArgs e) => e.Handled = true;
-
     }
 }
