@@ -1,5 +1,4 @@
 ﻿using Microsoft.Data.SqlClient;
-
 namespace Gerador_de_Testes.ModuloDisciplina
 {
     public class RepositorioDisciplinaEmSQL() : IRepositorioDisciplina
@@ -62,14 +61,14 @@ namespace Gerador_de_Testes.ModuloDisciplina
         }
         public bool Excluir(int id)
         {
-            string sqlEditar =
+            string sqlExcluir =
                 @"DELETE FROM [TBDisciplina]
                     WHERE
                         [ID] = @ID;
                 ";
 
             SqlConnection conexaoComBanco = new(enderecoBanco);
-            SqlCommand comandoExclusao = new(sqlEditar, conexaoComBanco);
+            SqlCommand comandoExclusao = new(sqlExcluir, conexaoComBanco);
 
             comandoExclusao.Parameters.AddWithValue("ID", id);
 
@@ -137,7 +136,8 @@ namespace Gerador_de_Testes.ModuloDisciplina
             while (leitorDisciplina.Read())
                 disciplinas.Add(ConverterParaDisciplina(leitorDisciplina));
 
-            contadorId = disciplinas.Last().Id + 1;
+            if (disciplinas.Count > 0)
+                contadorId = disciplinas.Last().Id + 1;
 
             conexaoComBanco.Close();
 
