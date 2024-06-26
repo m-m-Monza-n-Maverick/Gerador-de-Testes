@@ -14,8 +14,9 @@ namespace Gerador_de_Testes.ModuloDisciplina
             {
                 txtId.Text = value.Id.ToString();
                 txtNome.Text = value.Nome;
-                foreach (Materia m in value.Materias)
-                    materias.Add(m);
+                if (value.Materias != null) 
+                    foreach (Materia m in value.Materias)
+                        materias.Add(m);
             }
         }
         ContextoDados contexto;

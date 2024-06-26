@@ -24,7 +24,7 @@ namespace Gerador_de_Testes
 
             contexto = new(carregarDados: true);
 
-            repositorioDisciplina = new RepositorioDisciplina(contexto);
+            repositorioDisciplina = new RepositorioDisciplinaEmSQL();
             repositorioMateria = new RepositorioMateria(contexto);
             repositorioQuestao = new RepositorioQuestao(contexto);
             repositorioTeste = new RepositorioTeste(contexto);
