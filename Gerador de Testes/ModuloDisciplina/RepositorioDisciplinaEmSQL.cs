@@ -7,20 +7,49 @@ namespace Gerador_de_Testes.ModuloDisciplina
         private int contadorId;
         private string enderecoBanco = "Data Source=(LocalDB)\\MSSQLLocalDB;Initial Catalog = GeradorDeTestesDb; Integrated Security = True; Pooling=False";
 
+        #region Queries
+        protected string sqlInserir =
+            @"INSERT INTO [TBDISCIPLINA]
+            (
+                [NOME_DISCIPLINA]
+            )
+            VALUES
+            (
+                @NOME_DISCIPLINA
+            ); 
+            SELECT SCOPE_IDENTITY();";
+        protected string sqlEditar =
+            @"UPDATE [TBDisciplina]
+                SET
+                    [NOME_DISCIPLINA] = @NOME_DISCIPLINA
+                WHERE
+                    [ID] = @ID;
+            ";
+        protected string sqlExcluir =
+            @"DELETE FROM [TBDisciplina]
+                WHERE
+                    [ID] = @ID;
+            ";
+        protected string sqlSelecionarPorId =
+            @"SELECT 
+                [ID],
+                [NOME_DISCIPLINA]
+            FROM
+                [TBDisciplina]
+            WHERE
+                [ID] = @ID";
+        protected string sqlSelecionarTodos =
+            @"SELECT 
+                [ID],
+                [NOME_DISCIPLINA]
+            FROM
+                [TBDisciplina]
+            ";
+        #endregion
+
         #region CRUD
         public void Cadastrar(Disciplina novaDisciplina)
         {
-            string sqlInserir =
-                @"INSERT INTO [TBDISCIPLINA]
-                  	(
-                    	[NOME]
-                	)
-                	VALUES
-                	(
-                		@NOME
-                	); 
-                    SELECT SCOPE_IDENTITY();";
-
             SqlConnection conexaoComBanco = new(enderecoBanco);
             SqlCommand comandoInsercao = new(sqlInserir, conexaoComBanco);
 
@@ -36,14 +65,6 @@ namespace Gerador_de_Testes.ModuloDisciplina
         }
         public bool Editar(int id, Disciplina disciplinaEditada)
         {
-            string sqlEditar =
-                @"UPDATE [TBDisciplina]
-                    SET
-                        [NOME] = @NOME
-                    WHERE
-                        [ID] = @ID;
-                ";
-
             SqlConnection conexaoComBanco = new(enderecoBanco);
             SqlCommand comandoEdicao = new(sqlEditar, conexaoComBanco);
 
@@ -62,14 +83,8 @@ namespace Gerador_de_Testes.ModuloDisciplina
         }
         public bool Excluir(int id)
         {
-            string sqlEditar =
-                @"DELETE FROM [TBDisciplina]
-                    WHERE
-                        [ID] = @ID;
-                ";
-
             SqlConnection conexaoComBanco = new(enderecoBanco);
-            SqlCommand comandoExclusao = new(sqlEditar, conexaoComBanco);
+            SqlCommand comandoExclusao = new(sqlExcluir, conexaoComBanco);
 
             comandoExclusao.Parameters.AddWithValue("ID", id);
 
@@ -88,15 +103,6 @@ namespace Gerador_de_Testes.ModuloDisciplina
         public int PegarId() => contadorId;
         public Disciplina SelecionarPorId(int idSelecionado)
         {
-            string sqlSelecionarPorId =
-                @"SELECT 
-                    [ID],
-                    [NOME]
-                FROM
-                    [TBDisciplina]
-                WHERE
-                    [ID] = @ID";
-
             SqlConnection conexaoComBanco = new(enderecoBanco);
             SqlCommand comandoSelecao = new(sqlSelecionarPorId, conexaoComBanco);
 
@@ -117,14 +123,6 @@ namespace Gerador_de_Testes.ModuloDisciplina
         }
         public List<Disciplina> SelecionarTodos()
         {
-            string sqlSelecionarTodos =
-                @"SELECT 
-                    [ID],
-                    [NOME]
-                FROM
-                    [TBDisciplina]
-                ";
-
             SqlConnection conexaoComBanco = new(enderecoBanco);
             SqlCommand comandoSelecao = new(sqlSelecionarTodos, conexaoComBanco);
 
@@ -147,12 +145,12 @@ namespace Gerador_de_Testes.ModuloDisciplina
             => new()
             {
                 Id = Convert.ToInt32(leitor["ID"]),
-                Nome = leitor["NOME"].ToString()
+                Nome = leitor["NOME_DISCIPLINA"].ToString()
             };
         private void ConfigurarParametros(SqlCommand comando, Disciplina disciplina)
         {
             comando.Parameters.AddWithValue("ID", disciplina.Id);
-            comando.Parameters.AddWithValue("NOME", disciplina.Nome);
+            comando.Parameters.AddWithValue("NOME_DISCIPLINA", disciplina.Nome);
         }
         #endregion
     }

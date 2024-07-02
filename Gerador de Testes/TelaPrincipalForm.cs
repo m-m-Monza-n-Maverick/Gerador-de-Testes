@@ -11,6 +11,7 @@ namespace Gerador_de_Testes
         ContextoDados contexto;
 
         IRepositorioDisciplina repositorioDisciplina;
+        IRepositorioDisciplina repositorioDisciplinaSQL;
         IRepositorioMateria repositorioMateria;
         IRepositorioQuestao repositorioQuestao;
         IRepositorioTeste repositorioTeste;
@@ -24,7 +25,9 @@ namespace Gerador_de_Testes
 
             contexto = new(carregarDados: true);
 
-            repositorioDisciplina = new RepositorioDisciplinaEmSQL();
+            repositorioDisciplina = new RepositorioDisciplina(contexto);
+            repositorioDisciplinaSQL = new RepositorioDisciplinaEmSQL();
+
             repositorioMateria = new RepositorioMateria(contexto);
             repositorioQuestao = new RepositorioQuestao(contexto);
             repositorioTeste = new RepositorioTeste(contexto);
@@ -36,7 +39,7 @@ namespace Gerador_de_Testes
 
         #region Seleção de módulo
         private void disciplinasMenuItem_Click(object sender, EventArgs e)
-            => SelecionaModulo(ref controlador, () => controlador = new ControladorDisciplina(repositorioDisciplina, contexto),
+            => SelecionaModulo(ref controlador, () => controlador = new ControladorDisciplina(repositorioDisciplina, repositorioDisciplinaSQL, contexto),
                 contexto.Disciplinas.Count);
         private void materiasMenuItem_Click(object sender, EventArgs e)
             => SelecionaModulo(ref controlador, () => controlador = new ControladorMateria(repositorioMateria, contexto),

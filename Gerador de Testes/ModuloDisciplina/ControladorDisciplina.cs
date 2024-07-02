@@ -1,7 +1,7 @@
 ﻿using Gerador_de_Testes.Compartilhado;
 namespace Gerador_de_Testes.ModuloDisciplina
 {
-    public class ControladorDisciplina(IRepositorioDisciplina repositorioDisciplina, ContextoDados contexto) : ControladorBase
+    public class ControladorDisciplina(IRepositorioDisciplina repositorioDisciplina, IRepositorioDisciplina repositorioDisciplinaSQL, ContextoDados contexto) : ControladorBase
     {
         private TabelaDisciplinaControl tabelaDisciplina;
 
@@ -26,6 +26,7 @@ namespace Gerador_de_Testes.ModuloDisciplina
 
             RealizarAcao(
                 () => repositorioDisciplina.Cadastrar(novaDisciplina), 
+                () => repositorioDisciplinaSQL.Cadastrar(novaDisciplina),
                 novaDisciplina, "cadastrado");
 
             id++;
@@ -50,6 +51,7 @@ namespace Gerador_de_Testes.ModuloDisciplina
 
             RealizarAcao(
                 () => repositorioDisciplina.Editar(disciplinaSelecionada.Id, disciplinaEditada),
+                () => repositorioDisciplinaSQL.Editar(disciplinaSelecionada.Id, disciplinaEditada),
                 disciplinaEditada, "editado");
         }
         public override void Excluir()
@@ -62,6 +64,7 @@ namespace Gerador_de_Testes.ModuloDisciplina
 
             RealizarAcao(
                 () => repositorioDisciplina.Excluir(disciplinaSelecionada.Id),
+                () => repositorioDisciplinaSQL.Excluir(disciplinaSelecionada.Id),
                 disciplinaSelecionada, "excluído");
         }
         #endregion
@@ -77,6 +80,13 @@ namespace Gerador_de_Testes.ModuloDisciplina
         }
         protected override void CarregarRegistros()
             => tabelaDisciplina.AtualizarRegistros(repositorioDisciplina.SelecionarTodos());
+        protected void RealizarAcao(Action acao, Action acaoSQL, EntidadeBase materia, string texto)
+        {
+            acao();
+            acaoSQL();
+            CarregarRegistros();
+            CarregarMensagem(materia, texto);
+        }
         #endregion
     }
 }
